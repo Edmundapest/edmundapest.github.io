@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./styles_animation.css" rel="stylesheet" />
     <link href="./styles_tailwind.css" rel="stylesheet" />
     <link
       rel="stylesheet"
@@ -16,175 +17,241 @@
     <title>Edmund Lim</title>
   </head>
   <body class="dark:bg-gray-800 dark:text-white">
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+    <div class="flex-auto">
+      <div class="flex flex-col">
+        <button
+          data-drawer-target="default-sidebar"
+          data-drawer-toggle="default-sidebar"
+          aria-controls="default-sidebar"
+          type="button"
+          class="ms-3 mt-2 inline-flex self-start rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
+        >
+          <span class="sr-only">Open sidebar</span>
+          <svg
+            class="h-6 w-6"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              fill-rule="evenodd"
+              d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+            ></path>
+          </svg>
+        </button>
 
-    <div class="flex-auto flex-col">
-      <div class="flex flex-row">
-        <div class="w-1/6"></div>
-        <div class="container mx-auto my-10 flex w-4/6">
-          <h1 class="text-3xl font-black underline">Edmund Lim Ming Chun</h1>
-        </div>
-        <div class="div w-1/6">
-          <div class="mx-auto my-auto flex h-full w-1/2">
-            <label
-              for="toggle-example"
-              class="relative my-auto flex cursor-pointer items-center"
-            >
-              <input type="checkbox" id="toggle-example" class="sr-only" />
-              <div
-                class="toggle-bg h-6 w-11 rounded-full border-2 border-gray-200 bg-gray-200"
-              ></div>
-              <span class="ml-3 text-sm font-medium" id="toggle-example-label"
-                >Lightmode</span
-              >
-            </label>
+        <aside
+          id="default-sidebar"
+          class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
+          aria-label="Sidebar"
+        >
+          <div
+            class="h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800 sm:bg-transparent"
+          >
+            <ul class="space-y-2 font-medium">
+              <!--
+              <li>
+                <a
+                  href="#"
+                  class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 22 21"
+                  >
+                    <path
+                      d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"
+                    />
+                    <path
+                      d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
+                    />
+                  </svg>
+                  <span class="ms-3">Dashboard</span>
+                </a>
+              </li>-->
+            </ul>
           </div>
-        </div>
+        </aside>
       </div>
-      <div class="flex flex-row">
-        <div class="py-auto mx-auto my-auto w-1/6 items-center text-center">
-          <div class="my-auto">Work</div>
-          <div class="my-auto">2024</div>
-          <div class="my-auto">2023</div>
-          <div class="my-auto">2022</div>
-          <div class="my-auto">2021</div>
-          <div class="my-auto">2020</div>
-          <div class="my-auto">2019</div>
-          <div class="my-auto">2018</div>
-          <div class="my-auto">2017</div>
-          <div class="my-auto">2016</div>
-          <div class="my-auto">2015</div>
-          <div class="my-auto">2014</div>
-          <div class="my-auto">2013</div>
-          <div class="my-auto">2012</div>
-          <div class="my-auto">2011</div>
-          <div class="my-auto">2010</div>
-          <div class="my-auto">2009</div>
-          <div class="my-auto">2008</div>
-          <div class="my-auto">2007</div>
-          <div class="my-auto">2006</div>
-          <div class="my-auto">2005</div>
-        </div>
-        <div class="ml-8 mr-auto w-4/6">
-          <div>
-            <div class="my-4 text-3xl font-bold">Automation Test Engineer</div>
-            <div class="my-3 flex flex-row">
-              <div class="mr-auto text-start text-2xl font-semibold">
-                Motorola Solutions, MY, Penang
-              </div>
-              <div class="mr-5 text-end text-2xl font-semibold">
-                March 2022 - Present
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Responsible for executing and running tests, setting up stations
-                and remote desktop environments.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Own and manage multiple test suites such as KPI, sanity,
-                regressions, etc, which decreased workload of the team by 30%.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Analyzed and developed automated Android-based tests for TETRA,
-                MOTOTRBO, and ASTRO radios, which increased testing duration
-                from 8 hours to 24 hours daily.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Executed tests for multiple RRRs for ASTRO radios and identified
-                more than 20 radio software bugs before release.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Built multiple custom python pipelines for Jenkins to increase
-                flexibility of testing.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Created automated scripts for tasks such as email sending,
-                adding data into Google Sheet, Jira queries, GUI for parsing
-                XML, API calls with credentials for JFrog, and improved
-                efficiency of team’s data visualization processes.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Coached team members to develop tests using internal test
-                frameworks and softwares.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Collaborated with stakeholders from different time zones to
-                validate bug fixes in the sidebuild.
-              </div>
-            </div>
+      <div class="flex flex-col">
+        <div class="flex flex-row">
+          <div class="ml-8 w-4/6 p-4 sm:my-10 sm:ml-64">
+            <h1 class="text-5xl font-black underline">
+              Edmu<span class="hanging-n inline-block underline">n</span>d Lim
+              Ming Chun
+            </h1>
           </div>
-          <div class="mt-10">
-            <div class="my-4 text-3xl font-bold">FPGA Software Engineer</div>
-            <div class="my-3 flex flex-row">
-              <div class="mr-auto text-start text-2xl font-semibold">
-                Intel Technology Sdn. Bhd, MY, Penang
-              </div>
-              <div class="mr-5 text-end text-2xl font-semibold">
-                January 2020 - December 2021
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Responsible for maintaining the assembler stage for Quartus, a
-                software used to compile designs for FPGA products.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Previous owner of Device and Pin Options subsystem, an array of
-                options for users to control settings of FPGA.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Contributed to various code subsystems’ repositories with
-                thorough documentation, which improved code scalability and
-                maintainability.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Performed analysis for the feasibility of new features, which
-                saved implementation time before software release.
-              </div>
-            </div>
-            <div class="my-2 flex flex-row">
-              <span class="material-symbols-rounded"> square </span>
-              <div class="text my-auto ml-2">
-                Collaborated with cross-departmental and international
-                colleagues in numerous projects.
-              </div>
+          <div class="div w-2/6">
+            <div class="mx-auto flex h-full w-1/2">
+              <button
+                onclick="(() => document.documentElement.classList.toggle('dark'))()"
+                class="m-auto h-12 w-12 rounded-lg border-2 border-black p-2 hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+              >
+                <svg
+                  class="block fill-violet-700 dark:hidden"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                  ></path>
+                </svg>
+                <svg
+                  class="hidden fill-yellow-500 dark:block"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-        <div class="w-1/6"></div>
+        <div class="flex flex-row">
+          <div class="p-4 sm:ml-64">
+            <div class="mr-auto sm:ml-8 sm:w-4/6">
+              <div class="rounded-lg border-2 border-gray-200 p-4">
+                <div class="my-4 text-3xl font-bold">
+                  Automation Test Engineer
+                </div>
+                <div class="my-3 flex flex-row">
+                  <div class="mr-auto text-start text-2xl font-semibold">
+                    Motorola Solutions, MY, Penang
+                  </div>
+                  <div class="mr-5 text-end text-2xl font-semibold">
+                    March 2022 - Present
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="group my-auto ml-2">
+                    <span class="font-bold text-gray-700" id="dropdown">
+                      Responsible for executing and running tests, setting up
+                      stations and remote desktop environments.</span
+                    >
+                    <div class="hidden w-auto bg-white group-hover:block">
+                      <div class="p-3 hover:bg-gray-200">Admission Process</div>
+                      <div class="p-3 hover:bg-gray-200">option 1</div>
+                      <div class="p-3 hover:bg-gray-200">option 2</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Own and manage multiple test suites such as KPI, sanity,
+                    regressions, etc, which decreased workload of the team by
+                    30%.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Analyzed and developed automated Android-based tests for
+                    TETRA, MOTOTRBO, and ASTRO radios, which increased testing
+                    duration from 8 hours to 24 hours daily.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Executed tests for multiple RRRs for ASTRO radios and
+                    identified more than 20 radio software bugs before release.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Built multiple custom python pipelines for Jenkins to
+                    increase flexibility of testing.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Created automated scripts for tasks such as email sending,
+                    adding data into Google Sheet, Jira queries, GUI for parsing
+                    XML, API calls with credentials for JFrog, and improved
+                    efficiency of team’s data visualization processes.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Coached team members to develop tests using internal test
+                    frameworks and softwares.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Collaborated with stakeholders from different time zones to
+                    validate bug fixes in the sidebuild.
+                  </div>
+                </div>
+              </div>
+              <div class="mt-10 rounded-lg border-2 border-gray-200 p-4">
+                <div class="my-4 text-3xl font-bold">
+                  FPGA Software Engineer
+                </div>
+                <div class="my-3 flex flex-row">
+                  <div class="mr-auto text-start text-2xl font-semibold">
+                    Intel Technology Sdn. Bhd, MY, Penang
+                  </div>
+                  <div class="mr-5 text-end text-2xl font-semibold">
+                    January 2020 - December 2021
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Responsible for maintaining the assembler stage for Quartus,
+                    a software used to compile designs for FPGA products.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Previous owner of Device and Pin Options subsystem, an array
+                    of options for users to control settings of FPGA.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Contributed to various code subsystems’ repositories with
+                    thorough documentation, which improved code scalability and
+                    maintainability.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Performed analysis for the feasibility of new features,
+                    which saved implementation time before software release.
+                  </div>
+                </div>
+                <div class="my-2 flex flex-row">
+                  <span class="material-symbols-rounded"> square </span>
+                  <div class="text my-auto ml-2">
+                    Collaborated with cross-departmental and international
+                    colleagues in numerous projects.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-2/6"></div>
+          </div>
+        </div>
       </div>
     </div>
     <script>
@@ -217,6 +284,14 @@
           localStorage.setItem('theme', 'light')
         }
       })
+
+      const dropdownButton = document.querySelector('#dropdown')
+      const dropdownList = document.querySelector('#dropdown + div.hidden')
+
+      dropdownButton.addEventListener('hover', () => {
+        dropdownList.classList.toggle('hidden')
+      })
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
   </body>
 </html>

@@ -1,0 +1,33 @@
+.hanging-n {
+  animation: hang 1s infinite alternate;
+}
+
+@keyframes hang {
+  0% {
+    transform: translateY(0);
+    color: aqua;
+  }
+  50% {
+    transform: translateY(5px);
+    color: blueviolet;
+  }
+  100% {
+    transform: translateY(0);
+    color: aqua;
+  }
+}
+
+.fill-gradient:hover {
+  background: linear-gradient(0deg, #ffffff, #b888eb);
+  background-size: 800% 800%;
+  animation: fill-gradient-animation 4s ease alternate;
+}
+
+@keyframes fill-gradient-animation {
+  0% {
+    background-position: 0 100%; /* Start at the bottom */
+  }
+  100% {
+    background-position: 0 0; /* End at the top */
+  }
+}
