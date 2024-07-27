@@ -31,3 +31,31 @@
     background-position: 0 0; /* End at the top */
   }
 }
+
+.topbar_name_h1_animation_left {
+  animation: topbar_name_move_left 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes topbar_name_move_left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100px);
+  }
+}
+
+.topbar_name_h1_animation_right {
+  animation: topbar_name_move_right 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes topbar_name_move_right {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

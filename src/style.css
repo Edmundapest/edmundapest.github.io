@@ -1,5 +1,5 @@
-@import url("https://fonts.cdnfonts.com/css/ica-rubrik-black");
-@import url("https://fonts.cdnfonts.com/css/poppins");
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
 
 .banner {
   width: 100%;
@@ -57,7 +57,7 @@
   z-index: 1;
 }
 .banner .content h1 {
-  font-family: "ICA Rubrik";
+  font-family: 'ICA Rubrik';
   font-size: 16em;
   line-height: 1em;
   color: #25283b;
@@ -135,4 +135,39 @@
   .banner .content h1 {
     font-size: 5em;
   }
+}
+
+.grid-area-1-resume {
+  grid-area: 1/2/3/10;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-area-1-resume {
+    grid-row-start: 1;
+    grid-row-end: span 1;
+    grid-column-start: 5;
+    grid-column-end: span 2;
+  }
+}
+
+.grid-area-2-projects {
+  grid-area: 1/2/3/10;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-area-2-projects {
+    grid-row-start: 1;
+    grid-row-end: span 1;
+    grid-column-start: 4;
+    grid-column-end: span 2;
+  }
+}
+
+.bg-resume-color {
+  background: rgb(10, 102, 194);
+  background: linear-gradient(
+    90deg,
+    rgba(10, 102, 194, 1) 0%,
+    rgba(0, 212, 255, 1) 100%
+  );
 }
