@@ -234,10 +234,10 @@
 <!-- ══ STATS ══ -->
 <div class="stats-bar">
   <div class="stat"><div class="stat-n">10</div><div class="stat-l">Days</div></div>
-  <div class="stat"><div class="stat-n">~850</div><div class="stat-l">km Driven</div></div>
+  <div class="stat"><div class="stat-n">~700</div><div class="stat-l">km Driven</div></div>
   <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Flower Farms</div></div>
-  <div class="stat"><div class="stat-n">5</div><div class="stat-l">Fireworks Shows</div></div>
-  <div class="stat"><div class="stat-n">8</div><div class="stat-l">Stops</div></div>
+  <div class="stat"><div class="stat-n">4</div><div class="stat-l">Fireworks Shows</div></div>
+  <div class="stat"><div class="stat-n">7</div><div class="stat-l">Stops</div></div>
 </div>
 
 <!-- ══ MAP ══ -->
@@ -246,7 +246,7 @@
     <div class="map-panel">
       <div>
         <div class="map-panel-title">Route Map</div>
-        <div class="map-panel-sub" style="margin-top:.5rem">~850 km loop. Sapporo saved for last — shop freely with the airport 45 min away.</div>
+        <div class="map-panel-sub" style="margin-top:.5rem">~700 km loop. Land 7:25 PM · depart 9:30 AM · Sapporo shopping is Day 9 evening.</div>
       </div>
       <div class="stop-list" id="stop-list"></div>
     </div>
@@ -328,42 +328,57 @@
 <script>
 // ══ MAP DATA ════════════════════════════════════════════════════════
 const STOPS = [
-  { id:'cts',       n:1, name:'New Chitose Airport', emoji:'✈️',  days:'Day 1',     lat:42.775, lng:141.692, col:'#22C55E', note:'Arrive & drive to Furano' },
-  { id:'furano',    n:2, name:'Furano',              emoji:'💜',  days:'Days 2–3',  lat:43.350, lng:142.383, col:'#8B5CF6', note:'Lavender peak + Festival + Fireworks' },
-  { id:'biei',      n:3, name:'Biei',                emoji:'🌸',  days:'Days 4–5',  lat:43.587, lng:142.468, col:'#6366F1', note:'Blue Pond + Rainbow flower hills' },
-  { id:'asahikawa', n:4, name:'Asahikawa',           emoji:'🎆',  days:'Day 6',     lat:43.770, lng:142.365, col:'#F97316', note:'Summer Festival + Fireworks' },
-  { id:'hokuryu',   n:5, name:'Hokuryu',             emoji:'🌻',  days:'Day 7',     lat:43.876, lng:141.879, col:'#EAB308', note:'2.3 million sunflowers' },
-  { id:'otaru',     n:6, name:'Otaru',               emoji:'⛵',  days:'Day 8',     lat:43.191, lng:140.995, col:'#3B82F6', note:'Canal + Ushiomatsuri + Fireworks' },
-  { id:'toya',      n:7, name:'Lake Toya',           emoji:'🌋',  days:'Day 9',     lat:42.605, lng:140.844, col:'#EF4444', note:'Nightly fireworks + Showa Shinzan + Onsen' },
-  { id:'sapporo',   n:8, name:'Sapporo',             emoji:'🛍️', days:'Day 10',    lat:43.062, lng:141.354, col:'#EC4899', note:'Summer Festival + Grand Shopping Haul' },
+  { id:'cts',     n:1, name:'New Chitose Airport', emoji:'✈️',  days:'Day 1',     lat:42.775, lng:141.692, col:'#22C55E', note:'Land 7:25 PM · stay in Sapporo' },
+  { id:'furano',  n:2, name:'Furano',              emoji:'💜',  days:'Days 2–4',  lat:43.350, lng:142.383, col:'#8B5CF6', note:'Lavender peak + Farm Tomita + Fireworks' },
+  { id:'biei',    n:3, name:'Biei',                emoji:'🌸',  days:'Days 5–6',  lat:43.587, lng:142.468, col:'#6366F1', note:'Blue Pond + Rainbow flower hills' },
+  { id:'hokuryu', n:4, name:'Hokuryu',             emoji:'🌻',  days:'Day 7',     lat:43.876, lng:141.879, col:'#EAB308', note:'2.3 million sunflowers' },
+  { id:'otaru',   n:5, name:'Otaru',               emoji:'⛵',  days:'Day 8',     lat:43.191, lng:140.995, col:'#3B82F6', note:'Canal + Ushiomatsuri + Fireworks' },
+  { id:'toya',    n:6, name:'Lake Toya',           emoji:'🌋',  days:'Day 9',     lat:42.605, lng:140.844, col:'#EF4444', note:'Volcano + Nightly fireworks + Onsen' },
+  { id:'sapporo', n:7, name:'Sapporo',             emoji:'🛍️', days:'Day 9 eve & 10', lat:43.062, lng:141.354, col:'#EC4899', note:'Evening shopping + 9:30 AM departure' },
 ];
 
 const ROUTE = [
-  [42.775,141.692],[43.350,142.383],[43.587,142.468],[43.770,142.365],
+  [42.775,141.692],[43.350,142.383],[43.587,142.468],
   [43.876,141.879],[43.191,140.995],[42.605,140.844],[43.062,141.354],[42.775,141.692]
 ];
 
 // ══ TRIP DATA ════════════════════════════════════════════════════════
 const TRIP = [
   {
-    n:1, date:'Thu · July 16', title:'Arrive → Head Straight to Furano',
-    sub:'Fly in, grab the rental car, and drive directly to flower country — Sapporo shopping is saved for the end.',
+    n:1, date:'Thu · July 16', title:'Land 7:25 PM — Sapporo First Night',
+    sub:'Touch down at Chitose, collect the rental car, and head straight to Sapporo for the night. The adventure begins tomorrow.',
     theme:'travel', stop:'cts',
-    tags:[['tg-drive','✈️ Arrival'],['tg-drive','🚗 ~2.5 hrs']],
-    imgs:[['New_Chitose_Airport','ph-green'],['Furano','ph-lav']],
-    ytId:'vOUtxja9IqY', ytTitle:'The Lavender Fields of Furano, Hokkaido',
+    tags:[['tg-drive','✈️ 7:25 PM Landing'],['tg-drive','🚗 ~40 min to Sapporo']],
+    imgs:[['New_Chitose_Airport','ph-green'],['Sapporo','ph-green']],
+    ytId:'p4ULEq8988M', ytTitle:'Sapporo Japan 4K Walk — Odori Park & Tanukikoji',
     acts:[
-      ['Afternoon','✈️','Arrive New Chitose Airport (CTS)','Collect rental car — drive northeast on Route 38 directly to Furano, bypassing Sapporo for now'],
-      ['Late PM','🚗','Drive directly to Furano (~2.5 hrs)','Rolling farmland and open sky the whole way — roadside wildflowers start here'],
-      ['Evening','💜','First glimpse of the lavender roadsides','Even roadside verges glow purple in mid-July Hokkaido'],
-      ['Night','🍷','Furano Winery dinner','Hokkaido wine · panoramic mountain view · perfect first evening'],
+      ['7:25 PM','✈️','Land at New Chitose Airport (CTS)','Collect rental car — it\'s already evening, so we drive ~40 min north to Sapporo'],
+      ['Evening','🏙️','Check in to Sapporo hotel','Susukino area is perfect — walkable to dinner, convenient for tomorrow\'s early start'],
+      ['Night','🍜','Sapporo ramen in Ramen Alley (すすきの)','Miso ramen with rich Hokkaido butter and corn — the real thing, on the first night'],
     ],
-    hl:{ c:'purple', t:'💜 Lavender is at absolute peak July 15–25 — you land at exactly the right moment.' },
-    gem:'💎 Hidden gem: Tomita Melon House, just beside Farm Tomita, serves ice-cold fresh Hokkaido melon halves in the field. Easily missed by tourists rushing straight to the lavender.',
-    connector:'Stay in Furano · Days 2–3 here'
+    hl:{ c:'purple', t:'💜 Arriving at 7:25 PM rules out driving to Furano tonight. Sapporo Night 1 means a fresh morning drive into lavender country tomorrow.' },
+    gem:'💎 Hidden gem: Susukino\'s Ramen Yokocho (ラーメン横丁) — a tiny alley of 17 legendary ramen shops. Open until 3 AM. Each shop has a queue and a story.',
+    connector:'🚗 ~2.5 hrs northeast to Furano'
   },
   {
-    n:2, date:'Fri · July 17', title:'Farm Tomita — Crown Jewel of Hokkaido',
+    n:2, date:'Fri · July 17', title:'Sapporo → Furano — Drive into Lavender Country',
+    sub:'Morning drive northeast through open Hokkaido farmland — your first view of purple fields takes your breath away.',
+    theme:'lav', stop:'furano',
+    tags:[['tg-lav','💜 Peak Lavender'],['tg-drive','🚗 ~2.5 hrs']],
+    imgs:[['Furano','ph-lav'],['Lavandula','ph-lav']],
+    ytId:'vOUtxja9IqY', ytTitle:'The Lavender Fields of Furano, Hokkaido',
+    acts:[
+      ['Morning','🚗','Drive Sapporo → Furano via Route 38 (~2.5 hrs)','Rolling farmland and open sky the whole way — roadside wildflowers appear after Takikawa'],
+      ['Midday','💜','First glimpse of lavender roadsides','Even roadside verges glow purple in mid-July Hokkaido'],
+      ['Afternoon','🍷','Furano Winery & vineyard walk','Hokkaido wine on the hillside terrace with panoramic mountain views'],
+      ['Evening','🏮','Ningle Terrace at dusk','Fairy-tale forest craft shops lit up in the cedar trees — a perfect first Furano evening'],
+    ],
+    hl:{ c:'purple', t:'💜 Lavender is at absolute peak July 15–25 — you arrive at exactly the right moment.' },
+    gem:'💎 Hidden gem: Tomita Melon House, just beside Farm Tomita, serves ice-cold fresh Hokkaido melon halves in the field. Easily missed by tourists rushing straight to the lavender.',
+    connector:'Same base · Furano · Days 3–4 here too'
+  },
+  {
+    n:3, date:'Sat · July 18', title:'Farm Tomita — Crown Jewel of Hokkaido',
     sub:'Japan\'s most famous lavender farm. Arrive at dawn before the world wakes up.',
     theme:'lav', stop:'furano',
     tags:[['tg-lav','💜 Peak Lavender'],['tg-flower','🌸 Farms']],
@@ -374,14 +389,13 @@ const TRIP = [
       ['Morning','💜','Walk all seven lavender fields','Traditional Field · Bloom Field · Forest Panorama — seven Lavandula varieties in full bloom'],
       ['Midday','🍦','Lavender soft-serve ice cream & parfait','Farm Tomita\'s legendary lavender ice cream — a flavour that doesn\'t exist anywhere else'],
       ['Afternoon','🌸','Lavender Bud Farm Hinode & Fujida Farm','Smaller neighbours · half the crowds · equally stunning purple panoramas'],
-      ['Evening','🏮','Ningle Terrace at dusk','Fairy-tale forest craft shops lit up in the cedar trees'],
     ],
     hl:{ c:'purple', t:'🏆 Farm Tomita is the crown jewel of this entire trip. Give it a full morning — it earns every minute.' },
     gem:'💎 Hidden gem: Hinode Lavender Farm (ひので観光農園) is 500m from Farm Tomita with equally stunning views and a fraction of the visitors. Great for peaceful photos.',
     connector:'Same base · Furano'
   },
   {
-    n:3, date:'Sat · July 18', title:'Furano Lavender Festival & Fireworks Night',
+    n:4, date:'Sun · July 19', title:'Furano Lavender Festival & Fireworks Night',
     sub:'Festival afternoon, golden sunset over the fields, then fireworks burst above the lavender valley.',
     theme:'night', stop:'furano',
     tags:[['tg-fest','🎉 Lavender Festival'],['tg-fire','🎆 Hanabi Night']],
@@ -398,7 +412,7 @@ const TRIP = [
     connector:'🚗 ~30 min north to Biei'
   },
   {
-    n:4, date:'Sun · July 19', title:'Furano → Biei · Blue Pond & Patchwork Hills',
+    n:5, date:'Mon · July 20', title:'Furano → Biei · Blue Pond & Patchwork Hills',
     sub:'Drive 30 minutes north into a living Impressionist painting of rolling flower hills.',
     theme:'lav', stop:'biei',
     tags:[['tg-flower','🌸 Flowers'],['tg-drive','🚗 ~30 min']],
@@ -406,61 +420,43 @@ const TRIP = [
     ytId:'9jg0rsrGRi4', ytTitle:'Shirogane Blue Pond (Aoiike) — Biei, Hokkaido',
     acts:[
       ['Morning','🚗','Drive Furano → Biei via scenic Route 237','30 minutes through flower-lined country roads · every bend is a photograph'],
-      ['Midday','🌄','Patchwork Road (パッチワークの路)','Rolling hills of poppies, lavender, mustard and potato blossom — layered like brushstrokes on the hills'],
+      ['Midday','🌄','Patchwork Road (パッチワークの路)','Rolling hills of poppies, lavender, mustard and potato blossom — layered like brushstrokes'],
       ['Afternoon','🫐','Shirogane Blue Pond (白金青い池)','Ethereal aluminium-blue water · silver birch trees rising from the surface · genuinely magical'],
       ['Evening','🌅','Panorama Road golden hour drive','Dusk light over the flower hills — the whole valley glows orange and deep purple'],
     ],
     hl:{ c:'blue', t:'📸 The Blue Pond is illuminated nightly in summer. Visit at dusk for both sunset colours and the night glow.' },
     gem:'💎 Hidden gem: Shirogane Onsen (白金温泉) is a tiny hot spring village 5 min from the Blue Pond. After the tourist crowds leave, soak in a rotenburo (outdoor bath) with forest views.',
-    connector:'Same base · Biei · Day 5 here too'
+    connector:'Same base · Biei · Day 6 morning here too'
   },
   {
-    n:5, date:'Mon · July 20', title:'Biei — Shikisai-no-oka Rainbow Flower Hills',
-    sub:'Seven rows of rainbow flowers across the hillside — salvia, marigold, lavender, sunflower, all at once.',
-    theme:'lav', stop:'biei',
-    tags:[['tg-flower','🌸 Rainbow Hills'],['tg-lav','💜 Lavender'],['tg-sun','🌻 Sunflower']],
+    n:6, date:'Tue · July 21', title:'Biei Shikisai → Drive West to Hokuryu',
+    sub:'Rainbow flower hills in the morning, then a scenic drive west across central Hokkaido to sunflower country.',
+    theme:'lav', stop:'hokuryu',
+    tags:[['tg-flower','🌈 Rainbow Hills'],['tg-lav','💜 Lavender'],['tg-drive','🚗 ~2 hrs']],
     imgs:[['Biei, Hokkaido','ph-lav'],['Dahlia','ph-pink']],
     ytId:'OWvJuQqnGSs', ytTitle:'Summer in Hokkaido — Road Trip in Biei Patchwork Road',
     acts:[
       ['Morning','🌈','Shikisai-no-oka (四季彩の丘)','Seven flower rows: salvia · marigold · lavender · sunflower · dahlia · a living rainbow across the hillside'],
       ['Midday','🐑','Zerubu Hill & Flower Land Kamifurano','Tractor rides through sweeping lavender and dahlia fields with mountain panoramas'],
       ['Afternoon','🌾','Ken & Mary Tree & Mild Seven Hill','Iconic single-tree Hokkaido landscape landmarks — timeless and photogenic'],
-      ['Evening','🍜','Asahikawa ramen for dinner (~40 min drive)','Asahikawa-style: dark soy with lard ring — less famous than Sapporo ramen, far more flavour'],
+      ['Evening','🚗','Drive west to Hokuryu (~2 hrs)','Crossing central Hokkaido · flat, fast roads · sunset over the plains'],
     ],
     hl:{ c:'purple', t:'🌈 Shikisai-no-oka in mid-July has the widest simultaneous bloom variety — arguably more colourful than lavender fields alone.' },
     gem:'💎 Hidden gem: Asahidake Ropeway — 30 min from Biei, Hokkaido\'s highest peak at 2,291m. Alpine flowers bloom at 1,600m in July. Almost unknown to non-Japanese tourists.',
-    connector:'🚗 ~40 min to Asahikawa'
-  },
-  {
-    n:6, date:'Tue · July 21', title:'Asahikawa — Summer Festival & Fireworks',
-    sub:'One of Hokkaido\'s biggest matsuri, followed by grand fireworks over the Ishikari River.',
-    theme:'night', stop:'asahikawa',
-    tags:[['tg-fest','🎉 Matsuri'],['tg-fire','🎆 Fireworks'],['tg-flower','🌹 Rose Garden']],
-    imgs:[['Asahikawa','ph-dark'],['Asahiyama Zoo','ph-dark']],
-    ytId:'CypP7XtrA0s', ytTitle:'Summer Festival in Hokkaido (Asahikawa)',
-    acts:[
-      ['Morning','🌹','Tokiwa Park Rose Garden','Hundreds of rose varieties and hydrangeas in full July bloom around the lakeside park'],
-      ['Midday','🦒','Asahiyama Zoo (optional)','Japan\'s most innovative zoo — famous polar bear pool and the penguin walk past visitors'],
-      ['Evening','🥁','Asahikawa Summer Festival (旭川夏まつり)','Taiko drumming · bon-odori dance circles · massive food stall rows along the Ishikari River'],
-      ['Night','🎆','Asahikawa Hanabi Taikai','Grand fireworks over the river — one of northern Hokkaido\'s most spectacular displays'],
-    ],
-    hl:{ c:'dark', t:'🎆 Stake out an Ishikari riverside spot 1–2 hours early. The fireworks reflect on the water.' },
-    gem:'💎 Hidden gem: Asahikawa Ramen Mura (旭川ラーメン村) — 8 legendary ramen shops under one roof. Each serves its own interpretation of Asahikawa\'s signature dark soy style. Open until 10 PM.',
-    connector:'🚗 ~1 hr west to Hokuryu'
+    connector:'🚗 2 hrs west · now in Hokuryu'
   },
   {
     n:7, date:'Wed · July 22', title:'Hokuryu — 2.3 Million Sunflowers',
-    sub:'Japan\'s largest sunflower field. One hour west from Asahikawa — the scale is breathtaking.',
-    theme:'sun', stop:'hokuryu',
-    tags:[['tg-sun','🌻 Himawari Festival'],['tg-fest','🎉 Festival'],['tg-drive','🚗 ~1 hr']],
+    sub:'Japan\'s largest sunflower field. The scale is breathtaking — then drive the coastal highway south to Otaru.',
+    theme:'sun', stop:'otaru',
+    tags:[['tg-sun','🌻 Himawari Festival'],['tg-fest','🎉 Festival'],['tg-drive','🚗 ~2 hrs']],
     imgs:[['Hokuryu, Hokkaido','ph-sun'],['Helianthus annuus','ph-sun']],
     ytId:'n8UQaXmeMr0', ytTitle:'Japan\'s Sunflower Town — Hokuryu in Hokkaido',
     acts:[
-      ['Morning','🚗','Drive Asahikawa → Hokuryu (北竜町)','~1 hour due west through flat central Hokkaido farmland — surprisingly zen drive'],
-      ['Midday','🌻','Hokuryu Himawari Festival (ひまわりまつり)','2.3 MILLION sunflowers across 23 hectares — Japan\'s single largest sunflower field in full bloom'],
-      ['Afternoon','🏛️','Himawari Museum & Sunflower Maze','Sunflower varieties · cultivation history · sunflower honey tasting · gift shop'],
-      ['Late PM','🌅','Golden hour in the fields','A million yellow faces in warm afternoon light — a scale impossible to capture in one shot'],
-      ['Evening','🚗','Drive south to Otaru (~2 hrs)','Coastal Highway 231 hugs the Sea of Japan — beautiful evening drive'],
+      ['Morning','🌻','Hokuryu Himawari Festival (ひまわりまつり)','2.3 MILLION sunflowers across 23 hectares — Japan\'s single largest sunflower field in full bloom'],
+      ['Midday','🏛️','Himawari Museum & Sunflower Maze','Sunflower varieties · cultivation history · sunflower honey tasting · gift shop'],
+      ['Afternoon','🌅','Golden hour in the fields','A million yellow faces in warm afternoon light — a scale impossible to capture in one shot'],
+      ['Evening','🚗','Drive south to Otaru (~2 hrs, Coastal Hwy 231)','Highway 231 hugs the Sea of Japan — beautiful evening drive as the sun sets over the water'],
     ],
     hl:{ c:'gold', t:'🌻 Hokuryu Himawari Festival runs mid-July through mid-August — July 22 catches it at peak bloom.' },
     gem:'💎 Hidden gem: Sunagawa Service Area (砂川SA) on Route 12 south — Japan\'s most famous highway rest stop with gourmet restaurants including a branch of Michelin-starred ramen.',
@@ -484,10 +480,10 @@ const TRIP = [
     connector:'🚗 ~2 hrs south to Lake Toya'
   },
   {
-    n:9, date:'Fri · July 24', title:'Lake Toya — Volcano, Onsen & Nightly Fireworks',
-    sub:'A caldera lake forged by eruption. Nightly fireworks run from April to October — no schedule needed.',
+    n:9, date:'Fri · July 24', title:'Lake Toya — Volcano, Fireworks & Evening in Sapporo',
+    sub:'A caldera lake forged by eruption. Nightly fireworks, then drive to Sapporo for the evening shopping haul.',
     theme:'volcano', stop:'toya',
-    tags:[['tg-fire','🎆 Nightly Fireworks'],['tg-volcano','🌋 Showa Shinzan'],['tg-fest','♨️ Onsen']],
+    tags:[['tg-fire','🎆 Nightly Fireworks'],['tg-volcano','🌋 Showa Shinzan'],['tg-drive','🛍️ Sapporo PM']],
     imgs:[['Lake Tōya','ph-red'],['Shōwa Shinzan','ph-red']],
     ytId:'m0uSkRkm7Ps', ytTitle:'Lake Tōya Fireworks & Onsen Paradise in Hokkaido',
     acts:[
@@ -495,29 +491,27 @@ const TRIP = [
       ['Midday','🌋','Shōwa Shinzan volcanic dome','A lava dome that rose from a wheat field during the 1943–45 eruption — eerie and spectacular'],
       ['Afternoon','⛵','Lake Toya boat cruise to Nakajima Island','Tour the island in the lake\'s centre, home to wild deer · the caldera rim is visible from the water'],
       ['Late PM','🚡','Mt. Usu Ropeway','Views of the barren lava flow from the 2000 eruption — a raw, humbling Hokkaido landscape'],
-      ['Evening','♨️','Check in to Toyako Onsen ryokan','Lakeside hot spring hotel · many offer rotenburo baths facing the water'],
-      ['Night','🎆','Nightly Toya Lake Fireworks (Apr 28–Oct 31)','Fireworks explode over the caldera lake every single night from the pier — free to watch from the shore'],
+      ['Evening','🎆','Nightly Toya Lake Fireworks (Apr 28–Oct 31)','Fireworks over the caldera lake every night — watch from the pier before driving on'],
+      ['Night','🛍️','Drive to Sapporo (~2 hrs) · Tanukikoji shopping','Arcade open until 9 PM — buy everything tonight so bags are packed for the 9:30 AM flight'],
     ],
-    hl:{ c:'red', t:'🌋 Lake Toya\'s nightly fireworks are said to be the world\'s longest continuously-running fireworks show — 7 months straight, every night, weather permitting.' },
-    gem:'💎 Hidden gem: The Volcano Science Museum (有珠山火山科学館) in Toyako Onsen town is tiny but extraordinary — real-time seismic data and a floor-to-ceiling photo of the 2000 eruption consuming an entire neighbourhood.',
-    connector:'🚗 ~2 hrs north to Sapporo'
+    hl:{ c:'red', t:'🌋 Lake Toya\'s nightly fireworks run 7 months straight — every night, weather permitting. Watch them before the Sapporo drive.' },
+    gem:'💎 Hidden gem: The Volcano Science Museum (有珠山火山科学館) in Toyako Onsen town — real-time seismic data and a floor-to-ceiling photo of the 2000 eruption consuming an entire neighbourhood.',
+    connector:'🚗 ~2 hrs north · Sapporo evening shopping'
   },
   {
-    n:10, date:'Sat · July 25', title:'Sapporo — The Grand Shopping Haul',
-    sub:'The city you\'ve been saving for last. Shop freely — the airport is 45 minutes away.',
+    n:10, date:'Sat · July 25', title:'Sapporo Morning & 9:30 AM Departure',
+    sub:'Grab a last bowl of miso ramen, load the car, and make the 40-minute drive to Chitose. Bags full, heart fuller.',
     theme:'travel', stop:'sapporo',
-    tags:[['tg-drive','🛍️ Shopping'],['tg-fest','🎉 Summer Festival'],['tg-drive','✈️ Depart']],
-    imgs:[['Sapporo','ph-green'],['Odori Park','ph-pink']],
-    ytId:'p4ULEq8988M', ytTitle:'Sapporo Japan 4K Walk — Odori Park & Tanukikoji',
+    tags:[['tg-drive','✈️ 9:30 AM Flight'],['tg-drive','🛍️ Shopping Done']],
+    imgs:[['Sapporo','ph-green'],['New_Chitose_Airport','ph-green']],
+    ytId: null,
     acts:[
-      ['Morning','🚗','Drive Lake Toya → Sapporo (~2 hrs)','Arrive by 10:30 AM — drop bags at a coin locker near Odori Station'],
-      ['Midday','🌸','Odori Park & Summer Festival vibes','Beer garden open daytime too · Hokkaido Botanical Garden nearby for a final flower fix'],
-      ['Afternoon','🛍️','Tanukikoji Shopping Arcade','Japan\'s longest covered arcade · 7 blocks of fashion · food · souvenirs'],
-      ['Late PM','🎁','Souvenir sweep — Sapporo Factory & department stores','Royce chocolate · Shiroi Koibito · lavender sachets · sunflower honey · miso ramen kits'],
-      ['Evening','✈️','Return car · Depart New Chitose (CTS)','Sayonara, Hokkaido — bags full, heart even fuller 💜'],
+      ['Early AM','🍜','Last Sapporo miso ramen breakfast','A handful of ramen shops open by 7 AM — fuel up before the drive south'],
+      ['8:00 AM','🚗','Drive Sapporo → New Chitose Airport (~40 min)','Return rental car · check in · sweep duty-free for any last Royce chocolate'],
+      ['9:30 AM','✈️','Depart New Chitose Airport (CTS)','Sayonara, Hokkaido — bags full, heart even fuller 💜'],
     ],
-    hl:{ c:'purple', t:'🎁 Shopping last = no lugging bags through lavender fields all week. This is the only way to do a Hokkaido flower trip.' },
-    gem:'💎 Hidden gem: Hokkaido University campus (北大) — the free-to-enter poplar avenue (ポプラ並木) is one of Sapporo\'s most beautiful spots and almost entirely unknown to visitors.',
+    hl:{ c:'purple', t:'✈️ 9:30 AM departure means leaving Sapporo by 8 AM. Shopping is already done from last night — just check out and drive.' },
+    gem:'💎 Hidden gem: New Chitose Airport duty-free has the full Royce chocolate factory — the only place to buy Royce potato chip chocolate not available outside Hokkaido.',
     connector: null
   },
 ];
@@ -572,11 +566,11 @@ function renderCard(d) {
           <div class="card-tags">${tags}</div>
         </div>
         <ul class="acts">${acts}</ul>
-        <div class="yt-wrap">
+        ${d.ytId ? `<div class="yt-wrap">
           <iframe src="https://www.youtube-nocookie.com/embed/${d.ytId}?rel=0&modestbranding=1"
             title="${d.ytTitle}" allowfullscreen loading="lazy"></iframe>
         </div>
-        <div class="yt-caption">▶ ${d.ytTitle}</div>
+        <div class="yt-caption">▶ ${d.ytTitle}</div>` : ''}
         <div class="hl ${hlCls}">${d.hl.t}</div>
         ${d.gem ? `<div class="gem">${d.gem}</div>` : ''}
       </div>
