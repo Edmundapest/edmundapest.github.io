@@ -1,51 +1,155 @@
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hokkaido Road Trip 2026 | July 16-25</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lavender: #7B68EE;
+            --sunflower: #FFD700;
+            --deep-sea: #1A237E;
+            --bg: #FDFBFF;
+        }
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: #333;
+        }
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+        /* --- Hero Section --- */
+        header {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1576675448332-905963283f3e?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+        h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; }
+        .subtitle { font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; }
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+        /* --- Main Layout --- */
+        .container { max-width: 800px; margin: -50px auto 50px; padding: 20px; }
 
-jobs:
-  # Build job
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./src/
-          destination: ./_site
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(123, 104, 238, 0.1);
+            border-left: 5px solid var(--lavender);
+        }
 
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        .day-badge {
+            background: var(--lavender);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        h2 { color: var(--deep-sea); margin: 15px 0 5px; }
+        .location { color: #888; font-style: italic; margin-bottom: 15px; display: block; }
+        
+        .highlights { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .tag { background: #f0f0f0; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; }
+        .tag.fireworks { background: #ffebee; color: #d32f2f; }
+        .tag.food { background: #e8f5e9; color: #2e7d32; }
+
+        /* --- Footer --- */
+        footer { text-align: center; padding: 40px; background: var(--deep-sea); color: white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <p class="subtitle">The Purple Window</p>
+        <h1>Hokkaido 2026</h1>
+        <p>10 Days of Lavenders & Lights</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="card">
+            <span class="day-badge">July 16</span>
+            <h2>Arrival in the North</h2>
+            <span class="location">New Chitose Airport → Sapporo</span>
+            <p>Landing at 7:35 PM. Check-in and head straight to Susukino for late-night Miso Ramen.</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">July 17</span>
+            <h2>Into the Lavender</h2>
+            <span class="location">Sapporo → Furano</span>
+            <p>Pick up rental car. Visit Farm Tomita (Irodori Field). Evening illumination at Hinode Park.</p>
+            <div class="highlights">
+                <span class="tag">🌸 Peak Lavender</span>
+                <span class="tag food">🍦 Lavender Soft Serve</span>
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #d32f2f;">
+            <span class="day-badge">July 18</span>
+            <h2>The Big Event</h2>
+            <span class="location">Nakafurano</span>
+            <p>Biei rolling hills in the morning. Evening: **Nakafurano Lavender Festival Fireworks** at Hokuseiyama Park.</p>
+            <div class="highlights">
+                <span class="tag fireworks">🎆 Fireworks Display</span>
+                <span class="tag">🚜 Tractor Ride</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">July 19</span>
+            <h2>Blue Waters & Yellow Mazes</h2>
+            <span class="location">Biei → Hokuryu</span>
+            <p>Shirogane Blue Pond at dawn. Drive north to the Sunflower Village of Hokuryu (2 million sunflowers).</p>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">July 20-21</span>
+            <h2>Volcanoes & Nightly Lights</h2>
+            <span class="location">Lake Toya</span>
+            <p>Usuzan Ropeway and nightly fireworks from a boat on the lake.</p>
+            <div class="highlights">
+                <span class="tag fireworks">🎆 Nightly Fireworks</span>
+                <span class="tag food">🦞 Seafood BBQ</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">July 22-23</span>
+            <h2>Canals & Beer Gardens</h2>
+            <span class="location">Otaru → Sapporo</span>
+            <p>Fresh Uni in Otaru. Return car. Join the Sapporo Summer Festival Beer Garden in Odori Park.</p>
+            <div class="highlights">
+                <span class="tag">🍺 Beer Garden</span>
+                <span class="tag food">🍣 Otaru Sushi</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="day-badge">July 24-25</span>
+            <h2>Tokyo Transition</h2>
+            <span class="location">Sapporo → Tokyo</span>
+            <p>Mt. Moiwa night view. Flight to Tokyo on the 25th.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Road Trip Itinerary | July 2026</p>
+    </footer>
+
+</body>
+</html>
