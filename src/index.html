@@ -7,1200 +7,752 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --lavender:       #8B5CF6;
-      --lavender-light: #C4B5FD;
-      --lavender-pale:  #EDE9FE;
-      --sunflower:      #F59E0B;
-      --sunflower-pale: #FEF3C7;
-      --pink:           #EC4899;
-      --pink-pale:      #FCE7F3;
-      --blue:           #3B82F6;
-      --blue-pale:      #EFF6FF;
-      --green:          #22C55E;
-      --green-pale:     #F0FDF4;
-      --night:          #0F0C29;
-      --night-mid:      #1a1a4e;
-      --white:          #FEFEFE;
-      --surface:        #F8F7FF;
-      --text:           #1E1B4B;
-      --muted:          #6B7280;
+      --lav: #8B5CF6; --lav-l: #C4B5FD; --lav-p: #EDE9FE;
+      --sun: #F59E0B; --sun-p: #FEF3C7;
+      --pink: #EC4899; --pink-p: #FCE7F3;
+      --blue: #3B82F6; --blue-p: #EFF6FF;
+      --green: #22C55E; --green-p: #F0FDF4;
+      --night: #0F0C29; --night2: #1a1a4e;
+      --text: #1E1B4B; --muted: #6B7280; --surface: #F8F7FF;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); overflow-x: hidden; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--surface);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    /* ── HERO ──────────────────────────────────────────────── */
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: relative; min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; padding: 2rem;
       background: linear-gradient(160deg, #0F0C29 0%, #302B63 45%, #4a1942 100%);
       overflow: hidden;
-      text-align: center;
-      padding: 2rem;
     }
-
-    .hero-bg-glow {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-    .glow-purple {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%);
-      top: -100px; left: -100px;
-      animation: drift 12s ease-in-out infinite alternate;
-    }
-    .glow-gold {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%);
-      bottom: -80px; right: -80px;
-      animation: drift 15s ease-in-out infinite alternate-reverse;
-    }
-    .glow-pink {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
-      top: 40%; left: 55%;
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-    @keyframes drift {
-      from { transform: translate(0, 0) scale(1); }
-      to   { transform: translate(40px, 30px) scale(1.08); }
-    }
-
-    .particles { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
-
+    .glow { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .glow-a { width:600px;height:600px;background:radial-gradient(circle,rgba(139,92,246,.28) 0%,transparent 70%);top:-100px;left:-100px;animation:drift 12s ease-in-out infinite alternate; }
+    .glow-b { width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.2) 0%,transparent 70%);bottom:-80px;right:-80px;animation:drift 16s ease-in-out infinite alternate-reverse; }
+    .glow-c { width:400px;height:400px;background:radial-gradient(circle,rgba(236,72,153,.15) 0%,transparent 70%);top:40%;left:55%;animation:drift 20s ease-in-out infinite alternate; }
+    @keyframes drift { from{transform:translate(0,0) scale(1)} to{transform:translate(40px,30px) scale(1.08)} }
+    .particles { position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none; }
     @keyframes petal-fall {
-      0%   { transform: translateY(-5vh) rotate(0deg); opacity: 0; }
-      8%   { opacity: 1; }
-      88%  { opacity: 0.8; }
-      100% { transform: translateY(108vh) rotate(540deg); opacity: 0; }
+      0%{transform:translateY(-5vh) rotate(0deg);opacity:0}
+      8%{opacity:1} 88%{opacity:.8}
+      100%{transform:translateY(108vh) rotate(540deg);opacity:0}
     }
-
-    .hero-content { position: relative; z-index: 10; }
-
+    .hero-content { position:relative;z-index:10; }
     .hero-badge {
-      display: inline-block;
-      background: rgba(139,92,246,0.25);
-      border: 1px solid rgba(196,181,253,0.4);
-      color: var(--lavender-light);
-      padding: 0.45rem 1.4rem;
-      border-radius: 100px;
-      font-size: 0.8rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-      backdrop-filter: blur(12px);
+      display:inline-block;background:rgba(139,92,246,.25);border:1px solid rgba(196,181,253,.4);
+      color:var(--lav-l);padding:.45rem 1.4rem;border-radius:100px;font-size:.8rem;
+      letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:1.5rem;backdrop-filter:blur(12px);
     }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3.5rem, 9vw, 6.5rem);
-      color: white;
-      line-height: 1.05;
-      margin-bottom: 1rem;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.3);
-    }
-    .hero h1 .gradient-text {
-      background: linear-gradient(135deg, #C4B5FD 0%, #F9A8D4 40%, #FDE68A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-dates {
-      font-size: 1.15rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 2.5rem;
-      font-weight: 300;
-      letter-spacing: 0.06em;
-    }
-
-    .hero-tags {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .hero-tag {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: white;
-      padding: 0.55rem 1.1rem;
-      border-radius: 100px;
-      font-size: 0.87rem;
-      backdrop-filter: blur(12px);
-      transition: background 0.25s;
-    }
-    .hero-tag:hover { background: rgba(255,255,255,0.15); }
-
+    .hero h1 { font-family:'Playfair Display',serif;font-size:clamp(3.2rem,8vw,6rem);color:#fff;line-height:1.05;margin-bottom:1rem; }
+    .hero h1 .g { background:linear-gradient(135deg,#C4B5FD 0%,#F9A8D4 40%,#FDE68A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .hero-dates { font-size:1.1rem;color:rgba(255,255,255,.6);margin-bottom:2.5rem;font-weight:300;letter-spacing:.06em; }
+    .hero-tags { display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap; }
+    .hero-tag { background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;padding:.55rem 1.1rem;border-radius:100px;font-size:.85rem;backdrop-filter:blur(12px);transition:background .25s; }
+    .hero-tag:hover { background:rgba(255,255,255,.15); }
     .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255,255,255,0.35);
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      animation: bob 2.4s ease-in-out infinite;
+      position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.35);
+      font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;display:flex;flex-direction:column;
+      align-items:center;gap:.4rem;animation:bob 2.4s ease-in-out infinite;
     }
-    @keyframes bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(7px); }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
+
+    /* ── STATS ── */
+    .stats-bar { background:#fff;padding:1.75rem 2rem;display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap;box-shadow:0 4px 30px rgba(0,0,0,.07); }
+    .stat { text-align:center;padding:0 2.5rem;position:relative; }
+    .stat+.stat::before { content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:#E5E7EB; }
+    .stat-n { font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;background:linear-gradient(135deg,var(--lav),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .stat-l { font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:.2rem; }
+
+    /* ── MAP SECTION ── */
+    .map-section { background:linear-gradient(160deg,#0a0820,#1a1a4e); }
+    .map-inner { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:280px 1fr; }
+    .map-panel { padding:2.5rem 2rem;display:flex;flex-direction:column;gap:1.5rem; }
+    .map-panel-title { font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff; }
+    .map-panel-sub { font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6; }
+    .stop-list { display:flex;flex-direction:column;gap:.5rem; }
+    .stop-chip {
+      display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;border-radius:10px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);cursor:pointer;
+      transition:background .2s;text-decoration:none;
+    }
+    .stop-chip:hover { background:rgba(255,255,255,.12); }
+    .stop-num { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0; }
+    .stop-name { font-size:.82rem;color:#fff;font-weight:500; }
+    .stop-days { font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.05rem; }
+    #route-map { height:520px;width:100%; }
+    @media(max-width:720px) {
+      .map-inner { grid-template-columns:1fr; }
+      #route-map { height:300px; }
+      .map-panel { padding:1.5rem; }
     }
 
-    /* ── STATS BAR ─────────────────────────────────────────── */
-    .stats-bar {
-      background: white;
-      padding: 2rem 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.07);
-    }
-    .stat {
-      text-align: center;
-      padding: 0 2.5rem;
-      position: relative;
-    }
-    .stat + .stat::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 20%; bottom: 20%;
-      width: 1px;
-      background: #E5E7EB;
-    }
-    .stat-number {
-      font-size: 2.2rem;
-      font-weight: 700;
-      font-family: 'Playfair Display', serif;
-      background: linear-gradient(135deg, var(--lavender), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-top: 0.2rem;
-    }
+    /* Leaflet popup */
+    .leaflet-popup-content-wrapper { background:#1a1a4e;color:#fff;border:1px solid rgba(196,181,253,.3);border-radius:10px; }
+    .leaflet-popup-tip { background:#1a1a4e; }
+    .popup-name { font-weight:700;font-size:.9rem;margin-bottom:.2rem; }
+    .popup-days { font-size:.75rem;color:var(--lav-l); }
+    .popup-note { font-size:.75rem;color:rgba(255,255,255,.55);margin-top:.2rem; }
 
-    /* ── ROUTE OVERVIEW ────────────────────────────────────── */
-    .route-strip {
-      background: linear-gradient(135deg, var(--lavender-pale), #FDF4FF);
-      border-bottom: 1px solid #DDD6FE;
-      padding: 1.25rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      flex-wrap: wrap;
-      font-size: 0.82rem;
-      color: #5B21B6;
-      font-weight: 500;
-    }
-    .route-stop { white-space: nowrap; padding: 0.2rem 0.4rem; }
-    .route-arrow {
-      color: #C4B5FD;
-      padding: 0 0.1rem;
-      font-size: 0.9rem;
-    }
+    /* ── CONTAINER ── */
+    .container { max-width:880px;margin:0 auto;padding:4rem 1.5rem; }
+    .eyebrow { font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:.5rem; }
+    .section-h { font-family:'Playfair Display',serif;font-size:2rem;color:var(--text);margin-bottom:.4rem; }
+    .section-p { color:var(--muted);margin-bottom:3rem;font-size:.95rem; }
+    .legend { background:#fff;border-radius:14px;padding:1rem 1.5rem;margin-bottom:3rem;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center; }
+    .leg-lbl { font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-right:.5rem; }
 
-    /* ── CONTAINER ─────────────────────────────────────────── */
-    .container {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-    }
+    /* ── TAGS ── */
+    .tag { font-size:.69rem;padding:.22rem .65rem;border-radius:100px;font-weight:600;letter-spacing:.04em;white-space:nowrap; }
+    .tg-lav   { background:#F5F3FF;color:#6D28D9; }
+    .tg-flower { background:#EDE9FE;color:#7C3AED; }
+    .tg-sun   { background:#FEF9C3;color:#854D0E; }
+    .tg-fest  { background:#FCE7F3;color:#BE185D; }
+    .tg-fire  { background:#EFF6FF;color:#1D4ED8; }
+    .tg-drive { background:#F0FDF4;color:#166534; }
 
-    .section-eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--lavender);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.1rem;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-    .section-sub {
-      color: var(--muted);
-      margin-bottom: 3rem;
-      font-size: 0.95rem;
-    }
+    /* ── TIMELINE ── */
+    .timeline { position:relative; }
+    .timeline::before { content:'';position:absolute;left:29px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--lav),var(--pink),var(--sun),var(--blue),var(--green));opacity:.2;border-radius:2px; }
 
-    .legend {
-      background: white;
-      border-radius: 14px;
-      padding: 1rem 1.5rem;
-      margin-bottom: 3rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      align-items: center;
+    /* ── DAY CARD ── */
+    .day-card { display:grid;grid-template-columns:60px 1fr;gap:1.25rem;margin-bottom:1.5rem; }
+    .day-dot {
+      width:60px;height:60px;border-radius:50%;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;flex-shrink:0;border:2.5px solid;position:relative;z-index:1;
+      cursor:pointer;transition:transform .25s,box-shadow .25s;
     }
-    .legend-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-right: 0.5rem;
-    }
+    .day-dot:hover { transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.12); }
+    .day-dot .dn { font-size:1.4rem;font-family:'Playfair Display',serif;font-weight:700;line-height:1; }
+    .day-dot .dl { font-size:.58rem;font-weight:600;letter-spacing:.04em;opacity:.75; }
+    /* Theme dot colours */
+    .th-travel .day-dot  { background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-color:var(--green);color:#15803D; }
+    .th-lav    .day-dot  { background:linear-gradient(135deg,var(--lav-p),#DDD6FE);border-color:var(--lav);color:var(--lav); }
+    .th-night  .day-dot  { background:linear-gradient(135deg,#1E1B4B,#312E81);border-color:#818CF8;color:#fff; }
+    .th-sun    .day-dot  { background:linear-gradient(135deg,#FEF9C3,#FDE68A);border-color:var(--sun);color:#854D0E; }
+    .th-fest   .day-dot  { background:linear-gradient(135deg,var(--pink-p),#FBCFE8);border-color:var(--pink);color:#9D174D; }
+    /* Card wrapper */
+    .card-wrap { background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.06);border-left:3.5px solid transparent;transition:box-shadow .25s,transform .25s; }
+    .card-wrap:hover { transform:translateY(-2px);box-shadow:0 10px 35px rgba(0,0,0,.1); }
+    .th-travel .card-wrap { border-color:var(--green); }
+    .th-lav    .card-wrap { border-color:var(--lav); }
+    .th-night  .card-wrap { border-color:#818CF8; }
+    .th-sun    .card-wrap { border-color:var(--sun); }
+    .th-fest   .card-wrap { border-color:var(--pink); }
 
-    /* ── TIMELINE ──────────────────────────────────────────── */
-    .timeline { position: relative; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 29px; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom,
-        var(--lavender) 0%,
-        var(--pink) 30%,
-        var(--sunflower) 55%,
-        var(--blue) 80%,
-        var(--green) 100%);
-      opacity: 0.2;
-      border-radius: 2px;
-    }
+    /* ── PHOTO GRID ── */
+    .photo-grid { display:grid;grid-template-columns:1fr 1fr;gap:4px; }
+    .photo-frame { aspect-ratio:16/9;overflow:hidden;background:#e5e7eb;position:relative; }
+    .photo-frame.ph-lav  { background:linear-gradient(135deg,#EDE9FE,#DDD6FE); }
+    .photo-frame.ph-sun  { background:linear-gradient(135deg,#FEF9C3,#FDE68A); }
+    .photo-frame.ph-blue { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); }
+    .photo-frame.ph-pink { background:linear-gradient(135deg,#FCE7F3,#FBCFE8); }
+    .photo-frame.ph-green{ background:linear-gradient(135deg,#F0FDF4,#DCFCE7); }
+    .photo-frame.ph-dark { background:linear-gradient(135deg,#1E1B4B,#312E81); }
+    .photo-skeleton { position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite; }
+    @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+    .photo-frame img { width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;display:block; }
+    .photo-frame img.vis { opacity:1; }
 
-    /* ── DAY CARD ──────────────────────────────────────────── */
-    .day-card {
-      display: grid;
-      grid-template-columns: 60px 1fr;
-      gap: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
+    /* ── CARD BODY ── */
+    .card-body { padding:1.4rem 1.5rem; }
+    .th-night .card-body { background:linear-gradient(135deg,var(--night),var(--night2));color:#fff; }
+    .card-head { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;flex-wrap:wrap;gap:.5rem; }
+    .card-loc { font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--text); }
+    .th-night .card-loc { color:#fff; }
+    .card-date { font-size:.72rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem; }
+    .th-night .card-date { color:rgba(255,255,255,.4); }
+    .card-sub { font-size:.84rem;color:var(--muted);margin-bottom:1rem;font-style:italic;line-height:1.5; }
+    .th-night .card-sub { color:rgba(255,255,255,.45); }
+    .card-tags { display:flex;gap:.35rem;flex-wrap:wrap; }
 
-    .day-bubble {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border: 2.5px solid;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      position: relative;
-      z-index: 1;
-      cursor: default;
-    }
-    .day-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
-    .day-bubble .dn { font-size: 1.45rem; font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1; }
-    .day-bubble .dd { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.04em; opacity: 0.7; }
+    /* ── ACTIVITIES ── */
+    .acts { list-style:none;display:flex;flex-direction:column;gap:.5rem; }
+    .act { display:flex;align-items:flex-start;gap:.7rem;font-size:.87rem;color:#374151; }
+    .th-night .act { color:rgba(255,255,255,.78); }
+    .act-t { font-size:.72rem;color:var(--muted);font-weight:600;white-space:nowrap;min-width:60px;padding-top:.08rem; }
+    .th-night .act-t { color:rgba(255,255,255,.35); }
+    .act-i { font-size:1rem;min-width:20px;padding-top:.06rem; }
+    .act-text strong { color:var(--text);font-weight:600; }
+    .th-night .act-text strong { color:#fff; }
+    .act-note { display:block;font-size:.76rem;color:var(--muted);margin-top:.12rem;line-height:1.45; }
+    .th-night .act-note { color:rgba(255,255,255,.38); }
+    .div { height:1px;background:linear-gradient(to right,transparent,#E5E7EB,transparent);margin:.35rem 0; }
+    .th-night .div { background:linear-gradient(to right,transparent,rgba(255,255,255,.1),transparent); }
 
-    /* Theme colour sets */
-    .t-lavender .day-bubble { background: linear-gradient(135deg, #EDE9FE, #DDD6FE); border-color: var(--lavender); color: var(--lavender); }
-    .t-sunflower .day-bubble { background: linear-gradient(135deg, #FEF9C3, #FDE68A); border-color: var(--sunflower); color: #854D0E; }
-    .t-festival  .day-bubble { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); border-color: var(--pink); color: #9D174D; }
-    .t-night     .day-bubble { background: linear-gradient(135deg, #1E1B4B, #312E81); border-color: #818CF8; color: white; }
-    .t-travel    .day-bubble { background: linear-gradient(135deg, #F0FDF4, #DCFCE7); border-color: var(--green); color: #15803D; }
+    /* ── HIGHLIGHT BOX ── */
+    .hl { border-radius:10px;padding:.7rem .95rem;margin-top:1rem;font-size:.82rem;display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;border:1px solid; }
+    .hl-purple { background:#F5F3FF;border-color:#DDD6FE;color:#5B21B6; }
+    .hl-gold   { background:#FFFBEB;border-color:#FDE68A;color:#92400E; }
+    .hl-blue   { background:var(--blue-p);border-color:#BFDBFE;color:#1E40AF; }
+    .hl-pink   { background:#FFF1F2;border-color:#FECDD3;color:#9F1239; }
+    .hl-dark   { background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.3);color:#A5B4FC; }
 
-    /* Card body */
-    .card-body {
-      background: white;
-      border-radius: 18px;
-      padding: 1.4rem 1.5rem;
-      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
-      border-left: 3.5px solid transparent;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    /* ── YOUTUBE CARD ── */
+    .yt-card {
+      display:flex;align-items:center;gap:.9rem;background:#111827;border-radius:12px;
+      padding:.9rem 1rem;text-decoration:none;margin-top:1rem;transition:background .2s;border:1px solid rgba(255,255,255,.05);
     }
-    .card-body:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(0,0,0,0.1); }
+    .yt-card:hover { background:#1F2937; }
+    .yt-play { width:40px;height:40px;background:#FF0000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#fff;flex-shrink:0; }
+    .yt-info { flex:1;min-width:0; }
+    .yt-eyebrow { font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.15rem; }
+    .yt-title { font-size:.84rem;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .yt-arr { color:rgba(255,255,255,.3);font-size:1rem; }
 
-    .t-lavender .card-body { border-color: var(--lavender); }
-    .t-sunflower .card-body { border-color: var(--sunflower); }
-    .t-festival  .card-body { border-color: var(--pink); }
-    .t-night     .card-body {
-      background: linear-gradient(135deg, #0F0C29, #1a1a4e);
-      border-color: #818CF8;
-    }
-    .t-travel .card-body { border-color: var(--green); }
+    /* ── ROAD CONNECTOR ── */
+    .road { display:flex;align-items:center;gap:.6rem;padding:.4rem 0 .4rem 74px;color:var(--muted);font-size:.74rem;font-weight:500; }
+    .road-line { flex:1;border-top:2px dashed #E5E7EB; }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.1rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .card-loc {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .card-date-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 0.25rem;
-    }
-    .t-night .card-loc { color: white; }
-    .t-night .card-date-label { color: rgba(255,255,255,0.45); }
+    /* ── TIPS SECTION ── */
+    .tips-section { background:#fff;padding:4rem 1.5rem; }
+    .tips-grid { max-width:880px;margin:2rem auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem; }
+    .tip-card { background:var(--surface);border-radius:14px;padding:1.2rem;border:1px solid #E5E7EB; }
+    .tip-card h4 { font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--lav);font-weight:600;margin-bottom:.75rem; }
+    .tip-card ul { list-style:none;display:flex;flex-direction:column;gap:.4rem; }
+    .tip-card li { font-size:.83rem;color:#4B5563;display:flex;gap:.5rem; }
+    .tip-card li::before { content:'·';color:var(--muted);font-weight:700; }
 
-    .card-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    /* ── FOOTER ── */
+    .trip-footer { background:linear-gradient(160deg,var(--night),var(--night2),#2d1b4e);color:#fff;padding:5rem 2rem 4rem;text-align:center; }
+    .trip-footer h2 { font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:1rem; }
+    .trip-footer p { color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 2.5rem;line-height:1.7;font-size:.94rem; }
+    .footer-icons { font-size:2rem;letter-spacing:.6rem; }
 
-    /* ── TAGS ──────────────────────────────────────────────── */
-    .tag {
-      font-size: 0.69rem;
-      padding: 0.22rem 0.65rem;
-      border-radius: 100px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-    .tg-lavender  { background: #F5F3FF; color: #6D28D9; }
-    .tg-flower    { background: #EDE9FE; color: #7C3AED; }
-    .tg-sunflower { background: #FEF9C3; color: #854D0E; }
-    .tg-festival  { background: #FCE7F3; color: #BE185D; }
-    .tg-fireworks { background: #EFF6FF; color: #1D4ED8; }
-    .tg-drive     { background: #F0FDF4; color: #166534; }
-
-    /* ── ACTIVITIES ────────────────────────────────────────── */
-    .activities { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-
-    .act {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.7rem;
-      font-size: 0.88rem;
-      color: #374151;
-    }
-    .t-night .act { color: rgba(255,255,255,0.78); }
-
-    .act-time {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 600;
-      white-space: nowrap;
-      min-width: 58px;
-      padding-top: 0.08rem;
-    }
-    .t-night .act-time { color: rgba(255,255,255,0.35); }
-
-    .act-icon { font-size: 1rem; min-width: 20px; padding-top: 0.06rem; }
-
-    .act-text strong { color: var(--text); font-weight: 600; }
-    .t-night .act-text strong { color: white; }
-
-    .act-note {
-      display: block;
-      font-size: 0.76rem;
-      color: var(--muted);
-      margin-top: 0.12rem;
-      line-height: 1.45;
-    }
-    .t-night .act-note { color: rgba(255,255,255,0.38); }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, #E5E7EB, transparent);
-      margin: 0.35rem 0;
-    }
-    .t-night .divider {
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-    }
-
-    /* ── HIGHLIGHT BOXES ───────────────────────────────────── */
-    .hl {
-      border-radius: 10px;
-      padding: 0.7rem 0.95rem;
-      margin-top: 1rem;
-      font-size: 0.82rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      line-height: 1.5;
-      border: 1px solid;
-    }
-    .hl-purple { background: #F5F3FF; border-color: #DDD6FE; color: #5B21B6; }
-    .hl-gold   { background: #FFFBEB; border-color: #FDE68A; color: #92400E; }
-    .hl-blue   { background: #EFF6FF; border-color: #BFDBFE; color: #1E40AF; }
-    .hl-pink   { background: #FFF1F2; border-color: #FECDD3; color: #9F1239; }
-    .hl-dark-blue { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); color: #A5B4FC; }
-    .hl-dark-gold { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: #FDE68A; }
-
-    /* ── ROAD CONNECTOR ────────────────────────────────────── */
-    .road {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.4rem 0 0.4rem 74px;
-      color: var(--muted);
-      font-size: 0.74rem;
-      font-weight: 500;
-    }
-    .road-line { flex: 1; border-top: 2px dashed #E5E7EB; }
-
-    /* ── FOOTER ────────────────────────────────────────────── */
-    .trip-footer {
-      background: linear-gradient(160deg, #0F0C29, #1a1a4e, #2d1b4e);
-      color: white;
-      padding: 5rem 2rem 4rem;
-      text-align: center;
-    }
-    .trip-footer h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-    .trip-footer p {
-      color: rgba(255,255,255,0.55);
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-    .footer-icons { font-size: 2rem; letter-spacing: 0.6rem; }
-
-    /* ── PACKING TIPS ──────────────────────────────────────── */
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .tip-card {
-      background: white;
-      border-radius: 14px;
-      padding: 1.2rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .tip-card h4 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--lavender);
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
-    .tip-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
-    .tip-card li { font-size: 0.84rem; color: #4B5563; display: flex; gap: 0.5rem; }
-    .tip-card li::before { content: '·'; color: var(--muted); font-weight: 700; }
-
-    /* ── RESPONSIVE ────────────────────────────────────────── */
-    @media (max-width: 580px) {
-      .timeline::before { left: 24px; }
-      .day-card { grid-template-columns: 50px 1fr; gap: 0.9rem; }
-      .day-bubble { width: 50px; height: 50px; }
-      .day-bubble .dn { font-size: 1.2rem; }
-      .stats-bar { gap: 0; }
-      .stat { padding: 0 1.2rem; }
-      .route-strip { display: none; }
-      .road { padding-left: 58px; }
+    /* ── RESPONSIVE ── */
+    @media(max-width:580px) {
+      .timeline::before { left:24px; }
+      .day-card { grid-template-columns:50px 1fr;gap:.9rem; }
+      .day-dot { width:50px;height:50px; }
+      .day-dot .dn { font-size:1.2rem; }
+      .stats-bar { gap:0; }
+      .stat { padding:0 1.2rem; }
+      .road { padding-left:58px; }
+      .photo-grid { grid-template-columns:1fr; }
+      .photo-grid .photo-frame:last-child { display:none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════ HERO ══════════════ -->
+<!-- ══ HERO ══ -->
 <section class="hero">
-  <div class="hero-bg-glow glow-purple"></div>
-  <div class="hero-bg-glow glow-gold"></div>
-  <div class="hero-bg-glow glow-pink"></div>
+  <div class="glow glow-a"></div><div class="glow glow-b"></div><div class="glow glow-c"></div>
   <div class="particles" id="particles"></div>
-
   <div class="hero-content">
     <div class="hero-badge">Hokkaido · Japan · Summer 2026</div>
-    <h1>
-      Blooms,<br>
-      <span class="gradient-text">Festivals</span><br>
-      &amp; Fireworks
-    </h1>
+    <h1>Blooms,<br><span class="g">Festivals</span><br>&amp; Fireworks</h1>
     <p class="hero-dates">July 16 – 25, 2026 &nbsp;·&nbsp; 10 Days &nbsp;·&nbsp; Road Trip</p>
     <div class="hero-tags">
       <div class="hero-tag">💜 Lavender Fields</div>
       <div class="hero-tag">🌻 Sunflower Farms</div>
       <div class="hero-tag">🎆 Hanabi Fireworks</div>
       <div class="hero-tag">🎉 Summer Matsuri</div>
+      <div class="hero-tag">🛍️ Sapporo Shopping</div>
     </div>
   </div>
-
   <div class="scroll-hint">
     <span>Scroll to explore</span>
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
   </div>
 </section>
 
-<!-- ══════════════ STATS ══════════════ -->
+<!-- ══ STATS ══ -->
 <div class="stats-bar">
-  <div class="stat"><div class="stat-number">10</div><div class="stat-label">Days</div></div>
-  <div class="stat"><div class="stat-number">~800</div><div class="stat-label">km Driven</div></div>
-  <div class="stat"><div class="stat-number">8+</div><div class="stat-label">Flower Farms</div></div>
-  <div class="stat"><div class="stat-number">4</div><div class="stat-label">Fireworks Shows</div></div>
-  <div class="stat"><div class="stat-number">3</div><div class="stat-label">Matsuri</div></div>
+  <div class="stat"><div class="stat-n">10</div><div class="stat-l">Days</div></div>
+  <div class="stat"><div class="stat-n">~750</div><div class="stat-l">km Driven</div></div>
+  <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Flower Farms</div></div>
+  <div class="stat"><div class="stat-n">4</div><div class="stat-l">Fireworks Shows</div></div>
+  <div class="stat"><div class="stat-n">3</div><div class="stat-l">Matsuri</div></div>
 </div>
 
-<!-- ══════════════ ROUTE STRIP ══════════════ -->
-<div class="route-strip">
-  <span class="route-stop">✈️ Sapporo</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">🌿 Biei</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">💜 Furano</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">🌻 Hokuryu</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">🎆 Asahikawa</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">⛵ Otaru</span>
-  <span class="route-arrow">→</span>
-  <span class="route-stop">✈️ Sapporo</span>
-</div>
+<!-- ══ MAP ══ -->
+<section class="map-section">
+  <div class="map-inner">
+    <div class="map-panel">
+      <div>
+        <div class="map-panel-title">Route Map</div>
+        <div class="map-panel-sub" style="margin-top:.5rem">~750 km loop through central &amp; western Hokkaido. Sapporo is saved for last — shop freely with the airport 45 min away.</div>
+      </div>
+      <div class="stop-list" id="stop-list"></div>
+    </div>
+    <div id="route-map"></div>
+  </div>
+</section>
 
-<!-- ══════════════ ITINERARY ══════════════ -->
+<!-- ══ ITINERARY ══ -->
 <main class="container">
-  <div class="section-eyebrow">Day by Day</div>
-  <h2 class="section-title">The Full Journey</h2>
-  <p class="section-sub">Chasing summer across Japan's northern island — one bloom, one matsuri, one firework at a time</p>
-
+  <div class="eyebrow">Day by Day</div>
+  <h2 class="section-h">The Full Journey</h2>
+  <p class="section-p">Chasing summer across Japan's northern island — one bloom, one matsuri, one hanabi at a time</p>
   <div class="legend">
-    <span class="legend-label">Legend</span>
+    <span class="leg-lbl">Legend</span>
+    <span class="tag tg-lav">💜 Lavender</span>
     <span class="tag tg-flower">🌸 Flowers</span>
-    <span class="tag tg-lavender">💜 Lavender</span>
-    <span class="tag tg-sunflower">🌻 Sunflower</span>
-    <span class="tag tg-festival">🎉 Festival</span>
-    <span class="tag tg-fireworks">🎆 Fireworks</span>
+    <span class="tag tg-sun">🌻 Sunflower</span>
+    <span class="tag tg-fest">🎉 Festival</span>
+    <span class="tag tg-fire">🎆 Fireworks</span>
     <span class="tag tg-drive">🚗 Drive</span>
   </div>
-
-  <div class="timeline">
-
-    <!-- ── DAY 1 ── -->
-    <div class="day-card t-travel">
-      <div class="day-bubble"><span class="dn">1</span><span class="dd">JUL 16</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Sapporo — Arrival Day ✈️</div>
-            <div class="card-date-label">Thursday · July 16, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-drive">✈️ Travel</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">✈️</span>
-            <div class="act-text"><strong>Arrive at New Chitose Airport (CTS)</strong>
-              <span class="act-note">Collect rental car — your trusty road trip companion starts here</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Late PM</span>
-            <span class="act-icon">🏨</span>
-            <div class="act-text"><strong>Check in near Odori Park, Sapporo</strong>
-              <span class="act-note">Central base for the next two nights</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🍺</span>
-            <div class="act-text"><strong>Sapporo Odori Beer Garden</strong>
-              <span class="act-note">Cold Sapporo Classic on tap, grilled Hokkaido corn and lamb — open all summer along the 1.5 km park</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Night</span>
-            <span class="act-icon">🌃</span>
-            <div class="act-text"><strong>Susukino neon walk</strong>
-              <span class="act-note">Japan's largest entertainment district north of Tokyo — great first night vibe</span></div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🌸 City flowers tomorrow</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 2 ── -->
-    <div class="day-card t-festival">
-      <div class="day-bubble"><span class="dn">2</span><span class="dd">JUL 17</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Sapporo — Summer Festival</div>
-            <div class="card-date-label">Friday · July 17, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-festival">🎉 Festival</span>
-            <span class="tag tg-flower">🌸 Flowers</span>
-            <span class="tag tg-fireworks">🎆 Fireworks</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🌿</span>
-            <div class="act-text"><strong>Hokkaido Shrine &amp; Maruyama Park</strong>
-              <span class="act-note">Ancient cedar forest walk, summer wildflowers lining the shrine paths</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🌸</span>
-            <div class="act-text"><strong>Nakajima Park Lotus Pond</strong>
-              <span class="act-note">Water lilies and lotus in full July bloom — serene lakeside picnic spot</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🌼</span>
-            <div class="act-text"><strong>Hokkaido Botanical Garden</strong>
-              <span class="act-note">4,000+ alpine and wetland species — the native Hokkaido flower collection is otherworldly</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🏮</span>
-            <div class="act-text"><strong>Sapporo Summer Festival — Odori Park</strong>
-              <span class="act-note">Beer gardens, live music stages, food stalls running the length of the park</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Night</span>
-            <span class="act-icon">🎆</span>
-            <div class="act-text"><strong>Nakajima Park Fireworks Display</strong>
-              <span class="act-note">Mid-July hanabi above the city — reflect off the park lake beautifully</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-pink">🎉 Sapporo Summer Festival runs mid-July through mid-August — you're right at the vibrant opening weekend.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🚗 ~2.5 hrs north to Biei</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 3 ── -->
-    <div class="day-card t-lavender">
-      <div class="day-bubble"><span class="dn">3</span><span class="dd">JUL 18</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Biei — Patchwork Hills &amp; Blue Pond</div>
-            <div class="card-date-label">Saturday · July 18, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-flower">🌸 Flowers</span>
-            <span class="tag tg-drive">🚗 ~2.5 hrs</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🚗</span>
-            <div class="act-text"><strong>Depart Sapporo → Biei</strong>
-              <span class="act-note">Drive north on Route 12 alongside the Ishikari River valley</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🌄</span>
-            <div class="act-text"><strong>Patchwork Road (パッチワークの路)</strong>
-              <span class="act-note">Rolling hills of poppies, lavender, mustard, and potato flowers — a living Impressionist painting</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🫐</span>
-            <div class="act-text"><strong>Shirogane Blue Pond (白金青い池)</strong>
-              <span class="act-note">Ethereal aluminium-blue water, silver birch rising from the surface — genuinely magical</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Late PM</span>
-            <span class="act-icon">🌅</span>
-            <div class="act-text"><strong>Panorama Road golden hour drive</strong>
-              <span class="act-note">Dusk light over the flower hills — stay in Biei tonight</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-purple">📸 Pro tip: the Blue Pond is illuminated nightly in summer — visit at dusk for both the golden sunset and the night illumination.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🌈 Shikisai loop</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 4 ── -->
-    <div class="day-card t-lavender">
-      <div class="day-bubble"><span class="dn">4</span><span class="dd">JUL 19</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Biei — Shikisai-no-oka Rainbow Hills</div>
-            <div class="card-date-label">Sunday · July 19, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-flower">🌸 Flowers</span>
-            <span class="tag tg-lavender">💜 Lavender</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🌈</span>
-            <div class="act-text"><strong>Shikisai-no-oka (四季彩の丘)</strong>
-              <span class="act-note">Seven rows of rainbow flowers across the hillside — salvia, marigold, lavender, sunflower, dahlia, all at once</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🐑</span>
-            <div class="act-text"><strong>Zerubu Hill &amp; Flower Land Kamifurano</strong>
-              <span class="act-note">Lavender and dahlia fields with sweeping views; tractor rides through the blooms</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🚗</span>
-            <div class="act-text"><strong>Drive south to Furano (~30 min)</strong>
-              <span class="act-note">Wind through flower-lined country roads — every bend is a new photograph</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🍷</span>
-            <div class="act-text"><strong>Furano Winery at sunset</strong>
-              <span class="act-note">Local Hokkaido wine with panoramic vineyard and mountain views</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-purple">💜 You are now entering the lavender heartland — peak bloom is July 15–25. Timing is perfect.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>💜 Peak lavender week</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 5 ── -->
-    <div class="day-card t-lavender">
-      <div class="day-bubble"><span class="dn">5</span><span class="dd">JUL 20</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Farm Tomita — Crown Jewel of Hokkaido</div>
-            <div class="card-date-label">Monday · July 20, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-lavender">💜 Peak Lavender</span>
-            <span class="tag tg-flower">🌸 Flowers</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Early AM</span>
-            <span class="act-icon">🌅</span>
-            <div class="act-text"><strong>Farm Tomita at dawn — PRIORITY STOP</strong>
-              <span class="act-note">Arrive before 8 AM to catch morning mist floating over the purple rows, before the crowds arrive</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">💜</span>
-            <div class="act-text"><strong>Walk all seven lavender fields</strong>
-              <span class="act-note">Traditional Field, Bloom Field, Forest Panorama — seven varieties of Lavandula in full bloom</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🍦</span>
-            <div class="act-text"><strong>Lavender soft-serve &amp; parfait</strong>
-              <span class="act-note">Farm Tomita's legendary lavender-flavoured ice cream — life changing</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🌸</span>
-            <div class="act-text"><strong>Lavender Bud Farm Hinode &amp; Fujida Farm</strong>
-              <span class="act-note">Smaller neighbouring farms — fewer crowds, equally stunning purple waves</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🏮</span>
-            <div class="act-text"><strong>Ningle Terrace at dusk</strong>
-              <span class="act-note">Fairy-tale forest craft shops lit up in the trees — the most charming evening walk</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-purple">🏆 Farm Tomita is Japan's most famous lavender farm and the spiritual heart of this trip. Take your time here.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🎆 Festival &amp; fireworks night</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 6 ── -->
-    <div class="day-card t-night">
-      <div class="day-bubble"><span class="dn">6</span><span class="dd">JUL 21</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Furano Festival &amp; Hanabi Night</div>
-            <div class="card-date-label">Tuesday · July 21, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-festival">🎉 Festival</span>
-            <span class="tag tg-fireworks">🎆 Fireworks</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🌿</span>
-            <div class="act-text"><strong>Sarobetsu riverside wildflower meadow walk</strong>
-              <span class="act-note">White and yellow bog flowers, hamanasu beach roses, and open sky — quintessential Hokkaido morning</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🎊</span>
-            <div class="act-text"><strong>Furano Lavender Festival (富良野ラベンダーまつり)</strong>
-              <span class="act-note">Local crafts, lavender sachets, fresh produce, live folk performances in the town centre</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Sunset</span>
-            <span class="act-icon">📸</span>
-            <div class="act-text"><strong>Golden hour over the lavender fields</strong>
-              <span class="act-note">Purple and molten gold — the single best photograph of the entire trip</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Night</span>
-            <span class="act-icon">🎆</span>
-            <div class="act-text"><strong>Furano Hanabi Taikai (富良野花火大会)</strong>
-              <span class="act-note">Fireworks burst over the lavender valley and Furano mountains — an almost surreal summer spectacle</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-dark-blue">✨ Fireworks over a purple lavender valley under a summer night sky — possibly the most beautiful moment of the entire trip.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🚗 ~2.5 hrs north to Hokuryu</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 7 ── -->
-    <div class="day-card t-sunflower">
-      <div class="day-bubble"><span class="dn">7</span><span class="dd">JUL 22</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Hokuryu — 2.3 Million Sunflowers</div>
-            <div class="card-date-label">Wednesday · July 22, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-sunflower">🌻 Sunflowers</span>
-            <span class="tag tg-festival">🎉 Festival</span>
-            <span class="tag tg-drive">🚗 ~2.5 hrs</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🚗</span>
-            <div class="act-text"><strong>Drive Furano → Hokuryu (北竜町)</strong>
-              <span class="act-note">Through central Hokkaido plains and the wide-open Sorachi countryside</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🌻</span>
-            <div class="act-text"><strong>Hokuryu Himawari Festival (ひまわりまつり)</strong>
-              <span class="act-note">2.3 MILLION sunflowers across 23 hectares — Japan's largest sunflower field in full peak bloom</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🏛️</span>
-            <div class="act-text"><strong>Himawari Museum &amp; Sunflower Maze</strong>
-              <span class="act-note">Sunflower varieties, cultivation history, sunflower honey tasting, gift shop</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Late PM</span>
-            <span class="act-icon">🌅</span>
-            <div class="act-text"><strong>Golden hour in the sunflower fields</strong>
-              <span class="act-note">A million yellow faces turning toward the late afternoon sun — extraordinary scale</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🚗</span>
-            <div class="act-text"><strong>Drive east to Asahikawa (1 hr)</strong>
-              <span class="act-note">Check in for tomorrow's big festival night</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-gold">🌻 Hokuryu Himawari Festival runs mid-July through mid-August — July 22 hits peak bloom timing perfectly.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🎆 Asahikawa festival night</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 8 ── -->
-    <div class="day-card t-night">
-      <div class="day-bubble"><span class="dn">8</span><span class="dd">JUL 23</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Asahikawa Summer Festival &amp; Fireworks</div>
-            <div class="card-date-label">Thursday · July 23, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-festival">🎉 Festival</span>
-            <span class="tag tg-fireworks">🎆 Fireworks</span>
-            <span class="tag tg-flower">🌸 Gardens</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🌸</span>
-            <div class="act-text"><strong>Tokiwa Park &amp; Rose Garden</strong>
-              <span class="act-note">Hundreds of rose varieties in full July bloom, along with hydrangeas and seasonal flowers around the lake</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🦒</span>
-            <div class="act-text"><strong>Asahiyama Zoo (optional)</strong>
-              <span class="act-note">Japan's most innovative zoo — the polar bear pool and penguin parade are worth it</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🥁</span>
-            <div class="act-text"><strong>Asahikawa Summer Festival (旭川夏まつり)</strong>
-              <span class="act-note">One of Hokkaido's biggest matsuri — taiko drumming, bon-odori dance circles, massive food stall rows</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Night</span>
-            <span class="act-icon">🎆</span>
-            <div class="act-text"><strong>Asahikawa Hanabi Taikai</strong>
-              <span class="act-note">Grand fireworks over the Ishikari River — one of northern Hokkaido's biggest displays</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-dark-blue">🎆 The Asahikawa Summer Festival fireworks are among the most spectacular in Hokkaido — stake out a riverside spot early.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🚗 ~2 hrs west to the coast</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 9 ── -->
-    <div class="day-card t-festival">
-      <div class="day-bubble"><span class="dn">9</span><span class="dd">JUL 24</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Otaru — Canal, Coast &amp; Fireworks</div>
-            <div class="card-date-label">Friday · July 24, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-fireworks">🎆 Fireworks</span>
-            <span class="tag tg-festival">🎉 Ushiomatsuri</span>
-            <span class="tag tg-flower">🌊 Coastal Blooms</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🚗</span>
-            <div class="act-text"><strong>Drive Asahikawa → Otaru (~2 hrs)</strong>
-              <span class="act-note">Wind through the Sorachi wine country, passing orchard roads and green valleys</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">⛵</span>
-            <div class="act-text"><strong>Otaru Canal &amp; Warehouse District</strong>
-              <span class="act-note">Meiji-era stone warehouses, glass-blowing studios, fresh sushi lunch at the canal-side stalls</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🌊</span>
-            <div class="act-text"><strong>Shakotan Peninsula coastal wildflowers</strong>
-              <span class="act-note">Sea cliffs carpeted in hamanasu beach roses and eboshigusa — cobalt Nihonkai backdrop</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Evening</span>
-            <span class="act-icon">🎊</span>
-            <div class="act-text"><strong>Otaru Ushiomatsuri Festival (潮まつり)</strong>
-              <span class="act-note">Parade, dancing, street food — the whole city comes alive on the harbour waterfront</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Night</span>
-            <span class="act-icon">🎆</span>
-            <div class="act-text"><strong>Otaru Port Fireworks (おたる花火大会)</strong>
-              <span class="act-note">Fireworks burst over the harbour — city lights and reflections on the Nihonkai below</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-pink">🌊 Otaru's Ushiomatsuri is a beloved Hokkaido seaside tradition — the combination of canal lanterns, dancing, and harbour fireworks is unforgettable.</div>
-      </div>
-    </div>
-
-    <div class="road"><span class="road-line"></span><span>🚗 30 min back to Sapporo</span><span class="road-line"></span></div>
-
-    <!-- ── DAY 10 ── -->
-    <div class="day-card t-travel">
-      <div class="day-bubble"><span class="dn">10</span><span class="dd">JUL 25</span></div>
-      <div class="card-body">
-        <div class="card-header">
-          <div>
-            <div class="card-loc">Sapporo — Farewell Day ✈️</div>
-            <div class="card-date-label">Saturday · July 25, 2026</div>
-          </div>
-          <div class="card-tags">
-            <span class="tag tg-flower">🌸 Last Blooms</span>
-            <span class="tag tg-drive">✈️ Depart</span>
-          </div>
-        </div>
-        <ul class="activities">
-          <li class="act">
-            <span class="act-time">Morning</span>
-            <span class="act-icon">🦀</span>
-            <div class="act-text"><strong>Nijo Market breakfast</strong>
-              <span class="act-note">Fresh uni (sea urchin), king crab, and ikura salmon roe don — the finest final morning</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Midday</span>
-            <span class="act-icon">🌸</span>
-            <div class="act-text"><strong>Hokkaido Botanical Garden — last flower fix</strong>
-              <span class="act-note">4,000 species including rare alpine and wetland flowers found only in northern Japan</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Afternoon</span>
-            <span class="act-icon">🛍️</span>
-            <div class="act-text"><strong>Souvenir run — Tanukikoji Arcade</strong>
-              <span class="act-note">Lavender sachets, Royce chocolate, Shiroi Koibito cookies, sunflower honey, dried flower bunches</span></div>
-          </li>
-          <div class="divider"></div>
-          <li class="act">
-            <span class="act-time">Late PM</span>
-            <span class="act-icon">✈️</span>
-            <div class="act-text"><strong>Return car · New Chitose Airport departure</strong>
-              <span class="act-note">Sayonara, Hokkaido — until next summer 💜</span></div>
-          </li>
-        </ul>
-        <div class="hl hl-purple">🎁 Don't leave without: a fresh lavender sachet, a Royce chocolate box, a jar of Hokuryu sunflower honey, and a memory card full of purple fields.</div>
-      </div>
-    </div>
-
-  </div><!-- end timeline -->
-
-  <!-- ── PACKING / TIPS ── -->
-  <div style="margin-top: 4rem;">
-    <div class="section-eyebrow">Before You Go</div>
-    <h2 class="section-title">Trip Notes</h2>
-    <div class="tips-grid">
-      <div class="tip-card">
-        <h4>🚗 Driving</h4>
-        <ul>
-          <li>International Driving Permit required</li>
-          <li>Book rental car well in advance</li>
-          <li>Toll roads between major cities</li>
-          <li>ETC card saves time at tolls</li>
-          <li>Google Maps works perfectly</li>
-        </ul>
-      </div>
-      <div class="tip-card">
-        <h4>🌸 Flowers</h4>
-        <ul>
-          <li>Lavender peaks July 15–25 in Furano</li>
-          <li>Farm Tomita: arrive before 8 AM</li>
-          <li>Shikisai-no-oka: tractor rides available</li>
-          <li>Sunflowers face south by afternoon</li>
-          <li>Bring a macro lens for close-ups</li>
-        </ul>
-      </div>
-      <div class="tip-card">
-        <h4>🎆 Fireworks</h4>
-        <ul>
-          <li>Confirm exact dates closer to travel</li>
-          <li>Arrive 1–2 hrs early for a good spot</li>
-          <li>Bring a ground sheet to sit on</li>
-          <li>Hanabi shows last 45–90 minutes</li>
-          <li>Check local boards for exact times</li>
-        </ul>
-      </div>
-      <div class="tip-card">
-        <h4>🏨 Staying</h4>
-        <ul>
-          <li>Book accommodation 3+ months ahead</li>
-          <li>Furano ryokan during lavender season fills fast</li>
-          <li>IC Suica card for city transit</li>
-          <li>Convenience stores are your best friends</li>
-          <li>Bear spray advisable on nature walks</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
+  <div class="timeline" id="timeline"></div>
 </main>
 
-<!-- ══════════════ FOOTER ══════════════ -->
+<!-- ══ TIPS ══ -->
+<section class="tips-section">
+  <div style="max-width:880px;margin:0 auto">
+    <div class="eyebrow">Before You Go</div>
+    <h2 class="section-h" style="margin-bottom:.5rem">Trip Notes</h2>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card"><h4>🚗 Driving</h4><ul>
+      <li>International Driving Permit required</li>
+      <li>Book rental car 3+ months ahead</li>
+      <li>ETC card saves time at toll booths</li>
+      <li>Google Maps works perfectly offline</li>
+      <li>Hokkaido roads wide and well maintained</li>
+    </ul></div>
+    <div class="tip-card"><h4>💜 Flowers</h4><ul>
+      <li>Lavender peaks July 15–25 in Furano</li>
+      <li>Farm Tomita: arrive before 8 AM</li>
+      <li>Shikisai-no-oka: tractor rides available</li>
+      <li>Sunflowers face south by afternoon</li>
+      <li>Bring macro lens for close-ups</li>
+    </ul></div>
+    <div class="tip-card"><h4>🎆 Fireworks</h4><ul>
+      <li>Confirm exact dates closer to travel</li>
+      <li>Arrive 1–2 hrs early for a good spot</li>
+      <li>Bring a ground sheet to sit on</li>
+      <li>Shows last 45–90 minutes</li>
+      <li>Check local tourist boards for times</li>
+    </ul></div>
+    <div class="tip-card"><h4>🏨 Staying</h4><ul>
+      <li>Book lodging 3+ months in advance</li>
+      <li>Furano ryokan fills fast in peak season</li>
+      <li>Convenience stores are lifelines</li>
+      <li>IC Suica card for Sapporo transit</li>
+      <li>Bear spray advisable on nature walks</li>
+    </ul></div>
+    <div class="tip-card"><h4>🛍️ Sapporo Shopping</h4><ul>
+      <li>Tanukikoji: 7-block covered arcade</li>
+      <li>Sapporo Factory: former Meiji brewery</li>
+      <li>Royce chocolate factory outlet</li>
+      <li>Shiroi Koibito flagship store</li>
+      <li>Lavender goods, sunflower honey, miso</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
 <footer class="trip-footer">
   <h2>Hokkaido in Full Bloom</h2>
-  <p>Ten days of purple fields, golden sunflowers, festive nights, and fireworks over mountain valleys. This is Hokkaido summer at its most spectacular — fleeting, fragrant, and entirely unforgettable.</p>
-  <div class="footer-icons">💜 🌻 🎆 🌸 🎉</div>
+  <p>Ten days of purple fields, golden sunflowers, festive nights, and fireworks over mountain valleys — ending with a hard-earned shopping spree in Sapporo. This is Hokkaido summer at its most spectacular.</p>
+  <div class="footer-icons">💜 🌻 🎆 🌸 🎉 🛍️</div>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Floating emoji particles in hero
-  const container = document.getElementById('particles');
-  const symbols = ['🌸','💜','🌻','🎆','✨','🌺','🏮','⭐','🌼','💛','🎇'];
+// ══ TRIP DATA ══════════════════════════════════════════════════════
+const STOPS = [
+  { id:'cts',       n:1,  name:'New Chitose Airport', emoji:'✈️', days:'Day 1',    lat:42.775, lng:141.692, col:'#22C55E', note:'Arrive & drive to Furano' },
+  { id:'furano',    n:2,  name:'Furano',              emoji:'💜', days:'Days 2–3',  lat:43.350, lng:142.383, col:'#8B5CF6', note:'Lavender peak + Festival + Fireworks' },
+  { id:'biei',      n:3,  name:'Biei',                emoji:'🌸', days:'Days 4–5',  lat:43.587, lng:142.468, col:'#6366F1', note:'Blue Pond + Rainbow flower hills' },
+  { id:'asahikawa', n:4,  name:'Asahikawa',           emoji:'🎆', days:'Day 6',     lat:43.770, lng:142.365, col:'#F97316', note:'Summer Festival + Fireworks' },
+  { id:'hokuryu',   n:5,  name:'Hokuryu',             emoji:'🌻', days:'Day 7',     lat:43.876, lng:141.879, col:'#EAB308', note:'2.3 million sunflowers' },
+  { id:'otaru',     n:6,  name:'Otaru',               emoji:'⛵', days:'Day 8',     lat:43.191, lng:140.995, col:'#3B82F6', note:'Canal + Ushiomatsuri + Fireworks' },
+  { id:'sapporo',   n:7,  name:'Sapporo',             emoji:'🛍️', days:'Days 9–10', lat:43.062, lng:141.354, col:'#EC4899', note:'Summer Festival + Grand Shopping' },
+];
 
+const ROUTE = [[42.775,141.692],[43.350,142.383],[43.587,142.468],[43.770,142.365],[43.876,141.879],[43.191,140.995],[43.062,141.354],[42.775,141.692]];
+
+const TRIP = [
+  {
+    n:1, date:'Thu · July 16', title:'Arrive → Head Straight to Furano',
+    sub:'Fly in, pick up the rental car, and drive directly to flower country — bypassing Sapporo for now.',
+    theme:'travel', stop:'cts',
+    tags:[['tg-drive','✈️ Arrival'],['tg-drive','🚗 ~2.5 hrs']],
+    imgs:[['New_Chitose_Airport','ph-green'],['Furano','ph-lav']],
+    yt:{ q:'Furano Hokkaido road trip summer lavender', lbl:'Road trip: New Chitose → Furano' },
+    acts:[
+      ['Afternoon','✈️','Arrive New Chitose Airport (CTS)','Collect rental car — your trusty companion starts here. Sapporo can wait till the end.'],
+      ['Late PM','🚗','Drive directly to Furano (~2.5 hrs)','Take Route 38 east through the Sorachi valley — rolling farmland and open sky all the way'],
+      ['Evening','💜','First glimpse of lavender roadside fields','Even roadside verges glow purple in mid-July Hokkaido'],
+      ['Night','🍷','Furano Winery sunset dinner','Hokkaido wine · panoramic mountain views · the perfect first evening'],
+    ],
+    hl:{ c:'purple', t:'💜 Lavender is at absolute peak July 15–25 — you land at exactly the right moment.' },
+    connector:'Stay in Furano · Days 2–3 here'
+  },
+  {
+    n:2, date:'Fri · July 17', title:'Farm Tomita — Crown Jewel of Hokkaido',
+    sub:'Japan\'s most famous lavender farm. Arrive at dawn before the world wakes up.',
+    theme:'lav', stop:'furano',
+    tags:[['tg-lav','💜 Peak Lavender'],['tg-flower','🌸 Farms']],
+    imgs:[['Farm_Tomita','ph-lav'],['Lavandula','ph-lav']],
+    yt:{ q:'Farm Tomita lavender Furano Hokkaido', lbl:'Farm Tomita lavender fields in bloom' },
+    acts:[
+      ['Early AM','🌅','Farm Tomita at dawn — PRIORITY STOP','Arrive before 8 AM · morning mist floats over the purple rows · zero crowds'],
+      ['Morning','💜','Walk all seven lavender fields','Traditional Field · Bloom Field · Forest Panorama — seven Lavandula varieties in full bloom'],
+      ['Midday','🍦','Lavender soft-serve ice cream & parfait','Farm Tomita\'s legendary lavender ice cream — a flavour you won\'t find anywhere else on earth'],
+      ['Afternoon','🌸','Lavender Bud Farm Hinode & Fujida Farm','Smaller neighbours · fewer crowds · equally stunning purple waves across the hills'],
+      ['Evening','🏮','Ningle Terrace at dusk','Fairy-tale forest craft shops lit up in the cedar trees — the most charming evening walk'],
+    ],
+    hl:{ c:'purple', t:'🏆 Farm Tomita is the crown jewel of this entire trip. Give it a full morning — it absolutely earns it.' },
+    connector:'Same base · Furano'
+  },
+  {
+    n:3, date:'Sat · July 18', title:'Furano Lavender Festival & Fireworks Night',
+    sub:'Festival afternoon, golden sunset over the fields, then fireworks burst above the lavender valley.',
+    theme:'night', stop:'furano',
+    tags:[['tg-fest','🎉 Lavender Festival'],['tg-fire','🎆 Hanabi Night']],
+    imgs:[['Furano','ph-dark'],['Fireworks','ph-dark']],
+    yt:{ q:'Furano hanabi fireworks festival Hokkaido night', lbl:'Furano fireworks over the lavender valley' },
+    acts:[
+      ['Morning','🌿','Sarobetsu riverside wildflower meadow','White bog flowers, hamanasu beach roses, wide open Hokkaido sky'],
+      ['Afternoon','🎊','Furano Lavender Festival (富良野ラベンダーまつり)','Local crafts · lavender goods · fresh produce stalls · live folk music'],
+      ['Sunset','📸','Golden hour over the lavender fields','Purple and molten gold — arguably the single best photograph of the entire trip'],
+      ['Night','🎆','Furano Hanabi Taikai (富良野花火大会)','Fireworks explode above the valley and mountain silhouettes in the warm summer darkness'],
+    ],
+    hl:{ c:'dark', t:'✨ Fireworks over a purple lavender valley under a summer night sky — possibly the most beautiful moment of the trip.' },
+    connector:'🚗 ~30 min north to Biei'
+  },
+  {
+    n:4, date:'Sun · July 19', title:'Furano → Biei · Blue Pond & Patchwork Hills',
+    sub:'Drive 30 minutes north into a living Impressionist painting of rolling flower hills.',
+    theme:'lav', stop:'biei',
+    tags:[['tg-flower','🌸 Flowers'],['tg-drive','🚗 ~30 min']],
+    imgs:[['Shirogane_Blue_Pond','ph-blue'],['Biei,_Hokkaido','ph-lav']],
+    yt:{ q:'Shirogane Blue Pond Biei Hokkaido', lbl:'Shirogane Blue Pond — Biei, Hokkaido' },
+    acts:[
+      ['Morning','🚗','Drive Furano → Biei via scenic Route 237','30 minutes through flower-lined country roads · every bend is a new photograph'],
+      ['Midday','🌄','Patchwork Road (パッチワークの路)','Rolling hills of poppies, lavender, mustard and potato blossom — layered like brushstrokes'],
+      ['Afternoon','🫐','Shirogane Blue Pond (白金青い池)','Ethereal aluminium-blue water · silver birch rising from the surface · genuinely magical'],
+      ['Evening','🌅','Panorama Road golden hour drive','Dusk light over the flower hills — the whole valley glows orange and deep purple'],
+    ],
+    hl:{ c:'blue', t:'📸 The Blue Pond is illuminated nightly in summer. Visit at dusk for both sunset colours and the night glow.' },
+    connector:'Same base · Biei · Day 5 here too'
+  },
+  {
+    n:5, date:'Mon · July 20', title:'Biei — Shikisai-no-oka Rainbow Flower Hills',
+    sub:'Seven rows of rainbow flowers across the hillside — salvia, marigold, lavender, sunflower, all at once.',
+    theme:'lav', stop:'biei',
+    tags:[['tg-flower','🌸 Rainbow Hills'],['tg-lav','💜 Lavender'],['tg-sun','🌻 Sunflower']],
+    imgs:[['Biei,_Hokkaido','ph-lav'],['Dahlia','ph-pink']],
+    yt:{ q:'Shikisai no Oka Biei rainbow flower hills Hokkaido', lbl:'Shikisai-no-oka rainbow flower hills' },
+    acts:[
+      ['Morning','🌈','Shikisai-no-oka (四季彩の丘)','Seven flower rows: salvia · marigold · lavender · sunflower · dahlia — a living rainbow on the hillside'],
+      ['Midday','🐑','Zerubu Hill & Flower Land Kamifurano','Tractor rides through sweeping lavender and dahlia fields with mountain panoramas'],
+      ['Afternoon','🌾','Ken & Mary Tree & Mild Seven Hill','Iconic single-tree Hokkaido landscape landmarks — timeless and incredibly photogenic'],
+      ['Evening','🍜','Drive to Asahikawa for dinner (~40 min)','City famed for its rich soy-based ramen — well earned after a day of walking flower fields'],
+    ],
+    hl:{ c:'purple', t:'🌈 Shikisai-no-oka in mid-July has the widest variety of simultaneous blooms — arguably more colourful than lavender alone.' },
+    connector:'🚗 ~40 min to Asahikawa'
+  },
+  {
+    n:6, date:'Tue · July 21', title:'Asahikawa — Summer Festival & Fireworks',
+    sub:'One of Hokkaido\'s biggest matsuri followed by grand fireworks over the Ishikari River.',
+    theme:'night', stop:'asahikawa',
+    tags:[['tg-fest','🎉 Matsuri'],['tg-fire','🎆 Fireworks'],['tg-flower','🌹 Rose Garden']],
+    imgs:[['Asahikawa','ph-dark'],['Asahiyama_Zoo','ph-dark']],
+    yt:{ q:'Asahikawa summer festival fireworks Hokkaido', lbl:'Asahikawa Summer Festival & hanabi' },
+    acts:[
+      ['Morning','🌹','Tokiwa Park Rose Garden','Hundreds of rose varieties and hydrangeas in full July bloom around the lakeside park'],
+      ['Midday','🦒','Asahiyama Zoo (optional)','Japan\'s most innovative zoo — famous polar bear pool, penguins walking past visitors'],
+      ['Evening','🥁','Asahikawa Summer Festival (旭川夏まつり)','Taiko drumming · bon-odori dance circles · massive food stall rows along the Ishikari River'],
+      ['Night','🎆','Asahikawa Hanabi Taikai','Grand fireworks over the river — one of northern Hokkaido\'s most spectacular displays'],
+    ],
+    hl:{ c:'dark', t:'🎆 Stake out an Ishikari riverside spot 1–2 hours early. The fireworks reflect beautifully on the water.' },
+    connector:'🚗 ~1 hr west to Hokuryu'
+  },
+  {
+    n:7, date:'Wed · July 22', title:'Hokuryu — 2.3 Million Sunflowers',
+    sub:'Japan\'s largest sunflower field. One hour west from Asahikawa — the scale is breathtaking.',
+    theme:'sun', stop:'hokuryu',
+    tags:[['tg-sun','🌻 Himawari Festival'],['tg-fest','🎉 Festival'],['tg-drive','🚗 ~1 hr']],
+    imgs:[['Hokuryu,_Hokkaido','ph-sun'],['Helianthus_annuus','ph-sun']],
+    yt:{ q:'Hokuryu sunflower village festival Hokkaido himawari', lbl:'Hokuryu Himawari Festival — 2.3 million sunflowers' },
+    acts:[
+      ['Morning','🚗','Drive Asahikawa → Hokuryu (北竜町) ~1 hr','Due west through flat central Hokkaido farmland — surprisingly zen drive'],
+      ['Midday','🌻','Hokuryu Himawari Festival (ひまわりまつり)','2.3 MILLION sunflowers across 23 hectares — Japan\'s single largest sunflower field in full bloom'],
+      ['Afternoon','🏛️','Himawari Museum & Sunflower Maze','Sunflower varieties · cultivation history · sunflower honey tasting · gift shop'],
+      ['Late PM','🌅','Golden hour in the fields','A million yellow faces in warm afternoon light — extraordinary scale you can\'t capture in a single photo'],
+      ['Evening','🚗','Drive south toward Otaru (~2.5 hrs)','Stopover en route or push on to Otaru — stay by the sea tonight'],
+    ],
+    hl:{ c:'gold', t:'🌻 Hokuryu Himawari Festival runs mid-July through mid-August — July 22 catches it at peak bloom.' },
+    connector:'🚗 ~2.5 hrs south to Otaru'
+  },
+  {
+    n:8, date:'Thu · July 23', title:'Otaru — Canal, Cliffs & Harbour Fireworks',
+    sub:'Meiji-era stone warehouses, sea-cliff wildflowers, the Ushiomatsuri festival and fireworks over the bay.',
+    theme:'fest', stop:'otaru',
+    tags:[['tg-fire','🎆 Fireworks'],['tg-fest','🎉 Ushiomatsuri'],['tg-flower','🌊 Coastal Blooms']],
+    imgs:[['Otaru','ph-blue'],['Otaru_Canal','ph-blue']],
+    yt:{ q:'Otaru canal night fireworks festival Hokkaido', lbl:'Otaru Canal, Ushiomatsuri & fireworks' },
+    acts:[
+      ['Morning','⛵','Otaru Canal & Warehouse District','Meiji-era stone warehouses · glass-blowing studios · fresh sea-urchin breakfast at the canal'],
+      ['Afternoon','🌊','Shakotan Peninsula coastal wildflowers','Sea cliffs carpeted in hamanasu beach roses and eboshigusa · cobalt Nihonkai backdrop'],
+      ['Evening','🎊','Otaru Ushiomatsuri Festival (潮まつり)','Parade · dancing · street food · the whole city descends on the harbour waterfront'],
+      ['Night','🎆','Otaru Port Fireworks (おたる花火大会)','Fireworks over the bay · the city lights and their reflections on the dark sea below'],
+    ],
+    hl:{ c:'pink', t:'🌊 Otaru\'s canal lanterns + festival dancing + harbour fireworks is one of the most romantic nights in all of Japan summer.' },
+    connector:'🚗 ~30 min east to Sapporo'
+  },
+  {
+    n:9, date:'Fri · July 24', title:'Sapporo — Summer Festival Night',
+    sub:'The city you\'ve been teased with all trip. Beer garden, botanical gardens and festival fireworks.',
+    theme:'fest', stop:'sapporo',
+    tags:[['tg-fest','🎉 Summer Festival'],['tg-fire','🎆 Hanabi'],['tg-flower','🌸 City Blooms']],
+    imgs:[['Sapporo','ph-pink'],['Odori_Park','ph-pink']],
+    yt:{ q:'Sapporo summer festival Odori Park beer garden hokkaido', lbl:'Sapporo Summer Festival — Odori Park' },
+    acts:[
+      ['Morning','🚗','Drive Otaru → Sapporo (~30 min)','Coastal highway, just 30 minutes · check in and drop bags at your Sapporo base'],
+      ['Midday','🌸','Nakajima Park lotus pond & Hokkaido Botanical Garden','Water lilies in bloom · 4,000 alpine species · the most beautiful city park in Hokkaido'],
+      ['Afternoon','🌿','Hokkaido Shrine & Maruyama Park','Ancient cedar forest walk · wildflowers lining the shrine paths'],
+      ['Evening','🍺','Sapporo Odori Beer Garden','1.5 km of beer stalls · Sapporo Classic on tap · grilled Hokkaido corn and lamb · live music'],
+      ['Night','🎆','Sapporo Summer Festival fireworks','Nakajima Park hanabi — fireworks reflected on the park lake in the summer darkness'],
+    ],
+    hl:{ c:'pink', t:'🎉 Sapporo Summer Festival runs mid-July to mid-August. You arrive right at the height of the season.' },
+    connector:'Same city · Grand finale tomorrow'
+  },
+  {
+    n:10, date:'Sat · July 25', title:'Sapporo — The Grand Shopping Haul',
+    sub:'The day you\'ve been saving. Shop freely — all your bags fly home from New Chitose, 45 min away.',
+    theme:'travel', stop:'sapporo',
+    tags:[['tg-drive','🛍️ Shopping'],['tg-drive','✈️ Depart']],
+    imgs:[['Sapporo','ph-green'],['Hokkaido','ph-green']],
+    yt:{ q:'Sapporo shopping guide Tanukoji Sapporo Factory souvenirs', lbl:'Sapporo shopping guide — best spots' },
+    acts:[
+      ['Morning','🦀','Nijo Market breakfast','Sea urchin · king crab · salmon roe don — a spectacular final morning meal'],
+      ['Midday','🛍️','Tanukikoji Shopping Arcade','Japan\'s longest covered arcade · 7 blocks of fashion · food · souvenirs · snacks'],
+      ['Afternoon','🏭','Sapporo Factory & Stellar Place','Shopping inside a converted Meiji brewery · all the major Japanese brands in one place'],
+      ['Late PM','🎁','Souvenir sweep','Royce chocolate · Shiroi Koibito cookies · lavender sachets · sunflower honey · miso ramen kits'],
+      ['Evening','✈️','Return car · Depart New Chitose (CTS)','Sayonara Hokkaido — bags full, heart even fuller 💜'],
+    ],
+    hl:{ c:'purple', t:'🎁 Shopping last = no lugging bags through lavender fields all week. This is the only way to do a Hokkaido flower trip.' },
+    connector:null
+  },
+];
+
+// ══ RENDER STOP LIST ══════════════════════════════════════════════
+function renderStopList() {
+  const el = document.getElementById('stop-list');
+  el.innerHTML = STOPS.map(s => `
+    <a class="stop-chip" href="#day-${TRIP.find(d => d.stop === s.id)?.n || 1}" onclick="highlightStop('${s.id}')">
+      <div class="stop-num" style="background:${s.col};color:#fff">${s.n}</div>
+      <div>
+        <div class="stop-name">${s.emoji} ${s.name}</div>
+        <div class="stop-days">${s.days}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+// ══ RENDER TIMELINE ═══════════════════════════════════════════════
+function renderTimeline() {
+  const el = document.getElementById('timeline');
+  let html = '';
+  TRIP.forEach((d, i) => {
+    html += renderCard(d);
+    if (d.connector) {
+      html += `<div class="road"><div class="road-line"></div><span>${d.connector}</span><div class="road-line"></div></div>`;
+    }
+  });
+  el.innerHTML = html;
+}
+
+function renderCard(d) {
+  const tags = d.tags.map(([c,t]) => `<span class="tag ${c}">${t}</span>`).join('');
+  const imgs = d.imgs.map(([wiki, cls]) =>
+    `<div class="photo-frame ${cls}">
+       <div class="photo-skeleton"></div>
+       <img data-wiki="${wiki}" alt="${wiki.replace(/_/g,' ')}">
+     </div>`
+  ).join('');
+  const acts = d.acts.map(([t,i,txt,note], idx) =>
+    `${idx > 0 ? '<div class="div"></div>' : ''}
+     <li class="act">
+       <span class="act-t">${t}</span>
+       <span class="act-i">${i}</span>
+       <div class="act-text"><strong>${txt}</strong>
+         ${note ? `<span class="act-note">${note}</span>` : ''}
+       </div>
+     </li>`
+  ).join('');
+  const dateSplit = d.date.split(' · ');
+  const hlCls = `hl-${d.hl.c}`;
+
+  return `
+  <div class="day-card th-${d.theme}" id="day-${d.n}" data-stop="${d.stop}">
+    <div class="day-dot" onclick="panMapTo('${d.stop}')">
+      <span class="dn">${d.n}</span>
+      <span class="dl">${dateSplit[0].toUpperCase()}</span>
+    </div>
+    <div class="card-wrap">
+      <div class="photo-grid">${imgs}</div>
+      <div class="card-body">
+        <div class="card-head">
+          <div>
+            <div class="card-loc">${d.title}</div>
+            <div class="card-date">${d.date}</div>
+            <div class="card-sub">${d.sub}</div>
+          </div>
+          <div class="card-tags">${tags}</div>
+        </div>
+        <ul class="acts">${acts}</ul>
+        <a class="yt-card" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d.yt.q)}" target="_blank" rel="noopener noreferrer">
+          <div class="yt-play">▶</div>
+          <div class="yt-info">
+            <div class="yt-eyebrow">Watch on YouTube</div>
+            <div class="yt-title">${d.yt.lbl}</div>
+          </div>
+          <div class="yt-arr">→</div>
+        </a>
+        <div class="hl ${hlCls}">${d.hl.t}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══ LEAFLET MAP ════════════════════════════════════════════════════
+let leafletMap, leafletMarkers = {};
+
+function initMap() {
+  leafletMap = L.map('route-map', { scrollWheelZoom: false, zoomControl: true });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#aaa">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" style="color:#aaa">CARTO</a>',
+    subdomains: 'abcd', maxZoom: 19
+  }).addTo(leafletMap);
+
+  // Animated dashed route line
+  L.polyline(ROUTE, { color:'rgba(139,92,246,0.6)', weight:3, dashArray:'10,8' }).addTo(leafletMap);
+
+  // Markers
+  STOPS.forEach((s, i) => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:38px;height:38px;border-radius:50%;background:${s.col};
+        display:flex;align-items:center;justify-content:center;
+        color:#fff;font-weight:700;font-size:1rem;
+        box-shadow:0 3px 12px rgba(0,0,0,.5);
+        border:2.5px solid rgba(255,255,255,.5);
+        font-family:system-ui,sans-serif;
+        transition:transform .2s;
+      ">${s.n}</div>`,
+      iconSize: [38, 38], iconAnchor: [19, 19], popupAnchor: [0, -20]
+    });
+
+    const marker = L.marker([s.lat, s.lng], { icon })
+      .addTo(leafletMap)
+      .bindPopup(`
+        <div class="popup-name">${s.emoji} ${s.name}</div>
+        <div class="popup-days">${s.days}</div>
+        <div class="popup-note">${s.note}</div>
+      `)
+      .on('click', () => {
+        const dayNum = TRIP.find(d => d.stop === s.id)?.n;
+        if (dayNum) document.getElementById(`day-${dayNum}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+
+    leafletMarkers[s.id] = marker;
+  });
+
+  // Fit all stops in view
+  leafletMap.fitBounds(STOPS.map(s => [s.lat, s.lng]), { padding: [40, 40] });
+
+  // Add CTS return point label
+  L.circleMarker([42.775, 141.692], { radius:6, color:'#22C55E', fillColor:'#22C55E', fillOpacity:.5, weight:2 })
+    .addTo(leafletMap)
+    .bindTooltip('Return to CTS', { direction:'bottom', className:'' });
+}
+
+function panMapTo(stopId) {
+  const s = STOPS.find(x => x.id === stopId);
+  if (!s || !leafletMap) return;
+  leafletMap.flyTo([s.lat, s.lng], 10, { duration: 1.2 });
+  leafletMarkers[stopId]?.openPopup();
+}
+
+function highlightStop(stopId) {
+  setTimeout(() => panMapTo(stopId), 200);
+}
+
+// Scroll-linked map panning
+function initScrollSync() {
+  const cards = document.querySelectorAll('.day-card[data-stop]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const stopId = e.target.dataset.stop;
+        if (stopId && leafletMap) {
+          const s = STOPS.find(x => x.id === stopId);
+          if (s) leafletMap.flyTo([s.lat, s.lng], 9, { duration: 1, animate: true });
+        }
+      }
+    });
+  }, { threshold: 0.4 });
+  cards.forEach(c => obs.observe(c));
+}
+
+// ══ WIKIPEDIA IMAGES ═══════════════════════════════════════════════
+async function fetchWikiImage(img) {
+  const title = img.dataset.wiki;
+  if (!title) return;
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.thumbnail?.source) {
+      const src = data.thumbnail.source.replace(/\/\d+px-/, '/800px-');
+      img.onload = () => {
+        img.classList.add('vis');
+        img.previousElementSibling?.remove(); // remove skeleton
+      };
+      img.src = src;
+    }
+  } catch (_) { /* graceful fallback — keeps gradient placeholder */ }
+}
+
+function initImages() {
+  const imgs = document.querySelectorAll('img[data-wiki]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        fetchWikiImage(e.target);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '400px' });
+  imgs.forEach(img => obs.observe(img));
+}
+
+// ══ HERO PARTICLES ══════════════════════════════════════════════════
+function initParticles() {
+  const container = document.getElementById('particles');
+  const symbols = ['🌸','💜','🌻','🎆','✨','🌺','🏮','⭐','🌼','💛','🎇','🌷'];
   for (let i = 0; i < 28; i++) {
     const el = document.createElement('span');
     const size = Math.random() * 18 + 10;
-    const dur  = Math.random() * 12 + 9;
-    const del  = Math.random() * 14;
-    const left = Math.random() * 100;
-
+    const dur  = Math.random() * 12 + 10;
+    const del  = Math.random() * 15;
     el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    el.style.cssText = `
-      position: absolute;
-      font-size: ${size}px;
-      left: ${left}%;
-      bottom: -5%;
-      animation: petal-fall ${dur}s linear ${del}s infinite;
-      pointer-events: none;
-      user-select: none;
-    `;
+    el.style.cssText = `position:absolute;font-size:${size}px;left:${Math.random()*100}%;bottom:-5%;
+      animation:petal-fall ${dur}s linear ${del}s infinite;pointer-events:none;user-select:none;`;
     container.appendChild(el);
   }
+}
+
+// ══ INIT ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  renderStopList();
+  renderTimeline();
+  initMap();
+  initImages();
+  // Small delay so cards are in DOM before setting up scroll sync
+  setTimeout(initScrollSync, 500);
+});
 </script>
 </body>
 </html>
