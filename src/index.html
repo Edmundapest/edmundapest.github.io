@@ -16,6 +16,7 @@
       --pink: #EC4899; --pink-p: #FCE7F3;
       --blue: #3B82F6; --blue-p: #EFF6FF;
       --green: #22C55E; --green-p: #F0FDF4;
+      --red: #EF4444;
       --night: #0F0C29; --night2: #1a1a4e;
       --text: #1E1B4B; --muted: #6B7280; --surface: #F8F7FF;
     }
@@ -23,40 +24,23 @@
     body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); overflow-x: hidden; }
 
     /* ── HERO ── */
-    .hero {
-      position: relative; min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center; padding: 2rem;
-      background: linear-gradient(160deg, #0F0C29 0%, #302B63 45%, #4a1942 100%);
-      overflow: hidden;
-    }
-    .glow { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .hero { position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;background:linear-gradient(160deg,#0F0C29 0%,#302B63 45%,#4a1942 100%);overflow:hidden; }
+    .glow { position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none; }
     .glow-a { width:600px;height:600px;background:radial-gradient(circle,rgba(139,92,246,.28) 0%,transparent 70%);top:-100px;left:-100px;animation:drift 12s ease-in-out infinite alternate; }
     .glow-b { width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.2) 0%,transparent 70%);bottom:-80px;right:-80px;animation:drift 16s ease-in-out infinite alternate-reverse; }
     .glow-c { width:400px;height:400px;background:radial-gradient(circle,rgba(236,72,153,.15) 0%,transparent 70%);top:40%;left:55%;animation:drift 20s ease-in-out infinite alternate; }
     @keyframes drift { from{transform:translate(0,0) scale(1)} to{transform:translate(40px,30px) scale(1.08)} }
     .particles { position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none; }
-    @keyframes petal-fall {
-      0%{transform:translateY(-5vh) rotate(0deg);opacity:0}
-      8%{opacity:1} 88%{opacity:.8}
-      100%{transform:translateY(108vh) rotate(540deg);opacity:0}
-    }
+    @keyframes petal-fall { 0%{transform:translateY(-5vh) rotate(0deg);opacity:0} 8%{opacity:1} 88%{opacity:.8} 100%{transform:translateY(108vh) rotate(540deg);opacity:0} }
     .hero-content { position:relative;z-index:10; }
-    .hero-badge {
-      display:inline-block;background:rgba(139,92,246,.25);border:1px solid rgba(196,181,253,.4);
-      color:var(--lav-l);padding:.45rem 1.4rem;border-radius:100px;font-size:.8rem;
-      letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:1.5rem;backdrop-filter:blur(12px);
-    }
+    .hero-badge { display:inline-block;background:rgba(139,92,246,.25);border:1px solid rgba(196,181,253,.4);color:var(--lav-l);padding:.45rem 1.4rem;border-radius:100px;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:1.5rem;backdrop-filter:blur(12px); }
     .hero h1 { font-family:'Playfair Display',serif;font-size:clamp(3.2rem,8vw,6rem);color:#fff;line-height:1.05;margin-bottom:1rem; }
     .hero h1 .g { background:linear-gradient(135deg,#C4B5FD 0%,#F9A8D4 40%,#FDE68A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
     .hero-dates { font-size:1.1rem;color:rgba(255,255,255,.6);margin-bottom:2.5rem;font-weight:300;letter-spacing:.06em; }
     .hero-tags { display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap; }
     .hero-tag { background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;padding:.55rem 1.1rem;border-radius:100px;font-size:.85rem;backdrop-filter:blur(12px);transition:background .25s; }
     .hero-tag:hover { background:rgba(255,255,255,.15); }
-    .scroll-hint {
-      position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.35);
-      font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;display:flex;flex-direction:column;
-      align-items:center;gap:.4rem;animation:bob 2.4s ease-in-out infinite;
-    }
+    .scroll-hint { position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.35);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.4rem;animation:bob 2.4s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
 
     /* ── STATS ── */
@@ -66,30 +50,19 @@
     .stat-n { font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;background:linear-gradient(135deg,var(--lav),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
     .stat-l { font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:.2rem; }
 
-    /* ── MAP SECTION ── */
+    /* ── MAP ── */
     .map-section { background:linear-gradient(160deg,#0a0820,#1a1a4e); }
     .map-inner { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:280px 1fr; }
     .map-panel { padding:2.5rem 2rem;display:flex;flex-direction:column;gap:1.5rem; }
     .map-panel-title { font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff; }
     .map-panel-sub { font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6; }
     .stop-list { display:flex;flex-direction:column;gap:.5rem; }
-    .stop-chip {
-      display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;border-radius:10px;
-      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);cursor:pointer;
-      transition:background .2s;text-decoration:none;
-    }
+    .stop-chip { display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:background .2s;text-decoration:none; }
     .stop-chip:hover { background:rgba(255,255,255,.12); }
     .stop-num { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0; }
     .stop-name { font-size:.82rem;color:#fff;font-weight:500; }
     .stop-days { font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.05rem; }
     #route-map { height:520px;width:100%; }
-    @media(max-width:720px) {
-      .map-inner { grid-template-columns:1fr; }
-      #route-map { height:300px; }
-      .map-panel { padding:1.5rem; }
-    }
-
-    /* Leaflet popup */
     .leaflet-popup-content-wrapper { background:#1a1a4e;color:#fff;border:1px solid rgba(196,181,253,.3);border-radius:10px; }
     .leaflet-popup-tip { background:#1a1a4e; }
     .popup-name { font-weight:700;font-size:.9rem;margin-bottom:.2rem; }
@@ -112,45 +85,43 @@
     .tg-fest  { background:#FCE7F3;color:#BE185D; }
     .tg-fire  { background:#EFF6FF;color:#1D4ED8; }
     .tg-drive { background:#F0FDF4;color:#166534; }
+    .tg-volcano { background:#FEF2F2;color:#991B1B; }
 
     /* ── TIMELINE ── */
     .timeline { position:relative; }
-    .timeline::before { content:'';position:absolute;left:29px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--lav),var(--pink),var(--sun),var(--blue),var(--green));opacity:.2;border-radius:2px; }
+    .timeline::before { content:'';position:absolute;left:29px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--lav),var(--pink),var(--sun),var(--blue),var(--red),var(--green));opacity:.2;border-radius:2px; }
 
     /* ── DAY CARD ── */
     .day-card { display:grid;grid-template-columns:60px 1fr;gap:1.25rem;margin-bottom:1.5rem; }
-    .day-dot {
-      width:60px;height:60px;border-radius:50%;display:flex;flex-direction:column;align-items:center;
-      justify-content:center;flex-shrink:0;border:2.5px solid;position:relative;z-index:1;
-      cursor:pointer;transition:transform .25s,box-shadow .25s;
-    }
+    .day-dot { width:60px;height:60px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:2.5px solid;position:relative;z-index:1;cursor:pointer;transition:transform .25s,box-shadow .25s; }
     .day-dot:hover { transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.12); }
     .day-dot .dn { font-size:1.4rem;font-family:'Playfair Display',serif;font-weight:700;line-height:1; }
     .day-dot .dl { font-size:.58rem;font-weight:600;letter-spacing:.04em;opacity:.75; }
-    /* Theme dot colours */
     .th-travel .day-dot  { background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-color:var(--green);color:#15803D; }
     .th-lav    .day-dot  { background:linear-gradient(135deg,var(--lav-p),#DDD6FE);border-color:var(--lav);color:var(--lav); }
     .th-night  .day-dot  { background:linear-gradient(135deg,#1E1B4B,#312E81);border-color:#818CF8;color:#fff; }
     .th-sun    .day-dot  { background:linear-gradient(135deg,#FEF9C3,#FDE68A);border-color:var(--sun);color:#854D0E; }
     .th-fest   .day-dot  { background:linear-gradient(135deg,var(--pink-p),#FBCFE8);border-color:var(--pink);color:#9D174D; }
-    /* Card wrapper */
+    .th-volcano .day-dot { background:linear-gradient(135deg,#FEF2F2,#FECACA);border-color:var(--red);color:#991B1B; }
     .card-wrap { background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.06);border-left:3.5px solid transparent;transition:box-shadow .25s,transform .25s; }
     .card-wrap:hover { transform:translateY(-2px);box-shadow:0 10px 35px rgba(0,0,0,.1); }
-    .th-travel .card-wrap { border-color:var(--green); }
-    .th-lav    .card-wrap { border-color:var(--lav); }
-    .th-night  .card-wrap { border-color:#818CF8; }
-    .th-sun    .card-wrap { border-color:var(--sun); }
-    .th-fest   .card-wrap { border-color:var(--pink); }
+    .th-travel  .card-wrap { border-color:var(--green); }
+    .th-lav     .card-wrap { border-color:var(--lav); }
+    .th-night   .card-wrap { border-color:#818CF8; }
+    .th-sun     .card-wrap { border-color:var(--sun); }
+    .th-fest    .card-wrap { border-color:var(--pink); }
+    .th-volcano .card-wrap { border-color:var(--red); }
 
     /* ── PHOTO GRID ── */
     .photo-grid { display:grid;grid-template-columns:1fr 1fr;gap:4px; }
-    .photo-frame { aspect-ratio:16/9;overflow:hidden;background:#e5e7eb;position:relative; }
-    .photo-frame.ph-lav  { background:linear-gradient(135deg,#EDE9FE,#DDD6FE); }
-    .photo-frame.ph-sun  { background:linear-gradient(135deg,#FEF9C3,#FDE68A); }
-    .photo-frame.ph-blue { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); }
-    .photo-frame.ph-pink { background:linear-gradient(135deg,#FCE7F3,#FBCFE8); }
-    .photo-frame.ph-green{ background:linear-gradient(135deg,#F0FDF4,#DCFCE7); }
-    .photo-frame.ph-dark { background:linear-gradient(135deg,#1E1B4B,#312E81); }
+    .photo-frame { aspect-ratio:16/9;overflow:hidden;position:relative; }
+    .photo-frame.ph-lav   { background:linear-gradient(135deg,#EDE9FE,#DDD6FE); }
+    .photo-frame.ph-sun   { background:linear-gradient(135deg,#FEF9C3,#FDE68A); }
+    .photo-frame.ph-blue  { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); }
+    .photo-frame.ph-pink  { background:linear-gradient(135deg,#FCE7F3,#FBCFE8); }
+    .photo-frame.ph-green { background:linear-gradient(135deg,#F0FDF4,#DCFCE7); }
+    .photo-frame.ph-dark  { background:linear-gradient(135deg,#1E1B4B,#312E81); }
+    .photo-frame.ph-red   { background:linear-gradient(135deg,#FEF2F2,#FECACA); }
     .photo-skeleton { position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);background-size:200% 100%;animation:shimmer 1.5s infinite; }
     @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
     .photo-frame img { width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;display:block; }
@@ -182,31 +153,29 @@
     .div { height:1px;background:linear-gradient(to right,transparent,#E5E7EB,transparent);margin:.35rem 0; }
     .th-night .div { background:linear-gradient(to right,transparent,rgba(255,255,255,.1),transparent); }
 
-    /* ── HIGHLIGHT BOX ── */
-    .hl { border-radius:10px;padding:.7rem .95rem;margin-top:1rem;font-size:.82rem;display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;border:1px solid; }
+    /* ── CALLOUT BOXES ── */
+    .hl { border-radius:10px;padding:.7rem .95rem;margin-top:.9rem;font-size:.82rem;display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;border:1px solid; }
     .hl-purple { background:#F5F3FF;border-color:#DDD6FE;color:#5B21B6; }
     .hl-gold   { background:#FFFBEB;border-color:#FDE68A;color:#92400E; }
     .hl-blue   { background:var(--blue-p);border-color:#BFDBFE;color:#1E40AF; }
     .hl-pink   { background:#FFF1F2;border-color:#FECDD3;color:#9F1239; }
     .hl-dark   { background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.3);color:#A5B4FC; }
+    .hl-red    { background:#FEF2F2;border-color:#FECACA;color:#991B1B; }
+    /* Hidden gem box */
+    .gem { border-radius:10px;padding:.7rem .95rem;margin-top:.75rem;font-size:.82rem;display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;background:#F0FDF4;border:1px solid #86EFAC;color:#166534; }
+    .th-night .gem { background:rgba(134,239,172,.08);border-color:rgba(134,239,172,.2);color:#86EFAC; }
 
-    /* ── YOUTUBE CARD ── */
-    .yt-card {
-      display:flex;align-items:center;gap:.9rem;background:#111827;border-radius:12px;
-      padding:.9rem 1rem;text-decoration:none;margin-top:1rem;transition:background .2s;border:1px solid rgba(255,255,255,.05);
-    }
-    .yt-card:hover { background:#1F2937; }
-    .yt-play { width:40px;height:40px;background:#FF0000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#fff;flex-shrink:0; }
-    .yt-info { flex:1;min-width:0; }
-    .yt-eyebrow { font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.15rem; }
-    .yt-title { font-size:.84rem;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-    .yt-arr { color:rgba(255,255,255,.3);font-size:1rem; }
+    /* ── YOUTUBE EMBED ── */
+    .yt-wrap { border-radius:12px;overflow:hidden;margin-top:1rem;background:#000;aspect-ratio:16/9; }
+    .yt-wrap iframe { width:100%;height:100%;border:0;display:block; }
+    .yt-caption { font-size:.72rem;color:var(--muted);margin-top:.4rem;display:flex;align-items:center;gap:.35rem; }
+    .th-night .yt-caption { color:rgba(255,255,255,.3); }
 
     /* ── ROAD CONNECTOR ── */
     .road { display:flex;align-items:center;gap:.6rem;padding:.4rem 0 .4rem 74px;color:var(--muted);font-size:.74rem;font-weight:500; }
     .road-line { flex:1;border-top:2px dashed #E5E7EB; }
 
-    /* ── TIPS SECTION ── */
+    /* ── TIPS ── */
     .tips-section { background:#fff;padding:4rem 1.5rem; }
     .tips-grid { max-width:880px;margin:2rem auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem; }
     .tip-card { background:var(--surface);border-radius:14px;padding:1.2rem;border:1px solid #E5E7EB; }
@@ -222,15 +191,18 @@
     .footer-icons { font-size:2rem;letter-spacing:.6rem; }
 
     /* ── RESPONSIVE ── */
+    @media(max-width:720px) {
+      .map-inner { grid-template-columns:1fr; }
+      #route-map { height:300px; }
+      .map-panel { padding:1.5rem; }
+    }
     @media(max-width:580px) {
       .timeline::before { left:24px; }
       .day-card { grid-template-columns:50px 1fr;gap:.9rem; }
       .day-dot { width:50px;height:50px; }
       .day-dot .dn { font-size:1.2rem; }
-      .stats-bar { gap:0; }
       .stat { padding:0 1.2rem; }
       .road { padding-left:58px; }
-      .photo-grid { grid-template-columns:1fr; }
       .photo-grid .photo-frame:last-child { display:none; }
     }
   </style>
@@ -249,7 +221,7 @@
       <div class="hero-tag">💜 Lavender Fields</div>
       <div class="hero-tag">🌻 Sunflower Farms</div>
       <div class="hero-tag">🎆 Hanabi Fireworks</div>
-      <div class="hero-tag">🎉 Summer Matsuri</div>
+      <div class="hero-tag">🌋 Lake Toya</div>
       <div class="hero-tag">🛍️ Sapporo Shopping</div>
     </div>
   </div>
@@ -262,10 +234,10 @@
 <!-- ══ STATS ══ -->
 <div class="stats-bar">
   <div class="stat"><div class="stat-n">10</div><div class="stat-l">Days</div></div>
-  <div class="stat"><div class="stat-n">~750</div><div class="stat-l">km Driven</div></div>
+  <div class="stat"><div class="stat-n">~850</div><div class="stat-l">km Driven</div></div>
   <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Flower Farms</div></div>
-  <div class="stat"><div class="stat-n">4</div><div class="stat-l">Fireworks Shows</div></div>
-  <div class="stat"><div class="stat-n">3</div><div class="stat-l">Matsuri</div></div>
+  <div class="stat"><div class="stat-n">5</div><div class="stat-l">Fireworks Shows</div></div>
+  <div class="stat"><div class="stat-n">8</div><div class="stat-l">Stops</div></div>
 </div>
 
 <!-- ══ MAP ══ -->
@@ -274,7 +246,7 @@
     <div class="map-panel">
       <div>
         <div class="map-panel-title">Route Map</div>
-        <div class="map-panel-sub" style="margin-top:.5rem">~750 km loop through central &amp; western Hokkaido. Sapporo is saved for last — shop freely with the airport 45 min away.</div>
+        <div class="map-panel-sub" style="margin-top:.5rem">~850 km loop. Sapporo saved for last — shop freely with the airport 45 min away.</div>
       </div>
       <div class="stop-list" id="stop-list"></div>
     </div>
@@ -294,6 +266,7 @@
     <span class="tag tg-sun">🌻 Sunflower</span>
     <span class="tag tg-fest">🎉 Festival</span>
     <span class="tag tg-fire">🎆 Fireworks</span>
+    <span class="tag tg-volcano">🌋 Volcano</span>
     <span class="tag tg-drive">🚗 Drive</span>
   </div>
   <div class="timeline" id="timeline"></div>
@@ -309,9 +282,9 @@
     <div class="tip-card"><h4>🚗 Driving</h4><ul>
       <li>International Driving Permit required</li>
       <li>Book rental car 3+ months ahead</li>
-      <li>ETC card saves time at toll booths</li>
-      <li>Google Maps works perfectly offline</li>
-      <li>Hokkaido roads wide and well maintained</li>
+      <li>ETC card for toll booths</li>
+      <li>Google Maps works great</li>
+      <li>Roads wide and well maintained</li>
     </ul></div>
     <div class="tip-card"><h4>💜 Flowers</h4><ul>
       <li>Lavender peaks July 15–25 in Furano</li>
@@ -323,20 +296,20 @@
     <div class="tip-card"><h4>🎆 Fireworks</h4><ul>
       <li>Confirm exact dates closer to travel</li>
       <li>Arrive 1–2 hrs early for a good spot</li>
-      <li>Bring a ground sheet to sit on</li>
-      <li>Shows last 45–90 minutes</li>
+      <li>Lake Toya: nightly Apr 28–Oct 31!</li>
+      <li>Bring ground sheet to sit on</li>
       <li>Check local tourist boards for times</li>
     </ul></div>
-    <div class="tip-card"><h4>🏨 Staying</h4><ul>
-      <li>Book lodging 3+ months in advance</li>
-      <li>Furano ryokan fills fast in peak season</li>
-      <li>Convenience stores are lifelines</li>
-      <li>IC Suica card for Sapporo transit</li>
-      <li>Bear spray advisable on nature walks</li>
+    <div class="tip-card"><h4>🌋 Lake Toya</h4><ul>
+      <li>Nightly fireworks — no schedule needed</li>
+      <li>Mt. Usu last erupted in 2000</li>
+      <li>Day-use onsen available at most hotels</li>
+      <li>Boat to Nakajima island from the pier</li>
+      <li>Bear spotted occasionally near Usu</li>
     </ul></div>
     <div class="tip-card"><h4>🛍️ Sapporo Shopping</h4><ul>
       <li>Tanukikoji: 7-block covered arcade</li>
-      <li>Sapporo Factory: former Meiji brewery</li>
+      <li>Sapporo Factory: Meiji-era brewery</li>
       <li>Royce chocolate factory outlet</li>
       <li>Shiroi Koibito flagship store</li>
       <li>Lavender goods, sunflower honey, miso</li>
@@ -347,40 +320,46 @@
 <!-- ══ FOOTER ══ -->
 <footer class="trip-footer">
   <h2>Hokkaido in Full Bloom</h2>
-  <p>Ten days of purple fields, golden sunflowers, festive nights, and fireworks over mountain valleys — ending with a hard-earned shopping spree in Sapporo. This is Hokkaido summer at its most spectacular.</p>
-  <div class="footer-icons">💜 🌻 🎆 🌸 🎉 🛍️</div>
+  <p>Ten days of purple fields, golden sunflowers, festive nights, volcanic calderas, and fireworks over mountain lakes — ending with a hard-earned shopping spree in Sapporo.</p>
+  <div class="footer-icons">💜 🌻 🎆 🌋 🌸 🛍️</div>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ══ TRIP DATA ══════════════════════════════════════════════════════
+// ══ MAP DATA ════════════════════════════════════════════════════════
 const STOPS = [
-  { id:'cts',       n:1,  name:'New Chitose Airport', emoji:'✈️', days:'Day 1',    lat:42.775, lng:141.692, col:'#22C55E', note:'Arrive & drive to Furano' },
-  { id:'furano',    n:2,  name:'Furano',              emoji:'💜', days:'Days 2–3',  lat:43.350, lng:142.383, col:'#8B5CF6', note:'Lavender peak + Festival + Fireworks' },
-  { id:'biei',      n:3,  name:'Biei',                emoji:'🌸', days:'Days 4–5',  lat:43.587, lng:142.468, col:'#6366F1', note:'Blue Pond + Rainbow flower hills' },
-  { id:'asahikawa', n:4,  name:'Asahikawa',           emoji:'🎆', days:'Day 6',     lat:43.770, lng:142.365, col:'#F97316', note:'Summer Festival + Fireworks' },
-  { id:'hokuryu',   n:5,  name:'Hokuryu',             emoji:'🌻', days:'Day 7',     lat:43.876, lng:141.879, col:'#EAB308', note:'2.3 million sunflowers' },
-  { id:'otaru',     n:6,  name:'Otaru',               emoji:'⛵', days:'Day 8',     lat:43.191, lng:140.995, col:'#3B82F6', note:'Canal + Ushiomatsuri + Fireworks' },
-  { id:'sapporo',   n:7,  name:'Sapporo',             emoji:'🛍️', days:'Days 9–10', lat:43.062, lng:141.354, col:'#EC4899', note:'Summer Festival + Grand Shopping' },
+  { id:'cts',       n:1, name:'New Chitose Airport', emoji:'✈️',  days:'Day 1',     lat:42.775, lng:141.692, col:'#22C55E', note:'Arrive & drive to Furano' },
+  { id:'furano',    n:2, name:'Furano',              emoji:'💜',  days:'Days 2–3',  lat:43.350, lng:142.383, col:'#8B5CF6', note:'Lavender peak + Festival + Fireworks' },
+  { id:'biei',      n:3, name:'Biei',                emoji:'🌸',  days:'Days 4–5',  lat:43.587, lng:142.468, col:'#6366F1', note:'Blue Pond + Rainbow flower hills' },
+  { id:'asahikawa', n:4, name:'Asahikawa',           emoji:'🎆',  days:'Day 6',     lat:43.770, lng:142.365, col:'#F97316', note:'Summer Festival + Fireworks' },
+  { id:'hokuryu',   n:5, name:'Hokuryu',             emoji:'🌻',  days:'Day 7',     lat:43.876, lng:141.879, col:'#EAB308', note:'2.3 million sunflowers' },
+  { id:'otaru',     n:6, name:'Otaru',               emoji:'⛵',  days:'Day 8',     lat:43.191, lng:140.995, col:'#3B82F6', note:'Canal + Ushiomatsuri + Fireworks' },
+  { id:'toya',      n:7, name:'Lake Toya',           emoji:'🌋',  days:'Day 9',     lat:42.605, lng:140.844, col:'#EF4444', note:'Nightly fireworks + Showa Shinzan + Onsen' },
+  { id:'sapporo',   n:8, name:'Sapporo',             emoji:'🛍️', days:'Day 10',    lat:43.062, lng:141.354, col:'#EC4899', note:'Summer Festival + Grand Shopping Haul' },
 ];
 
-const ROUTE = [[42.775,141.692],[43.350,142.383],[43.587,142.468],[43.770,142.365],[43.876,141.879],[43.191,140.995],[43.062,141.354],[42.775,141.692]];
+const ROUTE = [
+  [42.775,141.692],[43.350,142.383],[43.587,142.468],[43.770,142.365],
+  [43.876,141.879],[43.191,140.995],[42.605,140.844],[43.062,141.354],[42.775,141.692]
+];
 
+// ══ TRIP DATA ════════════════════════════════════════════════════════
 const TRIP = [
   {
     n:1, date:'Thu · July 16', title:'Arrive → Head Straight to Furano',
-    sub:'Fly in, pick up the rental car, and drive directly to flower country — bypassing Sapporo for now.',
+    sub:'Fly in, grab the rental car, and drive directly to flower country — Sapporo shopping is saved for the end.',
     theme:'travel', stop:'cts',
     tags:[['tg-drive','✈️ Arrival'],['tg-drive','🚗 ~2.5 hrs']],
     imgs:[['New_Chitose_Airport','ph-green'],['Furano','ph-lav']],
-    yt:{ q:'Furano Hokkaido road trip summer lavender', lbl:'Road trip: New Chitose → Furano' },
+    ytId:'vOUtxja9IqY', ytTitle:'The Lavender Fields of Furano, Hokkaido',
     acts:[
-      ['Afternoon','✈️','Arrive New Chitose Airport (CTS)','Collect rental car — your trusty companion starts here. Sapporo can wait till the end.'],
-      ['Late PM','🚗','Drive directly to Furano (~2.5 hrs)','Take Route 38 east through the Sorachi valley — rolling farmland and open sky all the way'],
-      ['Evening','💜','First glimpse of lavender roadside fields','Even roadside verges glow purple in mid-July Hokkaido'],
-      ['Night','🍷','Furano Winery sunset dinner','Hokkaido wine · panoramic mountain views · the perfect first evening'],
+      ['Afternoon','✈️','Arrive New Chitose Airport (CTS)','Collect rental car — drive northeast on Route 38 directly to Furano, bypassing Sapporo for now'],
+      ['Late PM','🚗','Drive directly to Furano (~2.5 hrs)','Rolling farmland and open sky the whole way — roadside wildflowers start here'],
+      ['Evening','💜','First glimpse of the lavender roadsides','Even roadside verges glow purple in mid-July Hokkaido'],
+      ['Night','🍷','Furano Winery dinner','Hokkaido wine · panoramic mountain view · perfect first evening'],
     ],
     hl:{ c:'purple', t:'💜 Lavender is at absolute peak July 15–25 — you land at exactly the right moment.' },
+    gem:'💎 Hidden gem: Tomita Melon House, just beside Farm Tomita, serves ice-cold fresh Hokkaido melon halves in the field. Easily missed by tourists rushing straight to the lavender.',
     connector:'Stay in Furano · Days 2–3 here'
   },
   {
@@ -389,15 +368,16 @@ const TRIP = [
     theme:'lav', stop:'furano',
     tags:[['tg-lav','💜 Peak Lavender'],['tg-flower','🌸 Farms']],
     imgs:[['Farm_Tomita','ph-lav'],['Lavandula','ph-lav']],
-    yt:{ q:'Farm Tomita lavender Furano Hokkaido', lbl:'Farm Tomita lavender fields in bloom' },
+    ytId:'L40bSm3XPM8', ytTitle:'Farm Tomita [4K] — Furano Lavender Field, Hokkaido',
     acts:[
-      ['Early AM','🌅','Farm Tomita at dawn — PRIORITY STOP','Arrive before 8 AM · morning mist floats over the purple rows · zero crowds'],
+      ['Early AM','🌅','Farm Tomita at dawn — PRIORITY STOP','Arrive before 8 AM · morning mist over purple rows · virtually no crowds'],
       ['Morning','💜','Walk all seven lavender fields','Traditional Field · Bloom Field · Forest Panorama — seven Lavandula varieties in full bloom'],
-      ['Midday','🍦','Lavender soft-serve ice cream & parfait','Farm Tomita\'s legendary lavender ice cream — a flavour you won\'t find anywhere else on earth'],
-      ['Afternoon','🌸','Lavender Bud Farm Hinode & Fujida Farm','Smaller neighbours · fewer crowds · equally stunning purple waves across the hills'],
-      ['Evening','🏮','Ningle Terrace at dusk','Fairy-tale forest craft shops lit up in the cedar trees — the most charming evening walk'],
+      ['Midday','🍦','Lavender soft-serve ice cream & parfait','Farm Tomita\'s legendary lavender ice cream — a flavour that doesn\'t exist anywhere else'],
+      ['Afternoon','🌸','Lavender Bud Farm Hinode & Fujida Farm','Smaller neighbours · half the crowds · equally stunning purple panoramas'],
+      ['Evening','🏮','Ningle Terrace at dusk','Fairy-tale forest craft shops lit up in the cedar trees'],
     ],
-    hl:{ c:'purple', t:'🏆 Farm Tomita is the crown jewel of this entire trip. Give it a full morning — it absolutely earns it.' },
+    hl:{ c:'purple', t:'🏆 Farm Tomita is the crown jewel of this entire trip. Give it a full morning — it earns every minute.' },
+    gem:'💎 Hidden gem: Hinode Lavender Farm (ひので観光農園) is 500m from Farm Tomita with equally stunning views and a fraction of the visitors. Great for peaceful photos.',
     connector:'Same base · Furano'
   },
   {
@@ -406,14 +386,15 @@ const TRIP = [
     theme:'night', stop:'furano',
     tags:[['tg-fest','🎉 Lavender Festival'],['tg-fire','🎆 Hanabi Night']],
     imgs:[['Furano','ph-dark'],['Fireworks','ph-dark']],
-    yt:{ q:'Furano hanabi fireworks festival Hokkaido night', lbl:'Furano fireworks over the lavender valley' },
+    ytId:'Xzn2UISq9aA', ytTitle:'Furano Lavender Festival — Norokko Train, Hokkaido',
     acts:[
       ['Morning','🌿','Sarobetsu riverside wildflower meadow','White bog flowers, hamanasu beach roses, wide open Hokkaido sky'],
-      ['Afternoon','🎊','Furano Lavender Festival (富良野ラベンダーまつり)','Local crafts · lavender goods · fresh produce stalls · live folk music'],
-      ['Sunset','📸','Golden hour over the lavender fields','Purple and molten gold — arguably the single best photograph of the entire trip'],
-      ['Night','🎆','Furano Hanabi Taikai (富良野花火大会)','Fireworks explode above the valley and mountain silhouettes in the warm summer darkness'],
+      ['Afternoon','🎊','Furano Lavender Festival (富良野ラベンダーまつり)','Crafts · lavender goods · fresh produce stalls · live folk music in the town centre'],
+      ['Sunset','📸','Golden hour over the lavender fields','Purple and molten gold — the single best photograph of the entire trip'],
+      ['Night','🎆','Furano Hanabi Taikai (富良野花火大会)','Fireworks burst above the valley and mountain silhouettes in the warm summer dark'],
     ],
     hl:{ c:'dark', t:'✨ Fireworks over a purple lavender valley under a summer night sky — possibly the most beautiful moment of the trip.' },
+    gem:'💎 Hidden gem: Ride the Norokko tourist train (ノロッコ号) through the Furano lavender fields — a slow, open-air retro train that passes directly through the blooms.',
     connector:'🚗 ~30 min north to Biei'
   },
   {
@@ -421,15 +402,16 @@ const TRIP = [
     sub:'Drive 30 minutes north into a living Impressionist painting of rolling flower hills.',
     theme:'lav', stop:'biei',
     tags:[['tg-flower','🌸 Flowers'],['tg-drive','🚗 ~30 min']],
-    imgs:[['Shirogane_Blue_Pond','ph-blue'],['Biei,_Hokkaido','ph-lav']],
-    yt:{ q:'Shirogane Blue Pond Biei Hokkaido', lbl:'Shirogane Blue Pond — Biei, Hokkaido' },
+    imgs:[['Shirogane_Blue_Pond','ph-blue'],['Biei, Hokkaido','ph-lav']],
+    ytId:'9jg0rsrGRi4', ytTitle:'Shirogane Blue Pond (Aoiike) — Biei, Hokkaido',
     acts:[
-      ['Morning','🚗','Drive Furano → Biei via scenic Route 237','30 minutes through flower-lined country roads · every bend is a new photograph'],
-      ['Midday','🌄','Patchwork Road (パッチワークの路)','Rolling hills of poppies, lavender, mustard and potato blossom — layered like brushstrokes'],
-      ['Afternoon','🫐','Shirogane Blue Pond (白金青い池)','Ethereal aluminium-blue water · silver birch rising from the surface · genuinely magical'],
+      ['Morning','🚗','Drive Furano → Biei via scenic Route 237','30 minutes through flower-lined country roads · every bend is a photograph'],
+      ['Midday','🌄','Patchwork Road (パッチワークの路)','Rolling hills of poppies, lavender, mustard and potato blossom — layered like brushstrokes on the hills'],
+      ['Afternoon','🫐','Shirogane Blue Pond (白金青い池)','Ethereal aluminium-blue water · silver birch trees rising from the surface · genuinely magical'],
       ['Evening','🌅','Panorama Road golden hour drive','Dusk light over the flower hills — the whole valley glows orange and deep purple'],
     ],
     hl:{ c:'blue', t:'📸 The Blue Pond is illuminated nightly in summer. Visit at dusk for both sunset colours and the night glow.' },
+    gem:'💎 Hidden gem: Shirogane Onsen (白金温泉) is a tiny hot spring village 5 min from the Blue Pond. After the tourist crowds leave, soak in a rotenburo (outdoor bath) with forest views.',
     connector:'Same base · Biei · Day 5 here too'
   },
   {
@@ -437,31 +419,33 @@ const TRIP = [
     sub:'Seven rows of rainbow flowers across the hillside — salvia, marigold, lavender, sunflower, all at once.',
     theme:'lav', stop:'biei',
     tags:[['tg-flower','🌸 Rainbow Hills'],['tg-lav','💜 Lavender'],['tg-sun','🌻 Sunflower']],
-    imgs:[['Biei,_Hokkaido','ph-lav'],['Dahlia','ph-pink']],
-    yt:{ q:'Shikisai no Oka Biei rainbow flower hills Hokkaido', lbl:'Shikisai-no-oka rainbow flower hills' },
+    imgs:[['Biei, Hokkaido','ph-lav'],['Dahlia','ph-pink']],
+    ytId:'OWvJuQqnGSs', ytTitle:'Summer in Hokkaido — Road Trip in Biei Patchwork Road',
     acts:[
-      ['Morning','🌈','Shikisai-no-oka (四季彩の丘)','Seven flower rows: salvia · marigold · lavender · sunflower · dahlia — a living rainbow on the hillside'],
+      ['Morning','🌈','Shikisai-no-oka (四季彩の丘)','Seven flower rows: salvia · marigold · lavender · sunflower · dahlia · a living rainbow across the hillside'],
       ['Midday','🐑','Zerubu Hill & Flower Land Kamifurano','Tractor rides through sweeping lavender and dahlia fields with mountain panoramas'],
-      ['Afternoon','🌾','Ken & Mary Tree & Mild Seven Hill','Iconic single-tree Hokkaido landscape landmarks — timeless and incredibly photogenic'],
-      ['Evening','🍜','Drive to Asahikawa for dinner (~40 min)','City famed for its rich soy-based ramen — well earned after a day of walking flower fields'],
+      ['Afternoon','🌾','Ken & Mary Tree & Mild Seven Hill','Iconic single-tree Hokkaido landscape landmarks — timeless and photogenic'],
+      ['Evening','🍜','Asahikawa ramen for dinner (~40 min drive)','Asahikawa-style: dark soy with lard ring — less famous than Sapporo ramen, far more flavour'],
     ],
-    hl:{ c:'purple', t:'🌈 Shikisai-no-oka in mid-July has the widest variety of simultaneous blooms — arguably more colourful than lavender alone.' },
+    hl:{ c:'purple', t:'🌈 Shikisai-no-oka in mid-July has the widest simultaneous bloom variety — arguably more colourful than lavender fields alone.' },
+    gem:'💎 Hidden gem: Asahidake Ropeway — 30 min from Biei, Hokkaido\'s highest peak at 2,291m. Alpine flowers bloom at 1,600m in July. Almost unknown to non-Japanese tourists.',
     connector:'🚗 ~40 min to Asahikawa'
   },
   {
     n:6, date:'Tue · July 21', title:'Asahikawa — Summer Festival & Fireworks',
-    sub:'One of Hokkaido\'s biggest matsuri followed by grand fireworks over the Ishikari River.',
+    sub:'One of Hokkaido\'s biggest matsuri, followed by grand fireworks over the Ishikari River.',
     theme:'night', stop:'asahikawa',
     tags:[['tg-fest','🎉 Matsuri'],['tg-fire','🎆 Fireworks'],['tg-flower','🌹 Rose Garden']],
-    imgs:[['Asahikawa','ph-dark'],['Asahiyama_Zoo','ph-dark']],
-    yt:{ q:'Asahikawa summer festival fireworks Hokkaido', lbl:'Asahikawa Summer Festival & hanabi' },
+    imgs:[['Asahikawa','ph-dark'],['Asahiyama Zoo','ph-dark']],
+    ytId:'CypP7XtrA0s', ytTitle:'Summer Festival in Hokkaido (Asahikawa)',
     acts:[
       ['Morning','🌹','Tokiwa Park Rose Garden','Hundreds of rose varieties and hydrangeas in full July bloom around the lakeside park'],
-      ['Midday','🦒','Asahiyama Zoo (optional)','Japan\'s most innovative zoo — famous polar bear pool, penguins walking past visitors'],
+      ['Midday','🦒','Asahiyama Zoo (optional)','Japan\'s most innovative zoo — famous polar bear pool and the penguin walk past visitors'],
       ['Evening','🥁','Asahikawa Summer Festival (旭川夏まつり)','Taiko drumming · bon-odori dance circles · massive food stall rows along the Ishikari River'],
       ['Night','🎆','Asahikawa Hanabi Taikai','Grand fireworks over the river — one of northern Hokkaido\'s most spectacular displays'],
     ],
-    hl:{ c:'dark', t:'🎆 Stake out an Ishikari riverside spot 1–2 hours early. The fireworks reflect beautifully on the water.' },
+    hl:{ c:'dark', t:'🎆 Stake out an Ishikari riverside spot 1–2 hours early. The fireworks reflect on the water.' },
+    gem:'💎 Hidden gem: Asahikawa Ramen Mura (旭川ラーメン村) — 8 legendary ramen shops under one roof. Each serves its own interpretation of Asahikawa\'s signature dark soy style. Open until 10 PM.',
     connector:'🚗 ~1 hr west to Hokuryu'
   },
   {
@@ -469,123 +453,112 @@ const TRIP = [
     sub:'Japan\'s largest sunflower field. One hour west from Asahikawa — the scale is breathtaking.',
     theme:'sun', stop:'hokuryu',
     tags:[['tg-sun','🌻 Himawari Festival'],['tg-fest','🎉 Festival'],['tg-drive','🚗 ~1 hr']],
-    imgs:[['Hokuryu,_Hokkaido','ph-sun'],['Helianthus_annuus','ph-sun']],
-    yt:{ q:'Hokuryu sunflower village festival Hokkaido himawari', lbl:'Hokuryu Himawari Festival — 2.3 million sunflowers' },
+    imgs:[['Hokuryu, Hokkaido','ph-sun'],['Helianthus annuus','ph-sun']],
+    ytId:'n8UQaXmeMr0', ytTitle:'Japan\'s Sunflower Town — Hokuryu in Hokkaido',
     acts:[
-      ['Morning','🚗','Drive Asahikawa → Hokuryu (北竜町) ~1 hr','Due west through flat central Hokkaido farmland — surprisingly zen drive'],
+      ['Morning','🚗','Drive Asahikawa → Hokuryu (北竜町)','~1 hour due west through flat central Hokkaido farmland — surprisingly zen drive'],
       ['Midday','🌻','Hokuryu Himawari Festival (ひまわりまつり)','2.3 MILLION sunflowers across 23 hectares — Japan\'s single largest sunflower field in full bloom'],
       ['Afternoon','🏛️','Himawari Museum & Sunflower Maze','Sunflower varieties · cultivation history · sunflower honey tasting · gift shop'],
-      ['Late PM','🌅','Golden hour in the fields','A million yellow faces in warm afternoon light — extraordinary scale you can\'t capture in a single photo'],
-      ['Evening','🚗','Drive south toward Otaru (~2.5 hrs)','Stopover en route or push on to Otaru — stay by the sea tonight'],
+      ['Late PM','🌅','Golden hour in the fields','A million yellow faces in warm afternoon light — a scale impossible to capture in one shot'],
+      ['Evening','🚗','Drive south to Otaru (~2 hrs)','Coastal Highway 231 hugs the Sea of Japan — beautiful evening drive'],
     ],
     hl:{ c:'gold', t:'🌻 Hokuryu Himawari Festival runs mid-July through mid-August — July 22 catches it at peak bloom.' },
-    connector:'🚗 ~2.5 hrs south to Otaru'
+    gem:'💎 Hidden gem: Sunagawa Service Area (砂川SA) on Route 12 south — Japan\'s most famous highway rest stop with gourmet restaurants including a branch of Michelin-starred ramen.',
+    connector:'🚗 ~2 hrs south to Otaru'
   },
   {
     n:8, date:'Thu · July 23', title:'Otaru — Canal, Cliffs & Harbour Fireworks',
-    sub:'Meiji-era stone warehouses, sea-cliff wildflowers, the Ushiomatsuri festival and fireworks over the bay.',
+    sub:'Meiji-era stone warehouses, sea-cliff wildflowers, the Ushiomatsuri and fireworks over the bay.',
     theme:'fest', stop:'otaru',
     tags:[['tg-fire','🎆 Fireworks'],['tg-fest','🎉 Ushiomatsuri'],['tg-flower','🌊 Coastal Blooms']],
-    imgs:[['Otaru','ph-blue'],['Otaru_Canal','ph-blue']],
-    yt:{ q:'Otaru canal night fireworks festival Hokkaido', lbl:'Otaru Canal, Ushiomatsuri & fireworks' },
+    imgs:[['Otaru','ph-blue'],['Otaru Canal','ph-blue']],
+    ytId:'ucEQuB-IHQ0', ytTitle:'Don\'t Visit Otaru Without Watching This! — 24 Hours in Hokkaido',
     acts:[
-      ['Morning','⛵','Otaru Canal & Warehouse District','Meiji-era stone warehouses · glass-blowing studios · fresh sea-urchin breakfast at the canal'],
+      ['Morning','⛵','Otaru Canal & Warehouse District','Meiji-era stone warehouses · glass-blowing studios · fresh sea-urchin breakfast at the canal-side stalls'],
       ['Afternoon','🌊','Shakotan Peninsula coastal wildflowers','Sea cliffs carpeted in hamanasu beach roses and eboshigusa · cobalt Nihonkai backdrop'],
-      ['Evening','🎊','Otaru Ushiomatsuri Festival (潮まつり)','Parade · dancing · street food · the whole city descends on the harbour waterfront'],
-      ['Night','🎆','Otaru Port Fireworks (おたる花火大会)','Fireworks over the bay · the city lights and their reflections on the dark sea below'],
+      ['Evening','🎊','Otaru Ushiomatsuri Festival (潮まつり)','Parade · dancing · street food — the whole city on the harbour waterfront'],
+      ['Night','🎆','Otaru Port Fireworks (おたる花火大会)','Fireworks over the bay · city lights reflected on the dark sea'],
     ],
-    hl:{ c:'pink', t:'🌊 Otaru\'s canal lanterns + festival dancing + harbour fireworks is one of the most romantic nights in all of Japan summer.' },
-    connector:'🚗 ~30 min east to Sapporo'
+    hl:{ c:'pink', t:'🌊 Canal lanterns + festival dancing + harbour fireworks — one of the most romantic nights in Japanese summer.' },
+    gem:'💎 Hidden gem: Sakaimachi Street glass workshops — watch artisans hand-blow Otaru\'s famous glass oil lamps. Far more atmospheric than the canal walk and largely overlooked by tourists.',
+    connector:'🚗 ~2 hrs south to Lake Toya'
   },
   {
-    n:9, date:'Fri · July 24', title:'Sapporo — Summer Festival Night',
-    sub:'The city you\'ve been teased with all trip. Beer garden, botanical gardens and festival fireworks.',
-    theme:'fest', stop:'sapporo',
-    tags:[['tg-fest','🎉 Summer Festival'],['tg-fire','🎆 Hanabi'],['tg-flower','🌸 City Blooms']],
-    imgs:[['Sapporo','ph-pink'],['Odori_Park','ph-pink']],
-    yt:{ q:'Sapporo summer festival Odori Park beer garden hokkaido', lbl:'Sapporo Summer Festival — Odori Park' },
+    n:9, date:'Fri · July 24', title:'Lake Toya — Volcano, Onsen & Nightly Fireworks',
+    sub:'A caldera lake forged by eruption. Nightly fireworks run from April to October — no schedule needed.',
+    theme:'volcano', stop:'toya',
+    tags:[['tg-fire','🎆 Nightly Fireworks'],['tg-volcano','🌋 Showa Shinzan'],['tg-fest','♨️ Onsen']],
+    imgs:[['Lake Tōya','ph-red'],['Shōwa Shinzan','ph-red']],
+    ytId:'m0uSkRkm7Ps', ytTitle:'Lake Tōya Fireworks & Onsen Paradise in Hokkaido',
     acts:[
-      ['Morning','🚗','Drive Otaru → Sapporo (~30 min)','Coastal highway, just 30 minutes · check in and drop bags at your Sapporo base'],
-      ['Midday','🌸','Nakajima Park lotus pond & Hokkaido Botanical Garden','Water lilies in bloom · 4,000 alpine species · the most beautiful city park in Hokkaido'],
-      ['Afternoon','🌿','Hokkaido Shrine & Maruyama Park','Ancient cedar forest walk · wildflowers lining the shrine paths'],
-      ['Evening','🍺','Sapporo Odori Beer Garden','1.5 km of beer stalls · Sapporo Classic on tap · grilled Hokkaido corn and lamb · live music'],
-      ['Night','🎆','Sapporo Summer Festival fireworks','Nakajima Park hanabi — fireworks reflected on the park lake in the summer darkness'],
+      ['Morning','🚗','Drive Otaru → Lake Toya (~2 hrs, coastal highway)','Sea of Japan on your left the whole drive — stop at a konbini for road snacks'],
+      ['Midday','🌋','Shōwa Shinzan volcanic dome','A lava dome that rose from a wheat field during the 1943–45 eruption — eerie and spectacular'],
+      ['Afternoon','⛵','Lake Toya boat cruise to Nakajima Island','Tour the island in the lake\'s centre, home to wild deer · the caldera rim is visible from the water'],
+      ['Late PM','🚡','Mt. Usu Ropeway','Views of the barren lava flow from the 2000 eruption — a raw, humbling Hokkaido landscape'],
+      ['Evening','♨️','Check in to Toyako Onsen ryokan','Lakeside hot spring hotel · many offer rotenburo baths facing the water'],
+      ['Night','🎆','Nightly Toya Lake Fireworks (Apr 28–Oct 31)','Fireworks explode over the caldera lake every single night from the pier — free to watch from the shore'],
     ],
-    hl:{ c:'pink', t:'🎉 Sapporo Summer Festival runs mid-July to mid-August. You arrive right at the height of the season.' },
-    connector:'Same city · Grand finale tomorrow'
+    hl:{ c:'red', t:'🌋 Lake Toya\'s nightly fireworks are said to be the world\'s longest continuously-running fireworks show — 7 months straight, every night, weather permitting.' },
+    gem:'💎 Hidden gem: The Volcano Science Museum (有珠山火山科学館) in Toyako Onsen town is tiny but extraordinary — real-time seismic data and a floor-to-ceiling photo of the 2000 eruption consuming an entire neighbourhood.',
+    connector:'🚗 ~2 hrs north to Sapporo'
   },
   {
     n:10, date:'Sat · July 25', title:'Sapporo — The Grand Shopping Haul',
-    sub:'The day you\'ve been saving. Shop freely — all your bags fly home from New Chitose, 45 min away.',
+    sub:'The city you\'ve been saving for last. Shop freely — the airport is 45 minutes away.',
     theme:'travel', stop:'sapporo',
-    tags:[['tg-drive','🛍️ Shopping'],['tg-drive','✈️ Depart']],
-    imgs:[['Sapporo','ph-green'],['Hokkaido','ph-green']],
-    yt:{ q:'Sapporo shopping guide Tanukoji Sapporo Factory souvenirs', lbl:'Sapporo shopping guide — best spots' },
+    tags:[['tg-drive','🛍️ Shopping'],['tg-fest','🎉 Summer Festival'],['tg-drive','✈️ Depart']],
+    imgs:[['Sapporo','ph-green'],['Odori Park','ph-pink']],
+    ytId:'p4ULEq8988M', ytTitle:'Sapporo Japan 4K Walk — Odori Park & Tanukikoji',
     acts:[
-      ['Morning','🦀','Nijo Market breakfast','Sea urchin · king crab · salmon roe don — a spectacular final morning meal'],
-      ['Midday','🛍️','Tanukikoji Shopping Arcade','Japan\'s longest covered arcade · 7 blocks of fashion · food · souvenirs · snacks'],
-      ['Afternoon','🏭','Sapporo Factory & Stellar Place','Shopping inside a converted Meiji brewery · all the major Japanese brands in one place'],
-      ['Late PM','🎁','Souvenir sweep','Royce chocolate · Shiroi Koibito cookies · lavender sachets · sunflower honey · miso ramen kits'],
-      ['Evening','✈️','Return car · Depart New Chitose (CTS)','Sayonara Hokkaido — bags full, heart even fuller 💜'],
+      ['Morning','🚗','Drive Lake Toya → Sapporo (~2 hrs)','Arrive by 10:30 AM — drop bags at a coin locker near Odori Station'],
+      ['Midday','🌸','Odori Park & Summer Festival vibes','Beer garden open daytime too · Hokkaido Botanical Garden nearby for a final flower fix'],
+      ['Afternoon','🛍️','Tanukikoji Shopping Arcade','Japan\'s longest covered arcade · 7 blocks of fashion · food · souvenirs'],
+      ['Late PM','🎁','Souvenir sweep — Sapporo Factory & department stores','Royce chocolate · Shiroi Koibito · lavender sachets · sunflower honey · miso ramen kits'],
+      ['Evening','✈️','Return car · Depart New Chitose (CTS)','Sayonara, Hokkaido — bags full, heart even fuller 💜'],
     ],
     hl:{ c:'purple', t:'🎁 Shopping last = no lugging bags through lavender fields all week. This is the only way to do a Hokkaido flower trip.' },
-    connector:null
+    gem:'💎 Hidden gem: Hokkaido University campus (北大) — the free-to-enter poplar avenue (ポプラ並木) is one of Sapporo\'s most beautiful spots and almost entirely unknown to visitors.',
+    connector: null
   },
 ];
 
-// ══ RENDER STOP LIST ══════════════════════════════════════════════
+// ══ RENDER STOP LIST ════════════════════════════════════════════════
 function renderStopList() {
-  const el = document.getElementById('stop-list');
-  el.innerHTML = STOPS.map(s => `
-    <a class="stop-chip" href="#day-${TRIP.find(d => d.stop === s.id)?.n || 1}" onclick="highlightStop('${s.id}')">
+  document.getElementById('stop-list').innerHTML = STOPS.map(s => `
+    <a class="stop-chip" href="#day-${TRIP.find(d=>d.stop===s.id)?.n||1}" onclick="panMapTo('${s.id}')">
       <div class="stop-num" style="background:${s.col};color:#fff">${s.n}</div>
       <div>
         <div class="stop-name">${s.emoji} ${s.name}</div>
         <div class="stop-days">${s.days}</div>
       </div>
-    </a>
-  `).join('');
+    </a>`).join('');
 }
 
-// ══ RENDER TIMELINE ═══════════════════════════════════════════════
+// ══ RENDER TIMELINE ═════════════════════════════════════════════════
 function renderTimeline() {
   const el = document.getElementById('timeline');
-  let html = '';
-  TRIP.forEach((d, i) => {
-    html += renderCard(d);
-    if (d.connector) {
-      html += `<div class="road"><div class="road-line"></div><span>${d.connector}</span><div class="road-line"></div></div>`;
-    }
-  });
-  el.innerHTML = html;
+  el.innerHTML = TRIP.map(d => renderCard(d) +
+    (d.connector ? `<div class="road"><div class="road-line"></div><span>${d.connector}</span><div class="road-line"></div></div>` : '')
+  ).join('');
 }
 
 function renderCard(d) {
   const tags = d.tags.map(([c,t]) => `<span class="tag ${c}">${t}</span>`).join('');
-  const imgs = d.imgs.map(([wiki, cls]) =>
-    `<div class="photo-frame ${cls}">
-       <div class="photo-skeleton"></div>
-       <img data-wiki="${wiki}" alt="${wiki.replace(/_/g,' ')}">
-     </div>`
+  const imgs = d.imgs.map(([wiki,cls]) =>
+    `<div class="photo-frame ${cls}"><div class="photo-skeleton"></div><img data-wiki="${wiki}" alt="${wiki}"></div>`
   ).join('');
-  const acts = d.acts.map(([t,i,txt,note], idx) =>
-    `${idx > 0 ? '<div class="div"></div>' : ''}
-     <li class="act">
-       <span class="act-t">${t}</span>
-       <span class="act-i">${i}</span>
-       <div class="act-text"><strong>${txt}</strong>
-         ${note ? `<span class="act-note">${note}</span>` : ''}
-       </div>
+  const acts = d.acts.map(([t,i,txt,note],idx) =>
+    `${idx>0?'<div class="div"></div>':''}
+     <li class="act"><span class="act-t">${t}</span><span class="act-i">${i}</span>
+       <div class="act-text"><strong>${txt}</strong>${note?`<span class="act-note">${note}</span>`:''}</div>
      </li>`
   ).join('');
-  const dateSplit = d.date.split(' · ');
   const hlCls = `hl-${d.hl.c}`;
-
   return `
   <div class="day-card th-${d.theme}" id="day-${d.n}" data-stop="${d.stop}">
     <div class="day-dot" onclick="panMapTo('${d.stop}')">
       <span class="dn">${d.n}</span>
-      <span class="dl">${dateSplit[0].toUpperCase()}</span>
+      <span class="dl">${d.date.split(' · ')[0].toUpperCase()}</span>
     </div>
     <div class="card-wrap">
       <div class="photo-grid">${imgs}</div>
@@ -599,147 +572,98 @@ function renderCard(d) {
           <div class="card-tags">${tags}</div>
         </div>
         <ul class="acts">${acts}</ul>
-        <a class="yt-card" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d.yt.q)}" target="_blank" rel="noopener noreferrer">
-          <div class="yt-play">▶</div>
-          <div class="yt-info">
-            <div class="yt-eyebrow">Watch on YouTube</div>
-            <div class="yt-title">${d.yt.lbl}</div>
-          </div>
-          <div class="yt-arr">→</div>
-        </a>
+        <div class="yt-wrap">
+          <iframe src="https://www.youtube-nocookie.com/embed/${d.ytId}?rel=0&modestbranding=1"
+            title="${d.ytTitle}" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="yt-caption">▶ ${d.ytTitle}</div>
         <div class="hl ${hlCls}">${d.hl.t}</div>
+        ${d.gem ? `<div class="gem">${d.gem}</div>` : ''}
       </div>
     </div>
   </div>`;
 }
 
-// ══ LEAFLET MAP ════════════════════════════════════════════════════
+// ══ LEAFLET MAP ═════════════════════════════════════════════════════
 let leafletMap, leafletMarkers = {};
 
 function initMap() {
-  leafletMap = L.map('route-map', { scrollWheelZoom: false, zoomControl: true });
-
+  leafletMap = L.map('route-map', { scrollWheelZoom:false, zoomControl:true });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#aaa">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" style="color:#aaa">CARTO</a>',
-    subdomains: 'abcd', maxZoom: 19
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#aaa">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" style="color:#aaa">CARTO</a>',
+    subdomains:'abcd', maxZoom:19
   }).addTo(leafletMap);
 
-  // Animated dashed route line
   L.polyline(ROUTE, { color:'rgba(139,92,246,0.6)', weight:3, dashArray:'10,8' }).addTo(leafletMap);
 
-  // Markers
-  STOPS.forEach((s, i) => {
+  STOPS.forEach(s => {
     const icon = L.divIcon({
-      className: '',
-      html: `<div style="
-        width:38px;height:38px;border-radius:50%;background:${s.col};
-        display:flex;align-items:center;justify-content:center;
-        color:#fff;font-weight:700;font-size:1rem;
-        box-shadow:0 3px 12px rgba(0,0,0,.5);
-        border:2.5px solid rgba(255,255,255,.5);
-        font-family:system-ui,sans-serif;
-        transition:transform .2s;
-      ">${s.n}</div>`,
-      iconSize: [38, 38], iconAnchor: [19, 19], popupAnchor: [0, -20]
+      className:'',
+      html:`<div style="width:36px;height:36px;border-radius:50%;background:${s.col};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;box-shadow:0 3px 12px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.5);font-family:system-ui,sans-serif">${s.n}</div>`,
+      iconSize:[36,36], iconAnchor:[18,18], popupAnchor:[0,-20]
     });
-
-    const marker = L.marker([s.lat, s.lng], { icon })
-      .addTo(leafletMap)
-      .bindPopup(`
-        <div class="popup-name">${s.emoji} ${s.name}</div>
-        <div class="popup-days">${s.days}</div>
-        <div class="popup-note">${s.note}</div>
-      `)
+    const m = L.marker([s.lat,s.lng],{icon}).addTo(leafletMap)
+      .bindPopup(`<div class="popup-name">${s.emoji} ${s.name}</div><div class="popup-days">${s.days}</div><div class="popup-note">${s.note}</div>`)
       .on('click', () => {
-        const dayNum = TRIP.find(d => d.stop === s.id)?.n;
-        if (dayNum) document.getElementById(`day-${dayNum}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        const dayNum = TRIP.find(d=>d.stop===s.id)?.n;
+        if (dayNum) document.getElementById(`day-${dayNum}`)?.scrollIntoView({behavior:'smooth',block:'start'});
       });
-
-    leafletMarkers[s.id] = marker;
+    leafletMarkers[s.id] = m;
   });
 
-  // Fit all stops in view
-  leafletMap.fitBounds(STOPS.map(s => [s.lat, s.lng]), { padding: [40, 40] });
-
-  // Add CTS return point label
-  L.circleMarker([42.775, 141.692], { radius:6, color:'#22C55E', fillColor:'#22C55E', fillOpacity:.5, weight:2 })
-    .addTo(leafletMap)
-    .bindTooltip('Return to CTS', { direction:'bottom', className:'' });
+  leafletMap.fitBounds(STOPS.map(s=>[s.lat,s.lng]), {padding:[40,40]});
 }
 
 function panMapTo(stopId) {
-  const s = STOPS.find(x => x.id === stopId);
-  if (!s || !leafletMap) return;
-  leafletMap.flyTo([s.lat, s.lng], 10, { duration: 1.2 });
-  leafletMarkers[stopId]?.openPopup();
+  const s = STOPS.find(x=>x.id===stopId);
+  if (s && leafletMap) { leafletMap.flyTo([s.lat,s.lng],10,{duration:1.2}); leafletMarkers[stopId]?.openPopup(); }
 }
 
-function highlightStop(stopId) {
-  setTimeout(() => panMapTo(stopId), 200);
-}
-
-// Scroll-linked map panning
 function initScrollSync() {
-  const cards = document.querySelectorAll('.day-card[data-stop]');
-  const obs = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        const stopId = e.target.dataset.stop;
-        if (stopId && leafletMap) {
-          const s = STOPS.find(x => x.id === stopId);
-          if (s) leafletMap.flyTo([s.lat, s.lng], 9, { duration: 1, animate: true });
-        }
+        const s = STOPS.find(x=>x.id===e.target.dataset.stop);
+        if (s && leafletMap) leafletMap.flyTo([s.lat,s.lng],9,{duration:1,animate:true});
       }
     });
-  }, { threshold: 0.4 });
-  cards.forEach(c => obs.observe(c));
+  }, {threshold:0.4});
+  document.querySelectorAll('.day-card[data-stop]').forEach(c=>obs.observe(c));
 }
 
-// ══ WIKIPEDIA IMAGES ═══════════════════════════════════════════════
+// ══ WIKIPEDIA IMAGES (action API + origin=* for file:// CORS) ═══════
 async function fetchWikiImage(img) {
   const title = img.dataset.wiki;
   if (!title) return;
   try {
-    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
-    if (!res.ok) return;
+    const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&pithumbsize=800&format=json&origin=*`);
     const data = await res.json();
-    if (data.thumbnail?.source) {
-      const src = data.thumbnail.source.replace(/\/\d+px-/, '/800px-');
-      img.onload = () => {
-        img.classList.add('vis');
-        img.previousElementSibling?.remove(); // remove skeleton
-      };
+    const pages = data?.query?.pages;
+    if (!pages) return;
+    const src = Object.values(pages)[0]?.thumbnail?.source;
+    if (src) {
+      img.onload = () => { img.classList.add('vis'); img.previousElementSibling?.remove(); };
       img.src = src;
     }
-  } catch (_) { /* graceful fallback — keeps gradient placeholder */ }
+  } catch(_) {}
 }
 
 function initImages() {
-  const imgs = document.querySelectorAll('img[data-wiki]');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        fetchWikiImage(e.target);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { rootMargin: '400px' });
-  imgs.forEach(img => obs.observe(img));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { fetchWikiImage(e.target); obs.unobserve(e.target); } });
+  }, {rootMargin:'400px'});
+  document.querySelectorAll('img[data-wiki]').forEach(img=>obs.observe(img));
 }
 
 // ══ HERO PARTICLES ══════════════════════════════════════════════════
 function initParticles() {
-  const container = document.getElementById('particles');
-  const symbols = ['🌸','💜','🌻','🎆','✨','🌺','🏮','⭐','🌼','💛','🎇','🌷'];
-  for (let i = 0; i < 28; i++) {
+  const c = document.getElementById('particles');
+  const s = ['🌸','💜','🌻','🎆','✨','🌺','🏮','⭐','🌼','💛','🎇','🌷'];
+  for (let i=0;i<28;i++) {
     const el = document.createElement('span');
-    const size = Math.random() * 18 + 10;
-    const dur  = Math.random() * 12 + 10;
-    const del  = Math.random() * 15;
-    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    el.style.cssText = `position:absolute;font-size:${size}px;left:${Math.random()*100}%;bottom:-5%;
-      animation:petal-fall ${dur}s linear ${del}s infinite;pointer-events:none;user-select:none;`;
-    container.appendChild(el);
+    el.textContent = s[Math.floor(Math.random()*s.length)];
+    el.style.cssText = `position:absolute;font-size:${Math.random()*18+10}px;left:${Math.random()*100}%;bottom:-5%;animation:petal-fall ${Math.random()*12+10}s linear ${Math.random()*15}s infinite;pointer-events:none;user-select:none;`;
+    c.appendChild(el);
   }
 }
 
@@ -750,7 +674,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTimeline();
   initMap();
   initImages();
-  // Small delay so cards are in DOM before setting up scroll sync
   setTimeout(initScrollSync, 500);
 });
 </script>
