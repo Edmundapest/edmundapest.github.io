@@ -3,152 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hokkaido Road Trip 2026 | July 16-25</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Hokkaido Summer 2026 | The Purple Window</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --lavender: #7B68EE;
+            --lavender: #8A4FFF; /* Vibrant Lavender */
             --sunflower: #FFD700;
-            --deep-sea: #1A237E;
-            --bg: #FDFBFF;
+            --mist: #f4f7f6;
+            --text: #2c3e50;
+            --glass: rgba(255, 255, 255, 0.7);
         }
 
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg);
-            color: #333;
+            background-color: #f0eff5; /* Softest purple tint */
+            color: var(--text);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* --- Hero Section --- */
-        header {
-            height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1576675448332-905963283f3e?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+        /* --- Dynamic Video Hero --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             text-align: center;
         }
 
-        h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; }
-        .subtitle { font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; }
-
-        /* --- Main Layout --- */
-        .container { max-width: 800px; margin: -50px auto 50px; padding: 20px; }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(123, 104, 238, 0.1);
-            border-left: 5px solid var(--lavender);
+        .hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translate(-50%, -50%);
+            /* "Ken Burns" Animation Effect */
+            animation: kenburns 40s ease-out infinite alternate;
         }
 
-        .day-badge {
-            background: var(--lavender);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+            z-index: -1;
         }
 
-        h2 { color: var(--deep-sea); margin: 15px 0 5px; }
-        .location { color: #888; font-style: italic; margin-bottom: 15px; display: block; }
+        .hero-content { z-index: 10; padding: 20px; }
         
-        .highlights { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
-        .tag { background: #f0f0f0; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; }
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 5rem; 
+            margin: 0; 
+            opacity: 0;
+            animation: fadeInDown 1.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @media (max-width: 768px) { h1 { font-size: 3rem; } }
+
+        .subtitle { 
+            font-size: 1.2rem; 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 1.5s;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+        }
+
+        /* --- Main Content Layout --- */
+        .main-container {
+            max-width: 1100px;
+            margin: -80px auto 50px; /* Overlap the hero */
+            padding: 20px;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* --- Dynamic Scroll Animation --- */
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .day-block {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 120px 1fr 250px;
+            gap: 25px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+
+            /* Scroll-triggered reveal */
+            animation: reveal linear both;
+            animation-timeline: view();
+            animation-range: entry 20% cover 50%;
+        }
+
+        .day-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(138, 79, 255, 0.15);
+        }
+
+        @media (max-width: 900px) {
+            .day-block { grid-template-columns: 1fr; text-align: center; }
+        }
+
+        .date-circle {
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, var(--lavender), #b388ff);
+            border-radius: 50%;
+            color: white;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            box-shadow: 0 10px 20px rgba(138, 79, 255, 0.3);
+        }
+        .date-num { font-size: 2.2rem; font-weight: 700; }
+        .date-month { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        .day-content h2 { 
+            font-family: 'Playfair Display', serif; color: var(--text); 
+            margin: 0; font-size: 2rem;
+        }
+        .location-tag { color: var(--lavender); font-weight: 600; margin-bottom: 15px; display: block; }
+
+        .image-preview {
+            width: 100%; height: 200px;
+            border-radius: 15px;
+            background-size: cover; background-position: center;
+            transition: transform 0.3s ease;
+        }
+        .day-block:hover .image-preview { transform: scale(1.03); }
+
+        /* --- Tag Styles --- */
+        .tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .tag { padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
         .tag.fireworks { background: #ffebee; color: #d32f2f; }
-        .tag.food { background: #e8f5e9; color: #2e7d32; }
+        .tag.matsuri { background: #e3f2fd; color: #1976d2; }
+        .tag.peak { background: #f3e5f5; color: var(--lavender); }
 
         /* --- Footer --- */
-        footer { text-align: center; padding: 40px; background: var(--deep-sea); color: white; }
+        footer {
+            background-color: #2c3e50;
+            color: rgba(255,255,255,0.7);
+            padding: 60px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* --- Keyframes --- */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+        @keyframes kenburns { 0% { transform: scale(1) translate(-50%, -50%); } 100% { transform: scale(1.1) translate(-50%, -50%); } }
+
     </style>
 </head>
 <body>
 
-    <header>
-        <p class="subtitle">The Purple Window</p>
-        <h1>Hokkaido 2026</h1>
-        <p>10 Days of Lavenders & Lights</p>
-    </header>
-
-    <div class="container">
-        
-        <div class="card">
-            <span class="day-badge">July 16</span>
-            <h2>Arrival in the North</h2>
-            <span class="location">New Chitose Airport → Sapporo</span>
-            <p>Landing at 7:35 PM. Check-in and head straight to Susukino for late-night Miso Ramen.</p>
+    <div class="hero">
+        <video autoplay loop muted playsinline class="hero-video-bg" id="heroVideo">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-field-of-lavender-flowers-32860-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="subtitle">ROAD TRIP 2026</p>
+            <h1>Hokkaido Summer</h1>
         </div>
+        <div class="scroll-down">↓</div>
+    </div>
 
-        <div class="card">
-            <span class="day-badge">July 17</span>
-            <h2>Into the Lavender</h2>
-            <span class="location">Sapporo → Furano</span>
-            <p>Pick up rental car. Visit Farm Tomita (Irodori Field). Evening illumination at Hinode Park.</p>
-            <div class="highlights">
-                <span class="tag">🌸 Peak Lavender</span>
-                <span class="tag food">🍦 Lavender Soft Serve</span>
+    <div class="main-container">
+
+        <div class="day-block">
+            <div class="date-circle">
+                <span class="date-num">16</span>
+                <span class="date-month">July</span>
             </div>
-        </div>
-
-        <div class="card" style="border-left-color: #d32f2f;">
-            <span class="day-badge">July 18</span>
-            <h2>The Big Event</h2>
-            <span class="location">Nakafurano</span>
-            <p>Biei rolling hills in the morning. Evening: **Nakafurano Lavender Festival Fireworks** at Hokuseiyama Park.</p>
-            <div class="highlights">
-                <span class="tag fireworks">🎆 Fireworks Display</span>
-                <span class="tag">🚜 Tractor Ride</span>
+            <div class="day-content">
+                <h2>Arrival in the North</h2>
+                <span class="location-tag">New Chitose (CTS) → Sapporo</span>
+                <p>Arriving at 7:35 PM. Experience the neon energy of Susukino. Must try: Late-night Miso Ramen.</p>
             </div>
+            <div class="image-preview" style="background-image: url('https://images.unsplash.com/photo-1576110398180-873995f7c355?q=80&w=600&auto=format&fit=crop');"></div>
         </div>
 
-        <div class="card">
-            <span class="day-badge">July 19</span>
-            <h2>Blue Waters & Yellow Mazes</h2>
-            <span class="location">Biei → Hokuryu</span>
-            <p>Shirogane Blue Pond at dawn. Drive north to the Sunflower Village of Hokuryu (2 million sunflowers).</p>
-        </div>
-
-        <div class="card">
-            <span class="day-badge">July 20-21</span>
-            <h2>Volcanoes & Nightly Lights</h2>
-            <span class="location">Lake Toya</span>
-            <p>Usuzan Ropeway and nightly fireworks from a boat on the lake.</p>
-            <div class="highlights">
-                <span class="tag fireworks">🎆 Nightly Fireworks</span>
-                <span class="tag food">🦞 Seafood BBQ</span>
+        <div class="day-block" style="border-left: 5px solid #d32f2f;">
+            <div class="date-circle" style="background: linear-gradient(135deg, #d32f2f, #ff8a80);">
+                <span class="date-num">18</span>
+                <span class="date-month">July</span>
             </div>
-        </div>
-
-        <div class="card">
-            <span class="day-badge">July 22-23</span>
-            <h2>Canals & Beer Gardens</h2>
-            <span class="location">Otaru → Sapporo</span>
-            <p>Fresh Uni in Otaru. Return car. Join the Sapporo Summer Festival Beer Garden in Odori Park.</p>
-            <div class="highlights">
-                <span class="tag">🍺 Beer Garden</span>
-                <span class="tag food">🍣 Otaru Sushi</span>
+            <div class="day-content">
+                <h2>Lavender Fireworks</h2>
+                <span class="location-tag">Nakafurano</span>
+                <p>The main event. Watch spectacular fireworks launch right over the purple hills of Hokuseiyama.</p>
+                <div class="tags">
+                    <span class="tag fireworks">🎆 Fireworks Display</span>
+                    <span class="tag peak">🌸 Peak Lavender</span>
+                </div>
             </div>
+            <div class="image-preview" style="background-image: url('https://images.unsplash.com/photo-1533550882898-1e9b282caed2?q=80&w=600&auto=format&fit=crop');"></div>
         </div>
 
-        <div class="card">
-            <span class="day-badge">July 24-25</span>
-            <h2>Tokyo Transition</h2>
-            <span class="location">Sapporo → Tokyo</span>
-            <p>Mt. Moiwa night view. Flight to Tokyo on the 25th.</p>
+        <div class="day-block">
+            <div class="date-circle">
+                <span class="date-num">19</span>
+                <span class="date-month">July</span>
+            </div>
+            <div class="day-content">
+                <h2>Blue Waters & Yellow Mazes</h2>
+                <span class="location-tag">Biei → Hokuryu</span>
+                <p>Discover the surreal cobalt blue of the Shirogane Blue Pond, then lose yourself in 2 million sunflowers.</p>
+                <div class="tags">
+                    <span class="tag peak">🌻 Sunflower Festival</span>
+                </div>
+            </div>
+            <div class="image-preview" style="background-image: url('https://images.unsplash.com/photo-1628258334406-03f44357c376?q=80&w=600&auto=format&fit=crop');"></div>
+        </div>
+
+        <div class="day-block">
+            <div class="date-circle">
+                <span class="date-num">20-21</span>
+                <span class="date-month">July</span>
+            </div>
+            <div class="day-content">
+                <h2>Lake Toya Fireworks</h2>
+                <span class="location-tag">Lake Toya</span>
+                <p>Scenic drive to the volcanic lake. Watch fireworks launched from a boat every night from your hotel.</p>
+                <div class="tags">
+                    <span class="tag fireworks">🎆 Nightly Fireworks</span>
+                </div>
+            </div>
+            <div class="image-preview" style="background-image: url('https://images.unsplash.com/photo-1628114002636-613d94060505?q=80&w=600&auto=format&fit=crop');"></div>
+        </div>
+
+        <div class="day-block">
+            <div class="date-circle">
+                <span class="date-num">23</span>
+                <span class="date-month">July</span>
+            </div>
+            <div class="day-content">
+                <h2>Sapporo Beer Garden Matsuri</h2>
+                <span class="location-tag">Sapporo</span>
+                <p>The summer festival begins! Join thousands in Odori Park for one of Japan's largest beer gardens.</p>
+                <div class="tags">
+                    <span class="tag matsuri">🍺 Matsuri Festival</span>
+                </div>
+            </div>
+            <div class="image-preview" style="background-image: url('https://images.unsplash.com/photo-1584225065152-4a145457d4e9?q=80&w=600&auto=format&fit=crop');"></div>
         </div>
 
     </div>
 
     <footer>
-        <p>Road Trip Itinerary | July 2026</p>
+        <p>Built with ✨ for your 2026 Hokkaido Adventure</p>
+        <p>10 Days of Lavenders, Matsuri, and Fireworks</p>
     </footer>
 
 </body>
