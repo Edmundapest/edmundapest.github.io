@@ -2,104 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Petrova Line - Majestic Astrophage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mobile Petrova Line</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #020005; cursor: crosshair; }
-        canvas { display: block; filter: contrast(120%) brightness(110%); }
-        #overlay {
-            position: absolute; top: 30px; width: 100%; text-align: center;
-            color: #ff00ff; font-family: 'Segoe UI', Tahoma, sans-serif;
-            letter-spacing: 5px; text-transform: uppercase; pointer-events: none;
-            text-shadow: 0 0 20px #ff00ff; opacity: 0.7;
+        body { margin: 0; overflow: hidden; background: #080005; touch-action: none; }
+        canvas { display: block; }
+        #label {
+            position: absolute; bottom: 20px; left: 0; width: 100%;
+            text-align: center; color: #ff3366; font-family: monospace;
+            font-size: 10px; letter-spacing: 2px; opacity: 0.6; pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div id="overlay">Eridian Contact: Petrova Flow Detected</div>
-    <canvas id="canvas"></canvas>
+    <div id="label">TOUCH TO EMIT INFRARED SIGNATURE</div>
+    <canvas id="c"></canvas>
 
     <script>
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('c');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const mouse = { x: null, y: null };
+        let touch = { x: -100, y: -100, active: false };
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Shades of "Astrophage" - varying reds and pinks
+        const colors = ['#4a0000', '#88001b', '#ff0055', '#ff33aa', '#ff0033'];
 
-        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Mobile Touch Support
+        const handleTouch = (e) => {
+            touch.active = true;
+            touch.x = e.touches ? e.touches[0].clientX : e.clientX;
+            touch.y = e.touches ? e.touches[0].clientY : e.clientY;
+        };
+
+        window.addEventListener('touchstart', handleTouch);
+        window.addEventListener('touchmove', handleTouch);
+        window.addEventListener('touchend', () => touch.active = false);
+        // Mouse support for desktop testing
+        window.addEventListener('mousedown', handleTouch);
+        window.addEventListener('mousemove', (e) => { if(e.buttons > 0) handleTouch(e); });
+        window.addEventListener('mouseup', () => touch.active = false);
 
         class Astrophage {
             constructor() {
+                this.init();
+            }
+
+            init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 1.5 + 0.5;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.accel = 0.05;
-                this.color = Math.random() > 0.5 ? '#ff00ff' : '#00ffff'; // Pink & Cyan mix
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = "#000"; // Solid core
-                ctx.fill();
-                
-                // Outer energy glow
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 4);
-                gradient.addColorStop(0, this.color);
-                gradient.addColorStop(1, 'transparent');
-                ctx.fillStyle = gradient;
-                ctx.fill();
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
             }
 
             update() {
-                // Swarm Logic: Move toward mouse (Light source)
-                if (mouse.x) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
+                if (touch.active) {
+                    let dx = touch.x - this.x;
+                    let dy = touch.y - this.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 300) {
-                        this.vx += dx / 2000;
-                        this.vy += dy / 2000;
+                    if (dist < 150) {
+                        this.vx += dx / 800; // Drifts toward touch
+                        this.vy += dy / 800;
                     }
                 }
 
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Friction to keep it graceful
-                this.vx *= 0.99;
-                this.vy *= 0.99;
+                // Wrap boundaries
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
 
-                // Bounce
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                // Air resistance
+                this.vx *= 0.98;
+                this.vy *= 0.98;
             }
-        }
 
-        function createStarfield() {
-            for (let i = 0; i < 200; i++) {
-                ctx.fillStyle = "white";
+            draw() {
+                // Glow effect using shadow (Mobile friendly version)
                 ctx.beginPath();
-                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 0.5, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                
+                // Solid black core
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        function init() {
-            particles = [];
-            for (let i = 0; i < 400; i++) {
-                particles.push(new Astrophage());
-            }
+        function setup() {
+            // Lower particle count for mobile performance
+            const count = (canvas.width < 600) ? 80 : 180;
+            for (let i = 0; i < count; i++) particles.push(new Astrophage());
         }
 
-        function animate() {
-            // This creates the "Energy Trail" effect
-            ctx.fillStyle = 'rgba(2, 0, 8, 0.1)'; 
+        function loop() {
+            // Dark "fading" background creates the light trails
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'rgba(10, 0, 5, 0.15)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
@@ -107,28 +124,11 @@
                 p.draw();
             });
 
-            // Connect particles with thin light lines if they are close
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 50) {
-                        ctx.strokeStyle = `rgba(255, 0, 255, ${1 - distance/50})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(loop);
         }
 
-        init();
-        animate();
+        setup();
+        loop();
     </script>
 </body>
 </html>
