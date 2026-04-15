@@ -3,19 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Mobile Petrova Line</title>
+    <title>Astrophage Supernova</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #080005; touch-action: none; }
+        body { margin: 0; overflow: hidden; background: #050002; touch-action: none; }
         canvas { display: block; }
-        #label {
-            position: absolute; bottom: 20px; left: 0; width: 100%;
-            text-align: center; color: #ff3366; font-family: monospace;
-            font-size: 10px; letter-spacing: 2px; opacity: 0.6; pointer-events: none;
+        
+        #controls {
+            position: absolute; bottom: 30px; width: 100%;
+            display: flex; justify-content: center; pointer-events: none;
+        }
+
+        button {
+            pointer-events: auto;
+            background: rgba(255, 0, 80, 0.2);
+            border: 1px solid #ff0055;
+            color: #ff0055;
+            padding: 12px 25px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 80, 0.3);
+        }
+
+        button:active {
+            background: #ff0055;
+            color: #fff;
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
-    <div id="label">TOUCH TO EMIT INFRARED SIGNATURE</div>
+    <div id="controls">
+        <button onclick="scatter()">Scatter Astrophage</button>
+    </div>
     <canvas id="c"></canvas>
 
     <script>
@@ -24,44 +48,54 @@
         let particles = [];
         let touch = { x: -100, y: -100, active: false };
 
-        // Shades of "Astrophage" - varying reds and pinks
-        const colors = ['#4a0000', '#88001b', '#ff0055', '#ff33aa', '#ff0033'];
+        const colors = ['#330000', '#7e0018', '#ff0044', '#ff4d94', '#ff00ff'];
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-
         window.addEventListener('resize', resize);
         resize();
 
-        // Mobile Touch Support
         const handleTouch = (e) => {
             touch.active = true;
             touch.x = e.touches ? e.touches[0].clientX : e.clientX;
             touch.y = e.touches ? e.touches[0].clientY : e.clientY;
         };
-
         window.addEventListener('touchstart', handleTouch);
         window.addEventListener('touchmove', handleTouch);
         window.addEventListener('touchend', () => touch.active = false);
-        // Mouse support for desktop testing
         window.addEventListener('mousedown', handleTouch);
         window.addEventListener('mousemove', (e) => { if(e.buttons > 0) handleTouch(e); });
         window.addEventListener('mouseup', () => touch.active = false);
 
         class Astrophage {
-            constructor() {
+            constructor(type) {
+                this.type = type; // 0: Fast/Small, 1: Medium, 2: Heavy/Large
                 this.init();
             }
 
             init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Speed and Size logic based on "Type"
+                if(this.type === 0) { // The "Scouts"
+                    this.size = Math.random() * 0.8 + 0.3;
+                    this.baseSpeed = 2.5; 
+                    this.color = colors[4]; // Brightest pink
+                } else if(this.type === 1) { // The "Workers"
+                    this.size = Math.random() * 1.2 + 0.8;
+                    this.baseSpeed = 1.2;
+                    this.color = colors[2];
+                } else { // The "Heavies"
+                    this.size = Math.random() * 2.5 + 2.0;
+                    this.baseSpeed = 0.4;
+                    this.color = colors[1]; // Deep red
+                }
+
+                this.vx = (Math.random() - 0.5) * this.baseSpeed;
+                this.vy = (Math.random() - 0.5) * this.baseSpeed;
             }
 
             update() {
@@ -69,54 +103,71 @@
                     let dx = touch.x - this.x;
                     let dy = touch.y - this.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 150) {
-                        this.vx += dx / 800; // Drifts toward touch
-                        this.vy += dy / 800;
+                    if (dist < 200) {
+                        // All types attracted, but lighter ones move faster
+                        let force = (200 - dist) / 1500;
+                        this.vx += dx * force * (this.type === 0 ? 1.5 : 0.5);
+                        this.vy += dy * force * (this.type === 0 ? 1.5 : 0.5);
                     }
                 }
 
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Wrap boundaries
                 if (this.x < 0) this.x = canvas.width;
                 if (this.x > canvas.width) this.x = 0;
                 if (this.y < 0) this.y = canvas.height;
                 if (this.y > canvas.height) this.y = 0;
 
-                // Air resistance
-                this.vx *= 0.98;
-                this.vy *= 0.98;
+                this.vx *= 0.99;
+                this.vy *= 0.99;
             }
 
             draw() {
-                // Glow effect using shadow (Mobile friendly version)
+                ctx.shadowBlur = this.type === 0 ? 12 : 6;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = this.color;
                 ctx.fill();
                 
-                // Solid black core
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = '#000';
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size * 0.3, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
+        function scatter() {
+            particles.forEach(p => {
+                const angle = Math.random() * Math.PI * 2;
+                const force = Math.random() * 15 + 5;
+                p.vx = Math.cos(angle) * force;
+                p.vy = Math.sin(angle) * force;
+            });
+        }
+
+        // Global scatter function for the button
+        window.scatter = scatter;
+
         function setup() {
-            // Lower particle count for mobile performance
-            const count = (canvas.width < 600) ? 180 : 280;
-            for (let i = 0; i < count; i++) particles.push(new Astrophage());
+            // High limit for majesty: 600 particles
+            const total = 600; 
+            for (let i = 0; i < total; i++) {
+                // Mix: 50% Scouts, 30% Workers, 20% Heavies
+                let type = 0;
+                let rand = Math.random();
+                if(rand > 0.5 && rand < 0.8) type = 1;
+                if(rand >= 0.8) type = 2;
+                
+                particles.push(new Astrophage(type));
+            }
         }
 
         function loop() {
-            // Dark "fading" background creates the light trails
             ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(10, 0, 5, 0.15)';
+            ctx.fillStyle = 'rgba(5, 0, 2, 0.2)'; // Motion blur
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
