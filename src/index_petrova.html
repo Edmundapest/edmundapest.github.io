@@ -3,172 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Astrophage Supernova</title>
+    <title>Project Hail Mary - Forward Propulsion</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #050002; touch-action: none; }
-        canvas { display: block; }
+        body { margin: 0; overflow: hidden; background: #010002; touch-action: none; font-family: 'Courier New', monospace; }
+        canvas { display: block; position: absolute; top: 0; left: 0; }
         
+        /* The Hail Mary Ship Nose Cone Overdrive */
+        #ship-view {
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 60vh;
+            pointer-events: none; opacity: 0.95;
+            z-index: 10;
+        }
+
+        #cockpit-hud {
+            position: absolute; bottom: 20px; left: 20px;
+            color: #00ffff; font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase; text-shadow: 0 0 10px #00ffff;
+            pointer-events: none; z-index: 11;
+        }
+
+        /* Controls */
         #controls {
-            position: absolute; bottom: 30px; width: 100%;
-            display: flex; justify-content: center; pointer-events: none;
+            position: absolute; top: 20px; width: 100%;
+            display: flex; justify-content: center; z-index: 12;
         }
 
         button {
             pointer-events: auto;
-            background: rgba(255, 0, 80, 0.2);
-            border: 1px solid #ff0055;
-            color: #ff0055;
-            padding: 12px 25px;
-            font-family: 'Courier New', Courier, monospace;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00cccc;
+            color: #00ffff;
+            padding: 10px 20px;
             font-weight: bold;
             letter-spacing: 2px;
             cursor: pointer;
             text-transform: uppercase;
             backdrop-filter: blur(5px);
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(255, 0, 80, 0.3);
+            transition: 0.2s;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
         }
 
-        button:active {
-            background: #ff0055;
-            color: #fff;
-            transform: scale(0.95);
-        }
+        button:active { background: #00ffff; color: #000; }
     </style>
 </head>
 <body>
     <div id="controls">
-        <button onclick="scatter()">Scatter Astrophage</button>
+        <button onclick="changeSpeed(1)">Decrease Boost</button>
+        <button onclick="changeSpeed(2.5)">Boost (Petrova Wave)</button>
     </div>
+    
     <canvas id="c"></canvas>
+    
+    <div id="cockpit-hud">
+        VESSEL: HAIL MARY [MISSION STATUS: Eridian Sector]<br>
+        PROPULSION: Spin-Drive Active [ASTROPHAGE DENSITY: HIGH]<br>
+        COMMUNICATION: Blip-A Confirmed 🎵<br>
+        CREW STATUS: R. Grace [STABLE]
+    </div>
+
+    <svg id="ship-view" viewBox="0 0 1000 600" preserveAspectRatio="none">
+        <path d="M0,600 C0,400 300,300 500,300 C700,300 1000,400 1000,600 L0,600 Z" fill="#20232e" stroke="#00ffff" stroke-width="0.5"/>
+        <ellipse cx="500" cy="330" rx="300" ry="10" fill="#00ffff" filter="blur(8px)" opacity="0.3"/>
+        <line x1="200" y1="330" x2="800" y2="330" stroke="#00ffff" stroke-width="0.5"/>
+        <circle cx="200" cy="500" r="2" fill="#333"/>
+        <circle cx="800" cy="500" r="2" fill="#333"/>
+    </svg>
 
     <script>
         const canvas = document.getElementById('c');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let touch = { x: -100, y: -100, active: false };
+        let numParticles = 800;
+        let globalSpeed = 1; // Default "Cruise" speed
 
-        const colors = ['#330000', '#7e0018', '#ff0044', '#ff4d94', '#ff00ff'];
+        // Shades of "Astrophage" - varying reds and pinks
+        const colors = ['#5a000c', '#8e001f', '#ff0033', '#ff33aa', '#ff00ff'];
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            // Place perspective center at middle, slightly higher ( horizon )
+            ctx.translate(canvas.width / 2, canvas.height / 3);
         }
         window.addEventListener('resize', resize);
-        resize();
-
-        const handleTouch = (e) => {
-            touch.active = true;
-            touch.x = e.touches ? e.touches[0].clientX : e.clientX;
-            touch.y = e.touches ? e.touches[0].clientY : e.clientY;
-        };
-        window.addEventListener('touchstart', handleTouch);
-        window.addEventListener('touchmove', handleTouch);
-        window.addEventListener('touchend', () => touch.active = false);
-        window.addEventListener('mousedown', handleTouch);
-        window.addEventListener('mousemove', (e) => { if(e.buttons > 0) handleTouch(e); });
-        window.addEventListener('mouseup', () => touch.active = false);
+        resize(); // Initial call needs context, subsequent use will use translate again.
 
         class Astrophage {
-            constructor(type) {
-                this.type = type; // 0: Fast/Small, 1: Medium, 2: Heavy/Large
-                this.init();
+            constructor() {
+                this.init(true); // Initial setup
             }
 
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                
-                // Speed and Size logic based on "Type"
-                if(this.type === 0) { // The "Scouts"
-                    this.size = Math.random() * 0.8 + 0.3;
-                    this.baseSpeed = 2.5; 
-                    this.color = colors[4]; // Brightest pink
-                } else if(this.type === 1) { // The "Workers"
-                    this.size = Math.random() * 1.2 + 0.8;
-                    this.baseSpeed = 1.2;
-                    this.color = colors[2];
-                } else { // The "Heavies"
-                    this.size = Math.random() * 2.5 + 2.0;
-                    this.baseSpeed = 0.4;
-                    this.color = colors[1]; // Deep red
-                }
+            init(firstTime) {
+                // Cartesian coordinates (X, Y, Z depth)
+                this.x = (Math.random() - 0.5) * canvas.width * 2;
+                this.y = (Math.random() - 0.5) * canvas.height * 2;
+                this.z = firstTime ? Math.random() * canvas.width : canvas.width;
 
-                this.vx = (Math.random() - 0.5) * this.baseSpeed;
-                this.vy = (Math.random() - 0.5) * this.baseSpeed;
+                // Parallax depth color/size
+                this.baseColor = colors[Math.floor(Math.random() * colors.length)];
             }
 
             update() {
-                if (touch.active) {
-                    let dx = touch.x - this.x;
-                    let dy = touch.y - this.y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 200) {
-                        // All types attracted, but lighter ones move faster
-                        let force = (200 - dist) / 1500;
-                        this.vx += dx * force * (this.type === 0 ? 1.5 : 0.5);
-                        this.vy += dy * force * (this.type === 0 ? 1.5 : 0.5);
-                    }
+                // Move toward the viewer (decrease Z)
+                this.z -= 4 * globalSpeed; // Propulsion speed
+
+                // If particle is "behind" us, reset it to the "front" (far horizon)
+                if (this.z < 1) {
+                    this.init(false);
                 }
-
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-
-                this.vx *= 0.99;
-                this.vy *= 0.99;
             }
 
             draw() {
-                ctx.shadowBlur = this.type === 0 ? 12 : 6;
-                ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                // Convert 3D Cartesian coordinates to 2D screen view (Perspective Projection)
+                let fov = canvas.width / 1.8;
+                let sx = this.x * (fov / this.z);
+                let sy = this.y * (fov / this.z);
+                let ssize = (fov / this.z) * 0.8; // Objects grow as they approach
+
+                // Fade colors based on depth (Z)
+                let opacity = (canvas.width - this.z) / canvas.width;
+                if (this.z > canvas.width * 0.8) opacity *= 0.2; // Fade in far horizon
+
+                ctx.fillStyle = this.baseColor;
+                ctx.globalAlpha = opacity;
                 
+                // Glow effect (Mobile friendly shadow)
+                ctx.shadowBlur = this.z < canvas.width * 0.4 ? 15 : 5; // Closer = wider glow
+                ctx.shadowColor = this.baseColor;
+
+                ctx.beginPath();
+                ctx.arc(sx, sy, ssize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Solid Core (No glow)
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = '#000';
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 0.3, 0, Math.PI * 2);
+                ctx.arc(sx, sy, ssize * 0.3, 0, Math.PI * 2);
                 ctx.fill();
+
+                ctx.globalAlpha = 1; // Reset Alpha
             }
         }
 
-        function scatter() {
-            particles.forEach(p => {
-                const angle = Math.random() * Math.PI * 2;
-                const force = Math.random() * 15 + 5;
-                p.vx = Math.cos(angle) * force;
-                p.vy = Math.sin(angle) * force;
-            });
+        function changeSpeed(val) {
+            globalSpeed = val;
         }
 
-        // Global scatter function for the button
-        window.scatter = scatter;
+        // Global functions for buttons
+        window.changeSpeed = changeSpeed;
 
         function setup() {
-            // High limit for majesty: 600 particles
-            const total = 600; 
-            for (let i = 0; i < total; i++) {
-                // Mix: 50% Scouts, 30% Workers, 20% Heavies
-                let type = 0;
-                let rand = Math.random();
-                if(rand > 0.5 && rand < 0.8) type = 1;
-                if(rand >= 0.8) type = 2;
-                
-                particles.push(new Astrophage(type));
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Astrophage());
             }
         }
 
         function loop() {
+            // Dark "fading" background creates the motion blur/light trails
             ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(5, 0, 2, 0.2)'; // Motion blur
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(1, 0, 5, 0.3)';
+            ctx.fillRect(-canvas.width/2, -canvas.height/3, canvas.width, canvas.height); // Correct fill for translate
 
             particles.forEach(p => {
                 p.update();
@@ -179,6 +175,9 @@
         }
 
         setup();
+        // Reset translate to match loop function, loop uses translated coordinates
+        ctx.setTransform(1, 0, 0, 1, 0, 0); 
+        ctx.translate(canvas.width / 2, canvas.height / 3);
         loop();
     </script>
 </body>
